@@ -1,0 +1,2483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Shobotics — Brand Guidelines v1.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --purple: #AE72F9;
+    --purple-light: #C99AFA;
+    --purple-dark: #8B4ED4;
+    --black: #000000;
+    --white: #FFFFFF;
+    --lavender: #EAC7F0;
+    --lavender-pale: #F5EBF8;
+    --grey-100: #F8F8F8;
+    --grey-200: #EFEFEF;
+    --grey-300: #DEDEDE;
+    --grey-500: #888888;
+    --grey-700: #444444;
+
+    --font-display: 'Cormorant Garamond', Georgia, serif;
+    --font-body: 'Inter', -apple-system, sans-serif;
+    --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
+
+    --page-max: 1200px;
+    --section-pad: 80px 96px;
+    --nav-width: 220px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--white);
+    color: var(--black);
+    font-size: 16px;
+    line-height: 1.7;
+    display: flex;
+  }
+
+  /* ─── SIDEBAR NAV ─── */
+  nav#sidebar {
+    position: fixed;
+    top: 0; left: 0;
+    width: var(--nav-width);
+    height: 100vh;
+    background: var(--black);
+    padding: 40px 0;
+    overflow-y: auto;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+  }
+
+  nav#sidebar .nav-logo {
+    padding: 0 24px 32px;
+    border-bottom: 0.5px solid #333;
+  }
+
+  nav#sidebar .nav-logo span {
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--grey-500);
+  }
+
+  nav#sidebar .nav-logo .brand-name {
+    display: block;
+    color: var(--purple);
+    font-size: 18px;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    margin-bottom: 2px;
+  }
+
+  nav#sidebar ul {
+    list-style: none;
+    padding: 20px 0;
+    flex: 1;
+  }
+
+  nav#sidebar ul li a {
+    display: block;
+    padding: 8px 24px;
+    color: #888;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    transition: color 0.2s, background 0.2s;
+    border-left: 2px solid transparent;
+  }
+
+  nav#sidebar ul li a:hover,
+  nav#sidebar ul li a.active {
+    color: var(--white);
+    border-left-color: var(--purple);
+    background: rgba(174,114,249,0.08);
+  }
+
+  nav#sidebar ul li.section-label {
+    padding: 20px 24px 6px;
+  }
+
+  nav#sidebar ul li.section-label span {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #555;
+  }
+
+  nav#sidebar .nav-footer {
+    padding: 20px 24px;
+    border-top: 0.5px solid #333;
+  }
+
+  nav#sidebar .nav-footer span {
+    font-size: 10px;
+    color: #555;
+    font-family: var(--font-mono);
+    letter-spacing: 0.04em;
+  }
+
+  /* ─── MAIN CONTENT ─── */
+  main {
+    margin-left: var(--nav-width);
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* ─── SECTION BASE ─── */
+  section {
+    padding: var(--section-pad);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-bottom: 0.5px solid var(--grey-200);
+    position: relative;
+    overflow: hidden;
+  }
+
+  section.dark {
+    background: var(--black);
+    color: var(--white);
+  }
+
+  section.lavender-bg {
+    background: var(--lavender-pale);
+  }
+
+  section.compact {
+    min-height: auto;
+    padding: 64px 96px;
+  }
+
+  /* ─── TYPOGRAPHY ─── */
+  .section-num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--purple);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .section-num.light { color: var(--lavender); }
+
+  h1.display {
+    font-family: var(--font-display);
+    font-size: clamp(64px, 8vw, 120px);
+    font-weight: 300;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+  }
+
+  h2.section-title {
+    font-family: var(--font-display);
+    font-size: clamp(36px, 5vw, 64px);
+    font-weight: 300;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    margin-bottom: 24px;
+  }
+
+  h3.sub-heading {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--grey-500);
+    margin-bottom: 16px;
+    margin-top: 40px;
+  }
+
+  h3.sub-heading.purple { color: var(--purple); }
+
+  h4.rule-title {
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+
+  p.body-text {
+    font-size: 16px;
+    line-height: 1.75;
+    color: #333;
+    max-width: 640px;
+  }
+
+  p.body-text.light { color: #aaa; }
+
+  p.large-body {
+    font-family: var(--font-display);
+    font-size: clamp(20px, 2.5vw, 28px);
+    font-weight: 300;
+    line-height: 1.5;
+    max-width: 720px;
+  }
+
+  .label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--grey-500);
+  }
+
+  .label.purple { color: var(--purple); }
+  .label.light { color: #666; }
+
+  /* ─── LAYOUT HELPERS ─── */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+
+  .grid-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+
+  .divider {
+    height: 0.5px;
+    background: var(--grey-200);
+    margin: 40px 0;
+  }
+
+  .divider.dark-divider { background: #222; }
+
+  /* ─── LOGO SECTION ─── */
+  .logo-demo {
+    border: 0.5px solid var(--grey-200);
+    padding: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 160px;
+    position: relative;
+  }
+
+  .logo-demo.dark-bg { background: var(--black); border-color: #333; }
+  .logo-demo.purple-bg { background: var(--purple); border-color: var(--purple); }
+  .logo-demo.lavender-bg-block { background: var(--lavender); border-color: var(--lavender); }
+
+  /* ─── OFFICIAL LOGO IMAGES ─── */
+  .logo-img {
+    height: 32px;
+    width: auto;
+    display: inline-block;
+    vertical-align: middle;
+    transition: transform 0.2s ease, filter 0.2s ease;
+  }
+
+  /* Color Shifts using CSS Filters starting from the transparent white source */
+  /* Pure Black (#000000) */
+  .logo-img.black {
+    filter: brightness(0);
+  }
+
+  /* White (#FFFFFF) */
+  .logo-img.white {
+    filter: none;
+  }
+
+  /* Shobotics Purple (#AE72F9) */
+  .logo-img.purple {
+    filter: brightness(0) invert(53%) sepia(87%) saturate(1915%) hue-rotate(224deg) brightness(101%) contrast(98%);
+  }
+
+  /* Dark Purple for lavender backgrounds (#8B4ED4) */
+  .logo-img.purple-dark {
+    filter: brightness(0) invert(37%) sepia(61%) saturate(2976%) hue-rotate(246deg) brightness(91%) contrast(95%);
+  }
+
+  .logo-note {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--grey-500);
+    position: absolute;
+    bottom: 12px;
+    left: 16px;
+  }
+
+  .logo-note.light-note { color: #666; }
+
+  /* ─── COLOR SWATCHES ─── */
+  .swatch-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .swatch {
+    height: 120px;
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    padding: 12px 16px;
+    position: relative;
+  }
+
+  .swatch .swatch-label {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .swatch .swatch-name {
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .swatch .swatch-hex {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    opacity: 0.7;
+  }
+
+  /* ─── RATIO BAR ─── */
+  .ratio-bar {
+    display: flex;
+    height: 64px;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 2px;
+    margin: 24px 0;
+  }
+
+  .ratio-bar .seg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    transition: flex 0.3s;
+  }
+
+  /* ─── TYPE SCALE ─── */
+  .type-row {
+    display: flex;
+    align-items: baseline;
+    gap: 32px;
+    padding: 20px 0;
+    border-bottom: 0.5px solid var(--grey-200);
+  }
+
+  .type-meta {
+    min-width: 160px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  /* ─── DO / DON'T ─── */
+  .dd-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+  }
+
+  .dd-panel {
+    padding: 40px;
+    position: relative;
+  }
+
+  .dd-panel.do-panel { background: #F8FBF8; }
+  .dd-panel.dont-panel { background: #FBF8F8; }
+
+  .dd-badge {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 2px;
+    margin-bottom: 20px;
+    display: inline-block;
+  }
+
+  .dd-badge.do { background: #D4EDDA; color: #2A7A3A; }
+  .dd-badge.dont { background: #F8D7DA; color: #842029; }
+
+  /* ─── SIGNAL FIELD SVG ─── */
+  .signal-field {
+    position: absolute;
+    opacity: 0.06;
+    pointer-events: none;
+  }
+
+  /* ─── UI COMPONENTS ─── */
+  .btn-demo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 28px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    border-radius: 2px;
+    cursor: default;
+    text-decoration: none;
+  }
+
+  .btn-primary {
+    background: var(--purple);
+    color: var(--white);
+    border: none;
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--black);
+    border: 1px solid var(--black);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--black);
+    border: none;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    padding-left: 0;
+  }
+
+  .card-demo {
+    border: 0.5px solid var(--grey-200);
+    border-radius: 2px;
+    padding: 28px;
+    background: var(--white);
+  }
+
+  .card-demo h4 {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+
+  .card-demo p {
+    font-size: 14px;
+    color: var(--grey-500);
+    line-height: 1.6;
+  }
+
+  .form-demo {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 360px;
+  }
+
+  .form-demo label {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--grey-700);
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .form-demo input {
+    width: 100%;
+    padding: 10px 14px;
+    border: 0.5px solid var(--grey-300);
+    border-radius: 2px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    outline: none;
+    background: var(--white);
+  }
+
+  .form-demo input:focus {
+    border-color: var(--purple);
+    box-shadow: 0 0 0 3px rgba(174,114,249,0.12);
+  }
+
+  /* ─── ARCHITECTURE CHART ─── */
+  .arch-tree {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    padding: 40px 0;
+  }
+
+  .arch-box {
+    border: 0.5px solid var(--black);
+    padding: 16px 40px;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-align: center;
+    position: relative;
+  }
+
+  .arch-box.parent {
+    background: var(--black);
+    color: var(--white);
+    min-width: 280px;
+  }
+
+  .arch-children {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0 2px;
+    width: 100%;
+    margin-top: 2px;
+  }
+
+  .arch-box.child {
+    background: var(--white);
+    color: var(--black);
+  }
+
+  .arch-box.child-dhyaan {
+    background: var(--lavender);
+    border-color: var(--lavender);
+  }
+
+  .arch-box.child-studio {
+    background: var(--grey-100);
+  }
+
+  .arch-connector {
+    width: 0.5px;
+    height: 32px;
+    background: var(--black);
+    margin: 0 auto;
+  }
+
+  /* ─── ASSET TABLE ─── */
+  table.asset-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  table.asset-table th {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--grey-500);
+    text-align: left;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--black);
+    font-weight: 400;
+  }
+
+  table.asset-table td {
+    padding: 12px 16px;
+    border-bottom: 0.5px solid var(--grey-200);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+
+  table.asset-table tr:hover td { background: var(--grey-100); }
+
+  .tag {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 2px;
+    font-weight: 500;
+  }
+
+  .tag.locked { background: #FFE8E8; color: #B00; }
+  .tag.editable { background: #E8F5E9; color: #2A7A3A; }
+  .tag.adobe { background: #FFF0E6; color: #B85900; }
+  .tag.open { background: #E8F0FE; color: #1A56BD; }
+
+  /* ─── FOOTER BAND ─── */
+  .doc-footer {
+    background: var(--lavender);
+    padding: 16px 96px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .doc-footer span {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--purple-dark);
+    text-transform: lowercase;
+  }
+
+  /* ─── MISUSE DEMOS ─── */
+  .misuse-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+
+  .misuse-item {
+    padding: 28px 20px;
+    background: var(--grey-100);
+    position: relative;
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .misuse-x {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 20px;
+    height: 20px;
+    background: #E74C3C;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  .misuse-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #E74C3C;
+    position: absolute;
+    bottom: 10px;
+    left: 12px;
+  }
+
+  /* ─── VOICE EXAMPLES ─── */
+  .voice-card {
+    padding: 28px 32px;
+    border-left: 2px solid var(--purple);
+    background: var(--lavender-pale);
+    margin-bottom: 16px;
+  }
+
+  .voice-card p {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1.5;
+    color: var(--black);
+  }
+
+  .voice-avoid {
+    padding: 20px 32px;
+    border-left: 2px solid #E74C3C;
+    background: #FBF8F8;
+    margin-bottom: 12px;
+  }
+
+  .voice-avoid p {
+    font-size: 15px;
+    color: #888;
+    text-decoration: line-through;
+  }
+
+  /* ─── MOTION TABLE ─── */
+  .motion-row {
+    display: grid;
+    grid-template-columns: 180px 1fr 1fr;
+    gap: 24px;
+    padding: 20px 0;
+    border-bottom: 0.5px solid var(--grey-200);
+    align-items: start;
+  }
+
+  /* ─── ACCESSIBILITY ─── */
+  .contrast-pair {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-height: 100px;
+    justify-content: center;
+  }
+
+  .contrast-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .contrast-ratio {
+    font-size: 28px;
+    font-weight: 300;
+    font-family: var(--font-display);
+  }
+
+  .pass { color: #2A7A3A; }
+  .fail { color: #B00; }
+
+  /* ─── COVER ─── */
+  #cover {
+    min-height: 100vh;
+    background: var(--white);
+    padding: 0;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    overflow: hidden;
+  }
+
+  #cover .cover-inner {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 80px 96px 60px;
+    position: relative;
+    flex: 1;
+  }
+
+  /* ─── PHILOSOPHY KEYWORDS ─── */
+  .keyword-cluster {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+  }
+
+  .keyword {
+    border: 0.5px solid var(--grey-300);
+    padding: 6px 16px;
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    color: var(--grey-700);
+    border-radius: 2px;
+  }
+
+  .keyword.highlight {
+    border-color: var(--purple);
+    color: var(--purple);
+    background: rgba(174,114,249,0.05);
+  }
+
+  /* ─── IS / IS NOT ─── */
+  .is-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    margin-top: 24px;
+  }
+
+  .is-panel {
+    padding: 32px;
+  }
+
+  .is-panel.is { background: var(--grey-100); }
+  .is-panel.is-not { background: #FBF8F8; }
+
+  .is-panel ul {
+    list-style: none;
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .is-panel ul li {
+    font-size: 15px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    color: #333;
+  }
+
+  .is-panel ul li::before {
+    content: '→';
+    font-size: 13px;
+    color: var(--purple);
+    margin-top: 3px;
+    flex-shrink: 0;
+  }
+
+  .is-panel.is-not ul li::before {
+    content: '✕';
+    color: #B00;
+  }
+
+  /* ─── SIGNAL FIELD USAGE MODES ─── */
+  .signal-demo {
+    height: 200px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border: 0.5px solid var(--grey-200);
+  }
+
+  .signal-demo .signal-label {
+    position: absolute;
+    bottom: 12px;
+    left: 16px;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    z-index: 2;
+  }
+
+  /* ─── SCROLLSPY ─── */
+  .print-page-marker {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    color: var(--grey-500);
+    position: absolute;
+    top: 20px;
+    right: 96px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════
+     SIDEBAR NAVIGATION
+     Holds logo, category groupings, and paginated scroll links
+═══════════════════════════════════════════════════ -->
+<nav id="sidebar">
+  <div class="nav-logo" style="padding: 0 24px 28px;">
+    <div style="margin-bottom: 8px;">
+      <img src="assets/logo-white.png" alt="Shobotics" class="logo-img white" style="height: 18px;">
+    </div>
+    <span style="font-family: var(--font-body); font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--grey-500);">Brand Guidelines v1.0</span>
+  </div>
+  <ul>
+    <li class="section-label"><span>Identity</span></li>
+    <li><a href="#cover">Cover</a></li>
+    <li><a href="#contents">Contents</a></li>
+    <li><a href="#brand-essence">Brand Essence</a></li>
+    <li><a href="#visual-philosophy">Visual Philosophy</a></li>
+
+    <li class="section-label"><span>Logo</span></li>
+    <li><a href="#logo-system">Logo System</a></li>
+    <li><a href="#logo-variants">Logo Variants</a></li>
+    <li><a href="#logo-rules">Clear Space &amp; Size</a></li>
+    <li><a href="#logo-misuse">Logo Misuse</a></li>
+
+    <li class="section-label"><span>Colour</span></li>
+    <li><a href="#colour-system">Colour Palette</a></li>
+    <li><a href="#colour-ratios">Usage Ratios</a></li>
+    <li><a href="#colour-access">Accessibility</a></li>
+
+    <li class="section-label"><span>Typography</span></li>
+    <li><a href="#type-overview">Type Overview</a></li>
+    <li><a href="#type-scale">Type Scale</a></li>
+    <li><a href="#type-rules">Type Rules</a></li>
+
+    <li class="section-label"><span>System</span></li>
+    <li><a href="#layout">Layout &amp; Grid</a></li>
+    <li><a href="#signal-field">Signal Field</a></li>
+    <li><a href="#imagery">Imagery</a></li>
+    <li><a href="#iconography">Iconography</a></li>
+    <li><a href="#ui-components">UI Components</a></li>
+    <li><a href="#motion">Motion Language</a></li>
+
+    <li class="section-label"><span>Brand</span></li>
+    <li><a href="#voice-tone">Voice &amp; Tone</a></li>
+    <li><a href="#brand-arch">Brand Architecture</a></li>
+    <li><a href="#do-dont">Do / Don't</a></li>
+    <li><a href="#asset-library">Asset Library</a></li>
+  </ul>
+  <div class="nav-footer">
+    <span>confidential · do not share</span>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════
+     MAIN CONTENT
+═══════════════════════════════════════════════════ -->
+<main>
+
+<!-- ═══════════════════════════════════════════════════
+     01 · COVER
+═══════════════════════════════════════════════════ -->
+<section id="cover" style="padding: 0; display: block; position: relative; overflow: hidden; min-height: 100vh;">
+
+  <!-- Signal Field Hero SVG -->
+  <svg style="position:absolute;top:-60px;right:-80px;width:620px;height:700px;opacity:0.07;pointer-events:none;" viewBox="0 0 620 700" xmlns="http://www.w3.org/2000/svg">
+    <g fill="none" stroke="#000" stroke-width="1">
+      <ellipse cx="420" cy="320" rx="40" ry="28"/>
+      <ellipse cx="420" cy="320" rx="80" ry="58"/>
+      <ellipse cx="420" cy="320" rx="120" ry="88"/>
+      <ellipse cx="420" cy="320" rx="162" ry="118"/>
+      <ellipse cx="420" cy="320" rx="204" ry="150"/>
+      <ellipse cx="420" cy="320" rx="246" ry="182"/>
+      <ellipse cx="420" cy="320" rx="290" ry="214"/>
+      <ellipse cx="420" cy="320" rx="336" ry="248"/>
+      <ellipse cx="420" cy="320" rx="384" ry="284"/>
+      <ellipse cx="420" cy="320" rx="430" ry="320"/>
+      <path d="M 300 100 Q 360 160 320 240 Q 280 320 360 380 Q 420 440 380 520" stroke-width="0.8"/>
+      <path d="M 280 80 Q 340 140 300 220 Q 260 300 340 360 Q 400 420 360 500" stroke-width="0.8"/>
+      <path d="M 320 120 Q 380 180 340 260 Q 300 340 380 400 Q 440 460 400 540" stroke-width="0.8"/>
+      <path d="M 200 200 Q 280 260 260 340 Q 240 420 320 460 Q 380 500 360 580" stroke-width="0.8"/>
+      <path d="M 460 160 Q 480 240 440 300 Q 400 360 460 420 Q 500 480 480 560" stroke-width="0.8"/>
+    </g>
+  </svg>
+
+  <!-- Bottom-left corner signal -->
+  <svg style="position:absolute;bottom:0;left:0;width:300px;height:300px;opacity:0.04;pointer-events:none;" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+    <g fill="none" stroke="#000" stroke-width="1">
+      <path d="M 0 300 Q 40 200 120 160 Q 200 120 200 40"/>
+      <path d="M 0 280 Q 40 190 100 150 Q 170 110 170 40"/>
+      <path d="M 0 260 Q 60 200 80 160 Q 140 100 140 40"/>
+      <path d="M 0 240 Q 40 170 60 140 Q 110 80 110 40"/>
+      <path d="M 0 220 Q 50 160 40 120 Q 80 60 80 40"/>
+    </g>
+  </svg>
+
+  <div style="position:relative;z-index:1;display:flex;flex-direction:column;justify-content:flex-end;min-height:100vh;padding:80px 96px 0;">
+
+    <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; padding-bottom: 40px;">
+      <div style="margin-bottom: 24px;">
+        <img src="assets/logo-white.png" alt="Shobotics Logo" class="logo-img purple" style="height: 54px;">
+      </div>
+
+      <h1 style="font-family: 'Cormorant Garamond', serif; font-size: clamp(72px, 10vw, 140px); font-weight: 300; line-height: 0.9; letter-spacing: -0.02em; color: #000000; margin-bottom: 32px;">
+        Brand<br/>Guide&shy;lines
+      </h1>
+
+      <p style="font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 300; font-style: italic; color: #888888; max-width: 540px; line-height: 1.5;">
+        A visual system for the world of Shobotics. Version 1.0
+      </p>
+    </div>
+
+    <!-- Cover footer band -->
+    <div style="background: #EAC7F0; padding: 16px 0; display: flex; justify-content: space-between; align-items: center; margin: 0 -96px; padding-left: 96px; padding-right: 96px;">
+      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.12em; color: #8B4ED4;">confidential</span>
+      <img src="assets/logo-white.png" alt="Shobotics" class="logo-img purple-dark" style="height: 16px;">
+      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.12em; color: #8B4ED4;">do not share</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     02 · CONTENTS
+═══════════════════════════════════════════════════ -->
+<section id="contents" class="dark" style="padding: 80px 96px;">
+  <span class="print-page-marker" style="color:#555;">02</span>
+
+  <h2 class="section-title" style="color:white;margin-bottom:60px;">Contents</h2>
+
+  <div class="grid-2" style="gap:60px;">
+    <div>
+      <div style="border-top:0.5px solid #333;padding:20px 0;display:flex;justify-content:space-between;align-items:baseline;" >
+        <span style="color:#888;font-size:12px;font-family:'IBM Plex Mono',monospace;letter-spacing:0.1em;">01</span>
+        <span style="color:white;font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;">Brand Essence</span>
+      </div>
+      <div style="border-top:0.5px solid #333;padding:20px 0;display:flex;justify-content:space-between;align-items:baseline;">
+        <span style="color:#888;font-size:12px;font-family:'IBM Plex Mono',monospace;letter-spacing:0.1em;">02</span>
+        <span style="color:white;font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;">Visual Philosophy</span>
+      </div>
+      <div style="border-top:0.5px solid #333;padding:20px 0;display:flex;justify-content:space-between;align-items:baseline;">
+        <span style="color:#888;font-size:12px;font-family:'IBM Plex Mono',monospace;letter-spacing:0.1em;">03</span>
+        <span style="color:white;font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;">Logo System</span>
+      </div>
+      <div style="border-top:0.5px solid #333;padding:20px 0;display:flex;justify-content:space-between;align-items:baseline;">
+        <span style="color:#888;font-size:12px;font-family:'IBM Plex Mono',monospace;letter-spacing:0.1em;">04</span>
+        <span style="color:white;font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;">Logo Variants</span>
+      </div>
+      <div style="border-top:0.5px solid #333;padding:20px 0;display:flex;justify-content:space-between;align-items:baseline;">
+        <span style="color:#888;font-size:12px;font-family:'IBM Plex Mono',monospace;letter-spacing:0.1em;">05</span>
+        <span style="color:white;font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;">Logo Clear Space &amp; Size</span>
+      </div>
+      <div style="border-top:0.5px solid #333;padding:20px 0;display:flex;justify-content:space-between;align-items:baseline;">
+        <span style="color:#888;font-size:12px;font-family:'IBM Plex Mono',monospace;letter-spacing:0.1em;">06</span>
+        <span style="color:white;font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;">Logo Misuse</span>
+      </div>
+      <div style="border-top:0.5px solid #333;padding:20px 0;display:flex;justify-content:space-between;align-items:baseline;">
+        <span style="color:#888;font-size:12px;font-family:'IBM Plex Mono',monospace;letter-spacing:0.1em;">07</span>
+        <span style="color:white;font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;">Colour System</span>
+      </div>
+      <div style="border-top:0.5px solid #333;padding:20px 0;display:flex;justify-content:space-between;align-items:baseline;">
+        <span style="color:#888;font-size:12px;font-family:'IBM Plex Mono',monospace;letter-spacing:0.1em;">08</span>
+        <span style="color:white;font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;">Colour Ratios &amp; Access</span>
+      </div>
+    </div>
+    <div>
+      <div style="border-top:0.5px solid #333;padding:20px 0;display:flex;justify-content:space-between;align-items:baseline;">
+        <span style="color:#888;font-size:12px;font-family:'IBM Plex Mono',monospace;letter-spacing:0.1em;">09</span>
+        <span style="color:white;font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;">Typography</span>
+      </div>
+      <div style="border-top:0.5px solid #333;padding:20px 0;display:flex;justify-content:space-between;align-items:baseline;">
+        <span style="color:#888;font-size:12px;font-family:'IBM Plex Mono',monospace;letter-spacing:0.1em;">10</span>
+        <span style="color:white;font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;">Layout &amp; Grid</span>
+      </div>
+      <div style="border-top:0.5px solid #333;padding:20px 0;display:flex;justify-content:space-between;align-items:baseline;">
+        <span style="color:#888;font-size:12px;font-family:'IBM Plex Mono',monospace;letter-spacing:0.1em;">11</span>
+        <span style="color:white;font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;">Signal Field System</span>
+      </div>
+      <div style="border-top:0.5px solid #333;padding:20px 0;display:flex;justify-content:space-between;align-items:baseline;">
+        <span style="color:#888;font-size:12px;font-family:'IBM Plex Mono',monospace;letter-spacing:0.1em;">12</span>
+        <span style="color:white;font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;">Imagery &amp; Iconography</span>
+      </div>
+      <div style="border-top:0.5px solid #333;padding:20px 0;display:flex;justify-content:space-between;align-items:baseline;">
+        <span style="color:#888;font-size:12px;font-family:'IBM Plex Mono',monospace;letter-spacing:0.1em;">13</span>
+        <span style="color:white;font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;">UI Components</span>
+      </div>
+      <div style="border-top:0.5px solid #333;padding:20px 0;display:flex;justify-content:space-between;align-items:baseline;">
+        <span style="color:#888;font-size:12px;font-family:'IBM Plex Mono',monospace;letter-spacing:0.1em;">14</span>
+        <span style="color:white;font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;">Motion Language</span>
+      </div>
+      <div style="border-top:0.5px solid #333;padding:20px 0;display:flex;justify-content:space-between;align-items:baseline;">
+        <span style="color:#888;font-size:12px;font-family:'IBM Plex Mono',monospace;letter-spacing:0.1em;">15</span>
+        <span style="color:white;font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;">Voice &amp; Tone</span>
+      </div>
+      <div style="border-top:0.5px solid #333;padding:20px 0;display:flex;justify-content:space-between;align-items:baseline;">
+        <span style="color:#888;font-size:12px;font-family:'IBM Plex Mono',monospace;letter-spacing:0.1em;">16</span>
+        <span style="color:white;font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;">Brand Architecture</span>
+      </div>
+      <div style="border-top:0.5px solid #333;padding:20px 0;display:flex;justify-content:space-between;align-items:baseline;">
+        <span style="color:#888;font-size:12px;font-family:'IBM Plex Mono',monospace;letter-spacing:0.1em;">17</span>
+        <span style="color:white;font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;">Asset Library</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     03 · BRAND ESSENCE
+═══════════════════════════════════════════════════ -->
+<section id="brand-essence">
+  <span class="print-page-marker">03</span>
+  <span class="section-num">01 · Brand Essence</span>
+  <h2 class="section-title">Who we are.</h2>
+
+  <p class="large-body" style="margin-bottom:48px;">
+    Shobotics is a systems-first technology company operating at the intersection of neurotechnology, artificial intelligence, consciousness research, and creative media.
+  </p>
+
+  <div class="divider"></div>
+
+  <div class="grid-2" style="gap:80px;margin-top:40px;">
+    <div>
+      <h3 class="sub-heading">Brand Idea</h3>
+      <p class="body-text">
+        <strong>Precise systems, imperfect human signal.</strong><br/><br/>
+        The visual language combines technical precision with human imperfection. It should feel intelligent, minimal, experimental, and alive — like a precise lab notebook from the future, touched by a human hand.
+      </p>
+
+      <h3 class="sub-heading">Design Philosophy</h3>
+      <p class="body-text">
+        Shobotics maintains a visual tension between three forces: the hand-crafted and human, the scientific and technical, and the mystic and experimental. No single force dominates. The system exists in the balance.
+      </p>
+    </div>
+
+    <div>
+      <h3 class="sub-heading">Personality Keywords</h3>
+      <div class="keyword-cluster">
+        <span class="keyword highlight">Precise</span>
+        <span class="keyword highlight">Conscious</span>
+        <span class="keyword highlight">Experimental</span>
+        <span class="keyword">Human</span>
+        <span class="keyword">Technical</span>
+        <span class="keyword">Minimal</span>
+        <span class="keyword">Premium</span>
+        <span class="keyword">Slightly punk</span>
+        <span class="keyword">Calm</span>
+        <span class="keyword">Future-facing</span>
+        <span class="keyword">Disciplined</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="is-grid">
+    <div class="is-panel is">
+      <h3 class="sub-heading">The brand is</h3>
+      <ul>
+        <li>Minimal — but not empty</li>
+        <li>Technical — but not sterile</li>
+        <li>Human — but not messy</li>
+        <li>Experimental — but not vague</li>
+        <li>Premium — but not corporate</li>
+        <li>Slightly punk — but disciplined</li>
+      </ul>
+    </div>
+    <div class="is-panel is-not">
+      <h3 class="sub-heading" style="color:#B00;">The brand is not</h3>
+      <ul>
+        <li>Generic SaaS</li>
+        <li>Neon cyberpunk</li>
+        <li>Wellness spa cliché</li>
+        <li>Corporate consulting deck</li>
+        <li>Gamer-tech aesthetic</li>
+        <li>Overdesigned spiritual branding</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     04 · VISUAL PHILOSOPHY
+═══════════════════════════════════════════════════ -->
+<section id="visual-philosophy" class="lavender-bg">
+  <span class="print-page-marker" style="color:#8B4ED4;">04</span>
+  <span class="section-num">02 · Visual Philosophy</span>
+  <h2 class="section-title">Three forces<br/>in tension.</h2>
+
+  <div class="grid-3" style="margin-top:48px;">
+    <div style="padding:40px;background:white;border-top:3px solid #000;">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#888;margin-bottom:16px;">Force 01</div>
+      <h4 style="font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;margin-bottom:16px;">Human /<br/>Handmade</h4>
+      <p style="font-size:14px;color:#555;line-height:1.7;">Handwritten logo. Organic imperfection. Personal authorship. The work of a thinking human — not a template engine.</p>
+    </div>
+    <div style="padding:40px;background:white;border-top:3px solid #AE72F9;">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#888;margin-bottom:16px;">Force 02</div>
+      <h4 style="font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;margin-bottom:16px;">Scientific /<br/>Technical</h4>
+      <p style="font-size:14px;color:#555;line-height:1.7;">Clean white space. Structured grid. Thin black line systems. Precise labels. The discipline of a well-documented system.</p>
+    </div>
+    <div style="padding:40px;background:white;border-top:3px solid #EAC7F0;">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#888;margin-bottom:16px;">Force 03</div>
+      <h4 style="font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;margin-bottom:16px;">Mystic /<br/>Experimental</h4>
+      <p style="font-size:14px;color:#555;line-height:1.7;">Purple and lavender. Neural topographic forms. A quiet suggestion of consciousness, perception, and what lies beneath signal.</p>
+    </div>
+  </div>
+
+  <div style="margin-top:60px;padding:40px;background:white;border-left:3px solid #AE72F9;max-width:720px;">
+    <p style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#AE72F9;margin-bottom:12px;">One-line design rule</p>
+    <p style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;font-style:italic;line-height:1.5;color:#000;">
+      Shobotics should feel like a precise lab notebook from the future, touched by a human hand.
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     05 · LOGO SYSTEM
+═══════════════════════════════════════════════════ -->
+<section id="logo-system">
+  <span class="print-page-marker">05</span>
+  <span class="section-num">03 · Logo System</span>
+  <h2 class="section-title">The wordmark.</h2>
+
+  <div class="grid-2" style="gap:80px;margin-top:40px;align-items:start;">
+    <div>
+      <p class="body-text" style="margin-bottom:32px;">
+        The Shobotics wordmark is a handwritten logotype. It must always be used as supplied artwork — never rebuilt, retyped, or approximated with any font. The irregular stroke contrast and organic letterforms are properties of the original, not properties of any typeface.
+      </p>
+
+      <div style="padding:20px;background:#FFF8E6;border-left:3px solid #F5A623;">
+        <p style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#D97706;margin-bottom:8px;font-weight:500;">Licensing Note</p>
+        <p style="font-size:13px;color:#666;line-height:1.6;">
+          The Shobotics wordmark must always be used as artwork. Exact Adobe font names may be substituted only with approved licensed equivalents — but never for the logo itself. The wordmark must never be rebuilt manually.
+        </p>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div style="background:#ffffff;border:0.5px solid var(--grey-200);padding:48px;display:flex;align-items:center;justify-content:center;position:relative;min-height:160px;">
+        <img src="assets/logo-white.png" alt="Shobotics Logo" class="logo-img purple" style="height: 48px;">
+        <span style="position:absolute;bottom:10px;left:14px;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--grey-500);">Primary — purple on white</span>
+      </div>
+      <p style="font-size:12px;color:#888;font-style:italic;padding:0 4px;">Note: The official high-resolution brand logo file is loaded dynamically above in this document.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     06 · LOGO VARIANTS
+═══════════════════════════════════════════════════ -->
+<section id="logo-variants" class="compact">
+  <span class="print-page-marker">06</span>
+  <span class="section-num">04 · Logo Variants</span>
+  <h2 class="section-title" style="margin-bottom:48px;">Approved variations.</h2>
+
+  <div class="grid-3" style="gap:2px;">
+    <!-- Purple on White -->
+    <div>
+      <div class="logo-demo">
+        <img src="assets/logo-white.png" alt="Shobotics Logo" class="logo-img purple">
+        <span class="logo-note">Purple on white · Primary</span>
+      </div>
+    </div>
+    
+    <!-- Black on White -->
+    <div>
+      <div class="logo-demo">
+        <img src="assets/logo-white.png" alt="Shobotics Logo" class="logo-img black">
+        <span class="logo-note">Black on white</span>
+      </div>
+    </div>
+    
+    <!-- White on Black -->
+    <div>
+      <div class="logo-demo dark-bg">
+        <img src="assets/logo-white.png" alt="Shobotics Logo" class="logo-img white">
+        <span class="logo-note light-note">White on black</span>
+      </div>
+    </div>
+    
+    <!-- White on Black border container -->
+    <div>
+      <div class="logo-demo dark-bg" style="padding:32px 40px;">
+        <div style="background:#000000;border:1.5px solid #ffffff;border-radius:40px;padding:10px 28px;display:flex;align-items:center;justify-content:center;">
+          <img src="assets/logo-white.png" alt="Shobotics Logo" class="logo-img white" style="height:22px;">
+        </div>
+        <span class="logo-note light-note">White · Black container</span>
+      </div>
+    </div>
+    
+    <!-- White in rounded black fill container -->
+    <div>
+      <div class="logo-demo" style="padding:32px 40px;">
+        <div style="background:#000000;border-radius:40px;padding:10px 28px;display:flex;align-items:center;justify-content:center;">
+          <img src="assets/logo-white.png" alt="Shobotics Logo" class="logo-img white" style="height:22px;">
+        </div>
+        <span class="logo-note">White · Rounded black fill</span>
+      </div>
+    </div>
+    
+    <!-- Dark Purple on Lavender -->
+    <div>
+      <div class="logo-demo" style="background:#EAC7F0;border-color:#EAC7F0;">
+        <img src="assets/logo-white.png" alt="Shobotics Logo" class="logo-img purple-dark" style="height:32px;">
+        <span class="logo-note" style="color:#8B4ED4;">Purple-dark on lavender</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:32px;padding:20px 24px;background:var(--grey-100);border-left:2px solid var(--purple);">
+    <p style="font-size:14px;color:#555;line-height:1.7;">
+      Colour variations are limited to the six approved variants above. Font colour variations within the handwritten wordmark are permitted only within the defined palette.
+      No additional shadows, outlines, or effects may be added to any logo variant.
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     07 · LOGO CLEAR SPACE & MINIMUM SIZE
+═══════════════════════════════════════════════════ -->
+<section id="logo-rules" class="compact">
+  <span class="print-page-marker">07</span>
+  <span class="section-num">05 · Logo Rules</span>
+  <h2 class="section-title" style="margin-bottom:48px;">Clear space &amp; size.</h2>
+
+  <div class="grid-2" style="gap:80px;align-items:start;">
+    <div>
+      <h3 class="sub-heading">Clear Space Rule</h3>
+      <p class="body-text" style="margin-bottom:24px;">
+        Minimum clear space = the height of the lowercase "s" in the wordmark. No text, image, graphic, or page edge may enter this protected zone.
+      </p>
+      <div style="border:0.5px solid #ddd;padding:40px;position:relative;background:#fff;">
+        <div style="border:1.5px dashed #AE72F9;padding:32px;display:flex;align-items:center;justify-content:center;position:relative;">
+          <img src="assets/logo-white.png" alt="Shobotics" class="logo-img purple" style="height:32px;">
+          <!-- top arrow -->
+          <div style="position:absolute;top:-22px;left:50%;transform:translateX(-50%);font-family:'IBM Plex Mono',monospace;font-size:9px;color:#AE72F9;letter-spacing:0.1em;white-space:nowrap;">↑ min. "s" height</div>
+          <!-- bottom arrow -->
+          <div style="position:absolute;bottom:-22px;left:50%;transform:translateX(-50%);font-family:'IBM Plex Mono',monospace;font-size:9px;color:#AE72F9;letter-spacing:0.1em;white-space:nowrap;">↓ min. "s" height</div>
+          <!-- left arrow -->
+          <div style="position:absolute;left:-64px;top:50%;transform:translateY(-50%);font-family:'IBM Plex Mono',monospace;font-size:9px;color:#AE72F9;letter-spacing:0.1em;writing-mode:horizontal-tb;white-space:nowrap;">← min.</div>
+          <!-- right arrow -->
+          <div style="position:absolute;right:-42px;top:50%;transform:translateY(-50%);font-family:'IBM Plex Mono',monospace;font-size:9px;color:#AE72F9;letter-spacing:0.1em;white-space:nowrap;">→ min.</div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <h3 class="sub-heading">Minimum Sizes</h3>
+      <div style="display:flex;flex-direction:column;gap:0;border:0.5px solid var(--grey-200);">
+        <div style="padding:20px 24px;border-bottom:0.5px solid var(--grey-200);display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <p style="font-size:14px;font-weight:500;">Digital minimum</p>
+            <p style="font-size:13px;color:#888;margin-top:4px;">Web, screen, UI</p>
+          </div>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:500;color:var(--purple);">120 px</span>
+        </div>
+        <div style="padding:20px 24px;border-bottom:0.5px solid var(--grey-200);display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <p style="font-size:14px;font-weight:500;">Print minimum</p>
+            <p style="font-size:13px;color:#888;margin-top:4px;">Offset, screen, embossing</p>
+          </div>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:500;color:var(--purple);">25 mm</span>
+        </div>
+        <div style="padding:20px 24px;display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <p style="font-size:14px;font-weight:500;">Favicon / avatar</p>
+            <p style="font-size:13px;color:#888;margin-top:4px;">Below legibility threshold</p>
+          </div>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:500;color:#888;">Use icon only</span>
+        </div>
+      </div>
+
+      <h3 class="sub-heading">Background Control</h3>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="padding:12px 16px;background:#f8f8f8;border-left:2px solid #2A7A3A;font-size:13px;color:#555;">Use black or purple logo on white/light backgrounds</div>
+        <div style="padding:12px 16px;background:#f8f8f8;border-left:2px solid #2A7A3A;font-size:13px;color:#555;">Use white logo on black/dark backgrounds</div>
+        <div style="padding:12px 16px;background:#FBF8F8;border-left:2px solid #B00;font-size:13px;color:#555;">Avoid logo directly on dense contour-line patterns</div>
+        <div style="padding:12px 16px;background:#FFF8E6;border-left:2px solid #F5A623;font-size:13px;color:#555;">On busy backgrounds: place logo in a clean white/black container</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     08 · LOGO MISUSE
+═══════════════════════════════════════════════════ -->
+<section id="logo-misuse" class="compact lavender-bg">
+  <span class="print-page-marker" style="color:#8B4ED4;">08</span>
+  <span class="section-num">06 · Logo Misuse</span>
+  <h2 class="section-title" style="margin-bottom:48px;">What not to do.</h2>
+
+  <div class="misuse-grid">
+    <!-- Misuse: Stretched -->
+    <div class="misuse-item">
+      <img src="assets/logo-white.png" alt="Shobotics Logo" class="logo-img purple" style="height: 32px; transform: scaleX(1.5);">
+      <div class="misuse-x">✕</div>
+      <span class="misuse-label">Stretched / distorted</span>
+    </div>
+    
+    <!-- Misuse: Rotated -->
+    <div class="misuse-item">
+      <img src="assets/logo-white.png" alt="Shobotics Logo" class="logo-img purple" style="height: 32px; transform: rotate(-15deg);">
+      <div class="misuse-x">✕</div>
+      <span class="misuse-label">Rotated</span>
+    </div>
+    
+    <!-- Misuse: Drop Shadow -->
+    <div class="misuse-item">
+      <img src="assets/logo-white.png" alt="Shobotics Logo" class="logo-img black" style="height: 32px; filter: brightness(0) drop-shadow(3px 3px 6px rgba(0,0,0,0.4));">
+      <div class="misuse-x">✕</div>
+      <span class="misuse-label">Drop shadow added</span>
+    </div>
+    
+    <!-- Misuse: Wrong Background -->
+    <div class="misuse-item" style="background:#FF6B9D;">
+      <img src="assets/logo-white.png" alt="Shobotics Logo" class="logo-img purple" style="height: 32px;">
+      <div class="misuse-x">✕</div>
+      <span class="misuse-label" style="color:white;">Wrong background colour</span>
+    </div>
+    
+    <!-- Misuse: Outlined -->
+    <div class="misuse-item">
+      <img src="assets/logo-white.png" alt="Shobotics Logo" class="logo-img purple" style="height: 32px; filter: opacity(0.4) drop-shadow(1px 0 0 #AE72F9) drop-shadow(-1px 0 0 #AE72F9) drop-shadow(0 1px 0 #AE72F9) drop-shadow(0 -1px 0 #AE72F9);">
+      <div class="misuse-x">✕</div>
+      <span class="misuse-label">Outlined / stroked only</span>
+    </div>
+    
+    <!-- Misuse: Wrong Font (Kept as plain text to show violation of retyping) -->
+    <div class="misuse-item">
+      <span style="font-family:'Courier New',monospace;font-size:28px;color:#AE72F9;display:inline-block;letter-spacing:0.04em;">shobotics</span>
+      <div class="misuse-x">✕</div>
+      <span class="misuse-label">Retyped with wrong font</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     09 · COLOUR SYSTEM
+═══════════════════════════════════════════════════ -->
+<section id="colour-system">
+  <span class="print-page-marker">09</span>
+  <span class="section-num">07 · Colour System</span>
+  <h2 class="section-title">Four colours.<br/>No exceptions.</h2>
+
+  <div class="grid-4" style="margin-top:48px;">
+
+    <div class="swatch-block">
+      <div class="swatch" style="background:#AE72F9;">
+        <div class="swatch-label">
+          <span class="swatch-name" style="color:white;">Shobotics Purple</span>
+          <span class="swatch-hex" style="color:rgba(255,255,255,0.7);">#AE72F9</span>
+        </div>
+      </div>
+      <div style="padding:20px;border:0.5px solid var(--grey-200);">
+        <p style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:#888;margin-bottom:8px;">Use for</p>
+        <p style="font-size:13px;color:#444;line-height:1.6;">Logo accents · active states · small highlights · CTAs · brand moments</p>
+        <div style="margin-top:12px;padding:8px 12px;background:#FFF8E6;border-radius:2px;">
+          <p style="font-size:11px;color:#B85900;">⚠ Accent only — not a background default</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="swatch-block">
+      <div class="swatch" style="background:#000000;">
+        <div class="swatch-label">
+          <span class="swatch-name" style="color:white;">Signal Black</span>
+          <span class="swatch-hex" style="color:rgba(255,255,255,0.5);">#000000</span>
+        </div>
+      </div>
+      <div style="padding:20px;border:0.5px solid var(--grey-200);">
+        <p style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:#888;margin-bottom:8px;">Use for</p>
+        <p style="font-size:13px;color:#444;line-height:1.6;">Primary text · diagrams · linework · high-contrast structure</p>
+      </div>
+    </div>
+
+    <div class="swatch-block">
+      <div class="swatch" style="background:#FFFFFF;border:0.5px solid #DEDEDE;">
+        <div class="swatch-label">
+          <span class="swatch-name" style="color:#000;">System White</span>
+          <span class="swatch-hex" style="color:rgba(0,0,0,0.4);">#FFFFFF</span>
+        </div>
+      </div>
+      <div style="padding:20px;border:0.5px solid var(--grey-200);">
+        <p style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:#888;margin-bottom:8px;">Use for</p>
+        <p style="font-size:13px;color:#444;line-height:1.6;">Dominant background canvas · negative space · breathing room</p>
+        <div style="margin-top:12px;padding:8px 12px;background:#E8F5E9;border-radius:2px;">
+          <p style="font-size:11px;color:#2A7A3A;">✓ 70% of all brand surfaces</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="swatch-block">
+      <div class="swatch" style="background:#EAC7F0;border:0.5px solid #D4A8DC;">
+        <div class="swatch-label">
+          <span class="swatch-name" style="color:#6B3D7A;">Soft Lavender</span>
+          <span class="swatch-hex" style="color:rgba(107,61,122,0.6);">#EAC7F0</span>
+        </div>
+      </div>
+      <div style="padding:20px;border:0.5px solid var(--grey-200);">
+        <p style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:#888;margin-bottom:8px;">Use for</p>
+        <p style="font-size:13px;color:#444;line-height:1.6;">Footer bands · subtle surfaces · dividers · callout panels</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     10 · COLOUR RATIOS & ACCESSIBILITY
+═══════════════════════════════════════════════════ -->
+<section id="colour-ratios" class="compact">
+  <span class="print-page-marker">10</span>
+  <span class="section-num">08 · Colour Usage</span>
+  <h2 class="section-title" style="margin-bottom:48px;">Ratios &amp; accessibility.</h2>
+
+  <h3 class="sub-heading">Recommended Colour Proportion</h3>
+  <p class="body-text" style="margin-bottom:20px;">Apply this approximate ratio across all brand applications. Deviation should be intentional, not accidental.</p>
+
+  <div class="ratio-bar">
+    <div class="seg" style="flex:70;background:#FFFFFF;border:0.5px solid #ddd;color:#888;">70%</div>
+    <div class="seg" style="flex:20;background:#000000;color:#888;">20%</div>
+    <div class="seg" style="flex:8;background:#EAC7F0;color:#8B4ED4;">8%</div>
+    <div class="seg" style="flex:2;background:#AE72F9;color:white;">2%</div>
+  </div>
+  <div style="display:grid;grid-template-columns:70fr 20fr 8fr 2fr;gap:0;margin-top:8px;">
+    <span style="font-size:11px;color:#888;padding-left:4px;">White / space</span>
+    <span style="font-size:11px;color:#888;">Black text</span>
+    <span style="font-size:11px;color:#8B4ED4;">Lavender</span>
+    <span style="font-size:11px;color:var(--purple);">Purple</span>
+  </div>
+
+  <div class="divider" style="margin:48px 0;"></div>
+
+  <div id="colour-access">
+    <h3 class="sub-heading">Contrast &amp; Accessibility</h3>
+    <div class="grid-4" style="gap:2px;">
+      <div class="contrast-pair" style="background:#000;color:#fff;">
+        <span class="contrast-label" style="color:#666;">Black on White</span>
+        <span class="contrast-ratio" style="color:white;font-family:'Cormorant Garamond',serif;">21:1</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#2ecc71;">PASS · AAA</span>
+      </div>
+      <div class="contrast-pair" style="background:#AE72F9;">
+        <span class="contrast-label" style="color:rgba(255,255,255,0.6);">White on Purple</span>
+        <span class="contrast-ratio" style="color:white;font-family:'Cormorant Garamond',serif;">3.2:1</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#fff3cd;">PASS · AA Large</span>
+      </div>
+      <div class="contrast-pair" style="background:#EAC7F0;">
+        <span class="contrast-label">Black on Lavender</span>
+        <span class="contrast-ratio" style="font-family:'Cormorant Garamond',serif;">9.8:1</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#2A7A3A;">PASS · AAA</span>
+      </div>
+      <div class="contrast-pair" style="background:#fff;border:0.5px solid #ddd;">
+        <span class="contrast-label">Purple on White</span>
+        <span class="contrast-ratio" style="color:#AE72F9;font-family:'Cormorant Garamond',serif;">3.2:1</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#B00;">FAIL · Body text</span>
+      </div>
+    </div>
+    <div style="margin-top:16px;padding:16px 20px;background:#FBF8F8;border-left:2px solid #B00;">
+      <p style="font-size:13px;color:#555;">Never use #AE72F9 purple for body copy on white. It fails WCAG AA for small text. Purple is an accent, not a reading colour.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     11 · TYPOGRAPHY OVERVIEW
+═══════════════════════════════════════════════════ -->
+<section id="type-overview" class="dark">
+  <span class="print-page-marker" style="color:#555;">11</span>
+  <span class="section-num light">09 · Typography</span>
+  <h2 class="section-title" style="color:white;margin-bottom:60px;">Four roles.<br/>Three faces.</h2>
+
+  <div style="display:flex;flex-direction:column;gap:0;">
+
+    <div style="border-top:0.5px solid #222;padding:32px 0;display:grid;grid-template-columns:200px 1fr 240px;gap:40px;align-items:center;">
+      <div>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:#555;">Role 01</span>
+        <p style="color:#888;font-size:13px;margin-top:8px;">Logo / Handwritten</p>
+      </div>
+      <div>
+        <p style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#888;letter-spacing:0.04em;">Use logo artwork only</p>
+        <p style="color:#555;font-size:13px;margin-top:4px;">Never typeset. Never use in body copy.</p>
+      </div>
+      <div style="text-align:right;">
+        <span style="display:inline-block;padding:4px 12px;border:0.5px solid #333;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:0.1em;color:#555;text-transform:uppercase;">Artwork only</span>
+      </div>
+    </div>
+
+    <div style="border-top:0.5px solid #222;padding:32px 0;display:grid;grid-template-columns:200px 1fr 240px;gap:40px;align-items:center;">
+      <div>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:#555;">Role 02</span>
+        <p style="color:#888;font-size:13px;margin-top:8px;">Display Typeface</p>
+      </div>
+      <div>
+        <p style="font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:300;color:white;line-height:1;">Signal.</p>
+        <p style="color:#555;font-size:13px;margin-top:8px;">H1 headings · Section titles · Expressive statements</p>
+      </div>
+      <div style="text-align:right;">
+        <p style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#AE72F9;">Cormorant Garamond Light</p>
+        <p style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#555;margin-top:4px;">Fallback: Playfair Display</p>
+      </div>
+    </div>
+
+    <div style="border-top:0.5px solid #222;padding:32px 0;display:grid;grid-template-columns:200px 1fr 240px;gap:40px;align-items:center;">
+      <div>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:#555;">Role 03</span>
+        <p style="color:#888;font-size:13px;margin-top:8px;">Body Typeface</p>
+      </div>
+      <div>
+        <p style="font-family:'Inter',sans-serif;font-size:18px;font-weight:400;color:white;line-height:1.6;">The system reads the signal. The signal drives the loop. The loop defines the state.</p>
+        <p style="color:#555;font-size:13px;margin-top:8px;">Paragraphs · Captions · UI · Decks · Web pages</p>
+      </div>
+      <div style="text-align:right;">
+        <p style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#AE72F9;">Inter 300–500</p>
+        <p style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#555;margin-top:4px;">Fallback: Helvetica, Avenir</p>
+      </div>
+    </div>
+
+    <div style="border-top:0.5px solid #222;padding:32px 0;display:grid;grid-template-columns:200px 1fr 240px;gap:40px;align-items:center;">
+      <div>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:#555;">Role 04</span>
+        <p style="color:#888;font-size:13px;margin-top:8px;">Technical Typeface</p>
+      </div>
+      <div>
+        <p style="font-family:'IBM Plex Mono',monospace;font-size:18px;color:white;letter-spacing:0.08em;">STATE: MINDFUL · LATENCY: 48ms</p>
+        <p style="color:#555;font-size:13px;margin-top:8px;">Code labels · Data · Measurements · Diagram tags · Specs</p>
+      </div>
+      <div style="text-align:right;">
+        <p style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#AE72F9;">IBM Plex Mono</p>
+        <p style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#555;margin-top:4px;">Fallback: Space Mono</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     12 · TYPE SCALE
+═══════════════════════════════════════════════════ -->
+<section id="type-scale" class="compact">
+  <span class="print-page-marker">12</span>
+  <span class="section-num">09b · Type Scale</span>
+  <h2 class="section-title" style="margin-bottom:48px;">Sizing system.</h2>
+
+  <div>
+    <div class="type-row">
+      <div class="type-meta">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--purple);">H1</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#888;">64–88px / light</span>
+      </div>
+      <p style="font-family:'Cormorant Garamond',serif;font-size:clamp(48px,6vw,88px);font-weight:300;line-height:0.95;letter-spacing:-0.02em;">Display</p>
+    </div>
+    <div class="type-row">
+      <div class="type-meta">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--purple);">H2</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#888;">40–56px / light</span>
+      </div>
+      <p style="font-family:'Cormorant Garamond',serif;font-size:clamp(32px,4vw,56px);font-weight:300;line-height:1.05;">Section Title</p>
+    </div>
+    <div class="type-row">
+      <div class="type-meta">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--purple);">H3</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#888;">28–36px / regular</span>
+      </div>
+      <p style="font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:400;">Sub-heading</p>
+    </div>
+    <div class="type-row">
+      <div class="type-meta">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--purple);">Body Large</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#888;">20–24px / 300</span>
+      </div>
+      <p style="font-family:'Inter',sans-serif;font-size:22px;font-weight:300;line-height:1.6;">Lead paragraph text, pullquote support, intro copy</p>
+    </div>
+    <div class="type-row">
+      <div class="type-meta">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--purple);">Body</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#888;">15–18px / 400</span>
+      </div>
+      <p style="font-family:'Inter',sans-serif;font-size:16px;font-weight:400;line-height:1.75;max-width:640px;">Main body copy across all formats. Paragraphs, slide content, product descriptions, and documentation. Readable at all sizes.</p>
+    </div>
+    <div class="type-row">
+      <div class="type-meta">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--purple);">Caption</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#888;">11–13px / 400</span>
+      </div>
+      <p style="font-family:'Inter',sans-serif;font-size:12px;font-weight:400;color:#888;">Image captions, footnotes, supporting references</p>
+    </div>
+    <div class="type-row">
+      <div class="type-meta">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--purple);">Technical</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#888;">10–12px / mono</span>
+      </div>
+      <p style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#888;">SYS.STATE · LATENCY_MS · CONF: 0.94</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     13 · TYPE RULES
+═══════════════════════════════════════════════════ -->
+<section id="type-rules" class="compact lavender-bg">
+  <span class="print-page-marker" style="color:#8B4ED4;">13</span>
+  <span class="section-num">09c · Typography Rules</span>
+  <h2 class="section-title" style="margin-bottom:48px;">Dos &amp; don'ts.</h2>
+
+  <div class="dd-grid">
+    <div class="dd-panel do-panel">
+      <span class="dd-badge do">Do</span>
+      <div style="display:flex;flex-direction:column;gap:20px;">
+        <div>
+          <p style="font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:300;line-height:1;">Signal over noise</p>
+          <p style="font-size:12px;color:#2A7A3A;margin-top:6px;">✓ Display for H1 — elegant, spacious, light weight</p>
+        </div>
+        <div>
+          <p style="font-family:'Inter',sans-serif;font-size:16px;font-weight:400;line-height:1.7;max-width:360px;">The system detects state. The state drives modulation. The loop is closed.</p>
+          <p style="font-size:12px;color:#2A7A3A;margin-top:6px;">✓ Inter body — readable, clean, neutral</p>
+        </div>
+        <div>
+          <p style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#888;">latency: 48ms · state: focused</p>
+          <p style="font-size:12px;color:#2A7A3A;margin-top:6px;">✓ Mono for technical labels, all-caps sparingly</p>
+        </div>
+      </div>
+    </div>
+    <div class="dd-panel dont-panel">
+      <span class="dd-badge dont">Don't</span>
+      <div style="display:flex;flex-direction:column;gap:20px;">
+        <div>
+          <p style="font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:300;line-height:1;font-style:italic;">Our REVOLUTIONARY System</p>
+          <p style="font-size:12px;color:#842029;margin-top:6px;">✕ Mixed case + all-caps in headings = shouting</p>
+        </div>
+        <div>
+          <p style="font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:400;line-height:1.7;max-width:360px;font-style:italic;">The system detects state. The state drives modulation. The loop is closed.</p>
+          <p style="font-size:12px;color:#842029;margin-top:6px;">✕ Display font for body copy — unreadable at length</p>
+        </div>
+        <div>
+          <p style="font-family:'Inter',sans-serif;font-size:16px;font-weight:700;line-height:1.7;color:#AE72F9;max-width:360px;">UNLOCK YOUR FULL POTENTIAL WITH AI!</p>
+          <p style="font-size:12px;color:#842029;margin-top:6px;">✕ Heavy weight + all-caps + purple body = not us</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     14 · LAYOUT & GRID
+═══════════════════════════════════════════════════ -->
+<section id="layout" class="compact">
+  <span class="print-page-marker">14</span>
+  <span class="section-num">10 · Layout &amp; Grid</span>
+  <h2 class="section-title" style="margin-bottom:48px;">Space is signal.</h2>
+
+  <div class="grid-2" style="gap:80px;align-items:start;">
+    <div>
+      <p class="body-text" style="margin-bottom:32px;">
+        Whitespace is a core brand asset — not leftover space. The layout should feel sparse, deliberate, and intelligent. Density is earned through meaning, not decoration.
+      </p>
+
+      <h3 class="sub-heading">Grid Specification</h3>
+      <div style="display:flex;flex-direction:column;gap:0;border:0.5px solid var(--grey-200);">
+        <div style="display:grid;grid-template-columns:1fr 2fr;border-bottom:0.5px solid var(--grey-200);">
+          <div style="padding:14px 20px;background:var(--grey-100);border-right:0.5px solid var(--grey-200);">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#888;letter-spacing:0.1em;">WEB</span>
+          </div>
+          <div style="padding:14px 20px;">
+            <span style="font-size:14px;">12-column grid · generous margins</span>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 2fr;border-bottom:0.5px solid var(--grey-200);">
+          <div style="padding:14px 20px;background:var(--grey-100);border-right:0.5px solid var(--grey-200);">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#888;letter-spacing:0.1em;">DECK</span>
+          </div>
+          <div style="padding:14px 20px;">
+            <span style="font-size:14px;">16:9 or 4:3 · white canvas default</span>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 2fr;border-bottom:0.5px solid var(--grey-200);">
+          <div style="padding:14px 20px;background:var(--grey-100);border-right:0.5px solid var(--grey-200);">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#888;letter-spacing:0.1em;">PRINT</span>
+          </div>
+          <div style="padding:14px 20px;">
+            <span style="font-size:14px;">A4 / Letter · 20mm margins minimum</span>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 2fr;">
+          <div style="padding:14px 20px;background:var(--grey-100);border-right:0.5px solid var(--grey-200);">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#888;letter-spacing:0.1em;">SOCIAL</span>
+          </div>
+          <div style="padding:14px 20px;">
+            <span style="font-size:14px;">1:1 or 9:16 · minimal content per frame</span>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="sub-heading">Composition Rules</h3>
+      <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;">
+        <li style="font-size:14px;display:flex;gap:12px;align-items:flex-start;"><span style="color:var(--purple);flex-shrink:0;">→</span>One dominant visual idea per page</li>
+        <li style="font-size:14px;display:flex;gap:12px;align-items:flex-start;"><span style="color:var(--purple);flex-shrink:0;">→</span>Use asymmetry with balance — not chaos</li>
+        <li style="font-size:14px;display:flex;gap:12px;align-items:flex-start;"><span style="color:var(--purple);flex-shrink:0;">→</span>Thin rules and light dividers only</li>
+        <li style="font-size:14px;display:flex;gap:12px;align-items:flex-start;"><span style="color:var(--purple);flex-shrink:0;">→</span>Contour motif in corners or as large cropped detail</li>
+        <li style="font-size:14px;display:flex;gap:12px;align-items:flex-start;"><span style="color:var(--purple);flex-shrink:0;">→</span>Lavender footer band for documents and decks</li>
+      </ul>
+    </div>
+
+    <div>
+      <!-- Grid diagram -->
+      <div style="border:0.5px solid var(--grey-200);padding:24px;background:var(--grey-100);">
+        <div style="display:grid;grid-template-columns:repeat(12,1fr);gap:4px;height:200px;">
+          <div style="background:rgba(174,114,249,0.15);border:0.5px solid rgba(174,114,249,0.3);grid-column:span 1;"></div>
+          <div style="background:rgba(174,114,249,0.15);border:0.5px solid rgba(174,114,249,0.3);"></div>
+          <div style="background:rgba(174,114,249,0.15);border:0.5px solid rgba(174,114,249,0.3);"></div>
+          <div style="background:rgba(174,114,249,0.15);border:0.5px solid rgba(174,114,249,0.3);"></div>
+          <div style="background:rgba(174,114,249,0.15);border:0.5px solid rgba(174,114,249,0.3);"></div>
+          <div style="background:rgba(174,114,249,0.15);border:0.5px solid rgba(174,114,249,0.3);"></div>
+          <div style="background:rgba(174,114,249,0.15);border:0.5px solid rgba(174,114,249,0.3);"></div>
+          <div style="background:rgba(174,114,249,0.15);border:0.5px solid rgba(174,114,249,0.3);"></div>
+          <div style="background:rgba(174,114,249,0.15);border:0.5px solid rgba(174,114,249,0.3);"></div>
+          <div style="background:rgba(174,114,249,0.15);border:0.5px solid rgba(174,114,249,0.3);"></div>
+          <div style="background:rgba(174,114,249,0.15);border:0.5px solid rgba(174,114,249,0.3);"></div>
+          <div style="background:rgba(174,114,249,0.15);border:0.5px solid rgba(174,114,249,0.3);"></div>
+        </div>
+        <p style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#888;margin-top:8px;letter-spacing:0.1em;text-transform:uppercase;">12-col grid · web standard</p>
+      </div>
+
+      <!-- Document layout example -->
+      <div style="margin-top:16px;border:0.5px solid var(--grey-200);overflow:hidden;">
+        <div style="padding:32px;background:white;min-height:200px;position:relative;">
+          <!-- Contour corner motif -->
+          <svg style="position:absolute;top:0;right:0;width:100px;height:100px;opacity:0.08;" viewBox="0 0 100 100">
+            <g fill="none" stroke="#000" stroke-width="0.8">
+              <ellipse cx="100" cy="0" rx="20" ry="14"/>
+              <ellipse cx="100" cy="0" rx="40" ry="28"/>
+              <ellipse cx="100" cy="0" rx="60" ry="44"/>
+              <ellipse cx="100" cy="0" rx="80" ry="60"/>
+              <ellipse cx="100" cy="0" rx="100" ry="76"/>
+            </g>
+          </svg>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;line-height:1.1;margin-bottom:12px;">Document title here</div>
+          <div style="height:6px;background:var(--grey-200);border-radius:2px;margin-bottom:8px;width:80%;"></div>
+          <div style="height:6px;background:var(--grey-200);border-radius:2px;margin-bottom:8px;width:60%;"></div>
+          <div style="height:6px;background:var(--grey-200);border-radius:2px;width:70%;"></div>
+        </div>
+        <div style="background:var(--lavender);padding:10px 20px;display:flex;justify-content:space-between;">
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#8B4ED4;letter-spacing:0.1em;">confidential</span>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#8B4ED4;letter-spacing:0.1em;">shobotics</span>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#8B4ED4;letter-spacing:0.1em;">do not share · p. 01</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     15 · SIGNAL FIELD SYSTEM
+═══════════════════════════════════════════════════ -->
+<section id="signal-field" class="dark">
+  <span class="print-page-marker" style="color:#555;">15</span>
+  <span class="section-num light">11 · Signal Field System</span>
+  <h2 class="section-title" style="color:white;margin-bottom:16px;">Neural Topography.</h2>
+  <p style="font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;font-style:italic;color:#888;margin-bottom:60px;">The proprietary graphic language of Shobotics.</p>
+
+  <div class="grid-2" style="gap:60px;margin-bottom:60px;align-items:start;">
+    <div>
+      <h3 class="sub-heading" style="color:#555;">Concept</h3>
+      <p style="font-size:15px;color:#888;line-height:1.7;margin-bottom:24px;">
+        The contour-line system represents signal, attention, neural terrain, invisible systems, and organic computation. It is the visual DNA connecting all Shobotics outputs — from document footers to hero sections.
+      </p>
+      <p style="font-size:15px;color:#888;line-height:1.7;">
+        Lines should feel organic and topographic — like cartographic contours mapping cognitive terrain — not like stock circuit boards or generic tech wireframes.
+      </p>
+    </div>
+    <div>
+      <h3 class="sub-heading" style="color:#555;">Visual Rules</h3>
+      <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;">
+        <li style="font-size:14px;color:#888;display:flex;gap:12px;align-items:flex-start;"><span style="color:#AE72F9;flex-shrink:0;">→</span>Use thin contour-like strokes only</li>
+        <li style="font-size:14px;color:#888;display:flex;gap:12px;align-items:flex-start;"><span style="color:#AE72F9;flex-shrink:0;">→</span>Lines may be black, grey, white, or soft lavender</li>
+        <li style="font-size:14px;color:#888;display:flex;gap:12px;align-items:flex-start;"><span style="color:#AE72F9;flex-shrink:0;">→</span>Low opacity when placed behind text</li>
+        <li style="font-size:14px;color:#888;display:flex;gap:12px;align-items:flex-start;"><span style="color:#AE72F9;flex-shrink:0;">→</span>Dense black linework only as hero visual — never behind body copy</li>
+        <li style="font-size:14px;color:#888;display:flex;gap:12px;align-items:flex-start;"><span style="color:#AE72F9;flex-shrink:0;">→</span>Lines encode complexity — not decoration</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Signal field usage mode examples -->
+  <h3 class="sub-heading" style="color:#555;margin-top:0;">Usage Modes</h3>
+  <div class="grid-4" style="gap:2px;">
+    <div class="signal-demo" style="background:#111;">
+      <svg style="position:absolute;top:0;left:0;width:100%;height:100%;opacity:0.2;" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid slice">
+        <g fill="none" stroke="#f0f0f0" stroke-width="0.7">
+          <ellipse cx="100" cy="100" rx="20" ry="14"/>
+          <ellipse cx="100" cy="100" rx="40" ry="28"/>
+          <ellipse cx="100" cy="100" rx="60" ry="44"/>
+          <ellipse cx="100" cy="100" rx="80" ry="60"/>
+          <ellipse cx="100" cy="100" rx="100" ry="76"/>
+          <ellipse cx="100" cy="100" rx="120" ry="92"/>
+          <ellipse cx="100" cy="100" rx="140" ry="110"/>
+        </g>
+      </svg>
+      <span style="color:white;font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;z-index:1;position:relative;">Heading</span>
+      <span class="signal-label" style="color:#666;">Subtle bg — dark</span>
+    </div>
+    <div class="signal-demo" style="background:#fff;">
+      <svg style="position:absolute;top:0;left:0;width:100%;height:100%;opacity:0.06;" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid slice">
+        <g fill="none" stroke="#000" stroke-width="0.7">
+          <ellipse cx="160" cy="40" rx="20" ry="14"/>
+          <ellipse cx="160" cy="40" rx="40" ry="28"/>
+          <ellipse cx="160" cy="40" rx="70" ry="50"/>
+          <ellipse cx="160" cy="40" rx="100" ry="74"/>
+          <ellipse cx="160" cy="40" rx="130" ry="98"/>
+          <ellipse cx="160" cy="40" rx="160" ry="124"/>
+        </g>
+      </svg>
+      <span style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;z-index:1;position:relative;">Heading</span>
+      <span class="signal-label">Subtle bg — light corner crop</span>
+    </div>
+    <div class="signal-demo" style="background:#000;overflow:hidden;">
+      <svg style="position:absolute;top:-30px;right:-40px;width:200px;height:240px;opacity:1;" viewBox="0 0 200 240">
+        <g fill="none" stroke="#fff" stroke-width="1">
+          <ellipse cx="160" cy="60" rx="30" ry="20"/>
+          <ellipse cx="160" cy="60" rx="60" ry="44"/>
+          <ellipse cx="160" cy="60" rx="90" ry="68"/>
+          <ellipse cx="160" cy="60" rx="120" ry="92"/>
+          <ellipse cx="160" cy="60" rx="150" ry="118"/>
+          <ellipse cx="160" cy="60" rx="180" ry="144"/>
+        </g>
+      </svg>
+      <span style="color:white;font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;z-index:1;position:relative;">Hero field</span>
+      <span class="signal-label" style="color:#555;">Hero — full opacity, cropped</span>
+    </div>
+    <div class="signal-demo" style="background:#f8f0fc;">
+      <svg style="position:absolute;top:0;left:0;width:100%;height:100%;opacity:0.4;" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid slice">
+        <g fill="none" stroke="#AE72F9" stroke-width="0.6">
+          <ellipse cx="100" cy="200" rx="40" ry="28"/>
+          <ellipse cx="100" cy="200" rx="80" ry="56"/>
+          <ellipse cx="100" cy="200" rx="120" ry="84"/>
+          <ellipse cx="100" cy="200" rx="160" ry="112"/>
+        </g>
+      </svg>
+      <span style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;z-index:1;position:relative;color:#8B4ED4;">Accent</span>
+      <span class="signal-label" style="color:#AE72F9;">Purple accent field</span>
+    </div>
+  </div>
+
+  <div class="divider dark-divider" style="margin:48px 0;"></div>
+
+  <h3 class="sub-heading" style="color:#555;">Avoid</h3>
+  <div class="grid-4" style="gap:16px;">
+    <div style="padding:16px;border:0.5px solid #222;display:flex;align-items:center;gap:12px;">
+      <span style="color:#E74C3C;font-size:18px;">✕</span>
+      <span style="font-size:13px;color:#888;">Generic AI brain icons</span>
+    </div>
+    <div style="padding:16px;border:0.5px solid #222;display:flex;align-items:center;gap:12px;">
+      <span style="color:#E74C3C;font-size:18px;">✕</span>
+      <span style="font-size:13px;color:#888;">Circuit board patterns</span>
+    </div>
+    <div style="padding:16px;border:0.5px solid #222;display:flex;align-items:center;gap:12px;">
+      <span style="color:#E74C3C;font-size:18px;">✕</span>
+      <span style="font-size:13px;color:#888;">Glowing blue neural networks</span>
+    </div>
+    <div style="padding:16px;border:0.5px solid #222;display:flex;align-items:center;gap:12px;">
+      <span style="color:#E74C3C;font-size:18px;">✕</span>
+      <span style="font-size:13px;color:#888;">Dense patterns behind text</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     16 · IMAGERY & ICONOGRAPHY
+═══════════════════════════════════════════════════ -->
+<section id="imagery" class="compact">
+  <span class="print-page-marker">16</span>
+  <span class="section-num">12 · Imagery &amp; Iconography</span>
+  <h2 class="section-title" style="margin-bottom:48px;">Show what's real.</h2>
+
+  <div class="grid-2" style="gap:80px;align-items:start;">
+    <div>
+      <h3 class="sub-heading">Photography Direction</h3>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:24px;">
+        <div style="padding:12px 16px;background:var(--grey-100);border-left:2px solid var(--purple);font-size:13px;color:#555;">Hands, instruments, prototypes, rituals</div>
+        <div style="padding:12px 16px;background:var(--grey-100);border-left:2px solid var(--purple);font-size:13px;color:#555;">Quiet, premium, minimal — human but not staged</div>
+        <div style="padding:12px 16px;background:var(--grey-100);border-left:2px solid var(--purple);font-size:13px;color:#555;">White, black, grey, purple-tinted environments</div>
+        <div style="padding:12px 16px;background:var(--grey-100);border-left:2px solid var(--purple);font-size:13px;color:#555;">High-contrast compositions. Natural light preferred.</div>
+      </div>
+
+      <h3 class="sub-heading">Avoid</h3>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="padding:12px 16px;background:#FBF8F8;border-left:2px solid #E74C3C;font-size:13px;color:#888;text-decoration:line-through;">Stock startup team photos</div>
+        <div style="padding:12px 16px;background:#FBF8F8;border-left:2px solid #E74C3C;font-size:13px;color:#888;text-decoration:line-through;">Generic meditation / wellness imagery</div>
+        <div style="padding:12px 16px;background:#FBF8F8;border-left:2px solid #E74C3C;font-size:13px;color:#888;text-decoration:line-through;">Blue holographic AI graphics</div>
+        <div style="padding:12px 16px;background:#FBF8F8;border-left:2px solid #E74C3C;font-size:13px;color:#888;text-decoration:line-through;">Excessive neon lighting</div>
+      </div>
+    </div>
+
+    <div id="iconography">
+      <h3 class="sub-heading">Iconography System</h3>
+      <p class="body-text" style="margin-bottom:24px;font-size:14px;">
+        Icons must feel like thin-line technical drawings — not illustration packs, not startup SaaS icons. The stroke weight should match the Signal Field line system.
+      </p>
+
+      <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:16px;padding:32px;background:var(--grey-100);margin-bottom:16px;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1" stroke-linecap="round" style="width:100%;max-width:36px;">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M12 8v4l3 3"/>
+        </svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1" stroke-linecap="round" style="width:100%;max-width:36px;">
+          <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+        </svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1" stroke-linecap="round" style="width:100%;max-width:36px;">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
+        </svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1" stroke-linecap="round" style="width:100%;max-width:36px;">
+          <rect x="2" y="3" width="20" height="14" rx="2"/>
+          <path d="M8 21h8M12 17v4"/>
+        </svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1" stroke-linecap="round" style="width:100%;max-width:36px;">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        </svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1" stroke-linecap="round" style="width:100%;max-width:36px;">
+          <circle cx="11" cy="11" r="8"/>
+          <path d="m21 21-4.35-4.35"/>
+        </svg>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <p style="font-size:13px;color:#555;"><strong>Grid:</strong> 24px or 32px</p>
+        <p style="font-size:13px;color:#555;"><strong>Stroke:</strong> 1px — matches Signal Field line weight</p>
+        <p style="font-size:13px;color:#555;"><strong>Style:</strong> Thin stroke · rounded terminals · minimal detail</p>
+        <p style="font-size:13px;color:#B00;">✕ No filled cartoon icons · No generic SaaS packs</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     17 · UI COMPONENTS
+═══════════════════════════════════════════════════ -->
+<section id="ui-components" class="compact lavender-bg">
+  <span class="print-page-marker" style="color:#8B4ED4;">17</span>
+  <span class="section-num">13 · UI Components</span>
+  <h2 class="section-title" style="margin-bottom:48px;">System interface.</h2>
+
+  <div class="grid-3" style="gap:40px;align-items:start;">
+
+    <div>
+      <h3 class="sub-heading">Buttons</h3>
+      <div style="display:flex;flex-direction:column;gap:12px;padding:32px;background:white;border:0.5px solid var(--grey-200);">
+        <a class="btn-demo btn-primary">Begin session</a>
+        <a class="btn-demo btn-secondary">Learn more</a>
+        <a class="btn-demo btn-ghost">View documentation →</a>
+      </div>
+      <div style="margin-top:12px;display:flex;flex-direction:column;gap:4px;">
+        <p style="font-size:12px;color:#555;">Primary — Purple fill on dark or white</p>
+        <p style="font-size:12px;color:#555;">Secondary — Black outline, transparent fill</p>
+        <p style="font-size:12px;color:#555;">Ghost — Text-only, underline or arrow</p>
+      </div>
+    </div>
+
+    <div>
+      <h3 class="sub-heading">Cards</h3>
+      <div class="card-demo">
+        <h4>Session complete</h4>
+        <p>Your focus state was maintained for 24 minutes. Signal coherence: high.</p>
+        <div style="margin-top:16px;display:flex;gap:8px;">
+          <span style="display:inline-block;padding:4px 10px;border:0.5px solid var(--grey-300);border-radius:2px;font-size:11px;font-family:'IBM Plex Mono',monospace;letter-spacing:0.08em;text-transform:uppercase;color:#888;">focused</span>
+          <span style="display:inline-block;padding:4px 10px;border:0.5px solid rgba(174,114,249,0.4);background:rgba(174,114,249,0.06);border-radius:2px;font-size:11px;font-family:'IBM Plex Mono',monospace;letter-spacing:0.08em;text-transform:uppercase;color:var(--purple);">24 min</span>
+        </div>
+      </div>
+      <div style="margin-top:12px;">
+        <p style="font-size:12px;color:#555;">White bg · 0.5px border · 2px radius · generous padding</p>
+        <p style="font-size:12px;color:#555;">Minimal shadow only. No gradients.</p>
+      </div>
+    </div>
+
+    <div>
+      <h3 class="sub-heading">Form Elements</h3>
+      <div class="form-demo" style="padding:32px;background:white;border:0.5px solid var(--grey-200);">
+        <div>
+          <label>Full name</label>
+          <input type="text" value=""/>
+        </div>
+        <div>
+          <label>Email</label>
+          <input type="email" value=""/>
+        </div>
+        <a class="btn-demo btn-primary" style="margin-top:4px;">Submit</a>
+      </div>
+      <div style="margin-top:12px;">
+        <p style="font-size:12px;color:#555;">Focus ring: 3px purple at 12% opacity</p>
+        <p style="font-size:12px;color:#555;">Labels: all-caps mono · 12px · high-contrast</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="divider" style="margin:48px 0;"></div>
+
+  <!-- States -->
+  <h3 class="sub-heading">UI States</h3>
+  <div class="grid-4" style="gap:0;">
+    <div style="padding:16px 20px;border:0.5px solid var(--grey-200);display:flex;justify-content:space-between;align-items:center;">
+      <span style="font-size:13px;">Default</span>
+      <div style="width:8px;height:8px;border-radius:50%;background:#ccc;"></div>
+    </div>
+    <div style="padding:16px 20px;border:0.5px solid var(--grey-200);background:var(--grey-100);display:flex;justify-content:space-between;align-items:center;">
+      <span style="font-size:13px;">Hover</span>
+      <div style="width:8px;height:8px;border-radius:50%;background:#888;"></div>
+    </div>
+    <div style="padding:16px 20px;border:0.5px solid var(--purple);background:rgba(174,114,249,0.05);display:flex;justify-content:space-between;align-items:center;">
+      <span style="font-size:13px;color:var(--purple);">Focus</span>
+      <div style="width:8px;height:8px;border-radius:50%;background:var(--purple);"></div>
+    </div>
+    <div style="padding:16px 20px;border:0.5px solid #2A7A3A;background:#F0FAF2;display:flex;justify-content:space-between;align-items:center;">
+      <span style="font-size:13px;color:#2A7A3A;">Success</span>
+      <div style="width:8px;height:8px;border-radius:50%;background:#2A7A3A;"></div>
+    </div>
+    <div style="padding:16px 20px;border:0.5px solid var(--grey-200);background:var(--grey-100);opacity:0.4;display:flex;justify-content:space-between;align-items:center;">
+      <span style="font-size:13px;">Disabled</span>
+      <div style="width:8px;height:8px;border-radius:50%;background:#ccc;"></div>
+    </div>
+    <div style="padding:16px 20px;border:0.5px solid var(--grey-200);display:flex;justify-content:space-between;align-items:center;">
+      <span style="font-size:13px;">Active</span>
+      <div style="width:8px;height:8px;border-radius:50%;background:#000;"></div>
+    </div>
+    <div style="padding:16px 20px;border:0.5px solid #B00;background:#FBF8F8;display:flex;justify-content:space-between;align-items:center;">
+      <span style="font-size:13px;color:#B00;">Error</span>
+      <div style="width:8px;height:8px;border-radius:50%;background:#B00;"></div>
+    </div>
+    <div style="padding:16px 20px;border:0.5px solid #B85900;background:#FFF8E6;display:flex;justify-content:space-between;align-items:center;">
+      <span style="font-size:13px;color:#B85900;">Warning</span>
+      <div style="width:8px;height:8px;border-radius:50%;background:#F5A623;"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     18 · MOTION LANGUAGE
+═══════════════════════════════════════════════════ -->
+<section id="motion" class="compact dark">
+  <span class="print-page-marker" style="color:#555;">18</span>
+  <span class="section-num light">14 · Motion Language</span>
+  <h2 class="section-title" style="color:white;margin-bottom:16px;">System coming<br/>into coherence.</h2>
+  <p style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;font-style:italic;color:#666;margin-bottom:48px;">Motion is a signal, not a spectacle.</p>
+
+  <div style="display:flex;flex-direction:column;gap:0;">
+
+    <div class="motion-row">
+      <div>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#AE72F9;">Reveal</span>
+      </div>
+      <div>
+        <p style="font-size:14px;color:#aaa;line-height:1.6;">Elements enter from below or fade from opacity 0 → 1. Duration: 600–900ms. Easing: cubic-bezier(0.25, 0.46, 0.45, 0.94)</p>
+      </div>
+      <div>
+        <span style="display:inline-block;padding:4px 10px;background:#1a1a1a;border:0.5px solid #333;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:0.1em;color:#666;text-transform:uppercase;">Slow · Deliberate</span>
+      </div>
+    </div>
+
+    <div class="motion-row">
+      <div>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#AE72F9;">Line draw</span>
+      </div>
+      <div>
+        <p style="font-size:14px;color:#aaa;line-height:1.6;">Signal field contours animate via SVG stroke-dasharray/dashoffset. Draw over 1.2–2s. Simulate sensing/scanning behavior.</p>
+      </div>
+      <div>
+        <span style="display:inline-block;padding:4px 10px;background:#1a1a1a;border:0.5px solid #333;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:0.1em;color:#666;text-transform:uppercase;">Signature motion</span>
+      </div>
+    </div>
+
+    <div class="motion-row">
+      <div>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#AE72F9;">Pulse</span>
+      </div>
+      <div>
+        <p style="font-size:14px;color:#aaa;line-height:1.6;">Subtle opacity oscillation for active signal states. Amplitude: ±0.08 opacity. Cycle: 3–5s. Never jarring.</p>
+      </div>
+      <div>
+        <span style="display:inline-block;padding:4px 10px;background:#1a1a1a;border:0.5px solid #333;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:0.1em;color:#666;text-transform:uppercase;">Ambient</span>
+      </div>
+    </div>
+
+    <div class="motion-row">
+      <div>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#AE72F9;">Transition</span>
+      </div>
+      <div>
+        <p style="font-size:14px;color:#aaa;line-height:1.6;">Page / view transitions: cross-fade preferred. No slide-in theatrics. Match the brand pace — calm, not anxious.</p>
+      </div>
+      <div>
+        <span style="display:inline-block;padding:4px 10px;background:#1a1a1a;border:0.5px solid #333;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:0.1em;color:#666;text-transform:uppercase;">Smooth</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="divider dark-divider" style="margin:40px 0;"></div>
+
+  <div class="grid-2" style="gap:40px;">
+    <div>
+      <h3 class="sub-heading" style="color:#444;">Avoid</h3>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <p style="font-size:13px;color:#555;display:flex;gap:12px;"><span style="color:#E74C3C;">✕</span> Aggressive glitch effects</p>
+        <p style="font-size:13px;color:#555;display:flex;gap:12px;"><span style="color:#E74C3C;">✕</span> Fast cyberpunk cuts</p>
+        <p style="font-size:13px;color:#555;display:flex;gap:12px;"><span style="color:#E74C3C;">✕</span> Generic HUD animations</p>
+        <p style="font-size:13px;color:#555;display:flex;gap:12px;"><span style="color:#E74C3C;">✕</span> Random bouncing UI elements</p>
+        <p style="font-size:13px;color:#555;display:flex;gap:12px;"><span style="color:#E74C3C;">✕</span> Excessive parallax</p>
+      </div>
+    </div>
+    <div>
+      <h3 class="sub-heading" style="color:#444;">Easing Reference</h3>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <p style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#888;">reveal: cubic-bezier(0.25, 0.46, 0.45, 0.94)</p>
+        <p style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#888;">exit: cubic-bezier(0.55, 0.06, 0.68, 0.19)</p>
+        <p style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#888;">transition: cubic-bezier(0.4, 0, 0.2, 1)</p>
+        <p style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#555;margin-top:8px;">Duration range: 300ms – 1200ms</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     19 · VOICE & TONE
+═══════════════════════════════════════════════════ -->
+<section id="voice-tone" class="compact">
+  <span class="print-page-marker">19</span>
+  <span class="section-num">15 · Voice &amp; Tone</span>
+  <h2 class="section-title" style="margin-bottom:48px;">Signal over noise.</h2>
+
+  <div class="grid-2" style="gap:80px;align-items:start;">
+    <div>
+      <h3 class="sub-heading">Voice Attributes</h3>
+      <div style="display:flex;flex-direction:column;gap:0;border:0.5px solid var(--grey-200);">
+        <div style="display:grid;grid-template-columns:1fr 1fr;border-bottom:0.5px solid var(--grey-200);">
+          <div style="padding:14px 20px;border-right:0.5px solid var(--grey-200);">
+            <p style="font-size:14px;font-weight:500;color:var(--purple);">Sounds like</p>
+          </div>
+          <div style="padding:14px 20px;">
+            <p style="font-size:14px;font-weight:500;color:#B00;">Not like</p>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;border-bottom:0.5px solid var(--grey-200);">
+          <div style="padding:12px 20px;border-right:0.5px solid var(--grey-200);font-size:14px;color:#555;">Intelligent, not academic</div>
+          <div style="padding:12px 20px;font-size:14px;color:#aaa;text-decoration:line-through;">Jargon-heavy, over-explained</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;border-bottom:0.5px solid var(--grey-200);">
+          <div style="padding:12px 20px;border-right:0.5px solid var(--grey-200);font-size:14px;color:#555;">Experimental, not vague</div>
+          <div style="padding:12px 20px;font-size:14px;color:#aaa;text-decoration:line-through;">Wishy-washy, non-committal</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;border-bottom:0.5px solid var(--grey-200);">
+          <div style="padding:12px 20px;border-right:0.5px solid var(--grey-200);font-size:14px;color:#555;">Calm, not passive</div>
+          <div style="padding:12px 20px;font-size:14px;color:#aaa;text-decoration:line-through;">Flat, lifeless, bureaucratic</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;border-bottom:0.5px solid var(--grey-200);">
+          <div style="padding:12px 20px;border-right:0.5px solid var(--grey-200);font-size:14px;color:#555;">Premium, not pretentious</div>
+          <div style="padding:12px 20px;font-size:14px;color:#aaa;text-decoration:line-through;">Elitist, exclusionary</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;">
+          <div style="padding:12px 20px;border-right:0.5px solid var(--grey-200);font-size:14px;color:#555;">Slightly punk, disciplined</div>
+          <div style="padding:12px 20px;font-size:14px;color:#aaa;text-decoration:line-through;">Chaotic, unstructured</div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <h3 class="sub-heading">Approved Phrases</h3>
+      <div class="voice-card">
+        <p>"Conscious technology."</p>
+      </div>
+      <div class="voice-card">
+        <p>"Signal over noise."</p>
+      </div>
+      <div class="voice-card">
+        <p>"Built with precision, designed for humans."</p>
+      </div>
+      <div class="voice-card">
+        <p>"The interface between mind, machine, and media."</p>
+      </div>
+
+      <h3 class="sub-heading">Avoid</h3>
+      <div class="voice-avoid"><p>"Revolutionary AI-powered solution"</p></div>
+      <div class="voice-avoid"><p>"Unlock your full potential"</p></div>
+      <div class="voice-avoid"><p>"Disrupting everything"</p></div>
+      <div class="voice-avoid"><p>"Seamless next-gen ecosystem"</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     20 · BRAND ARCHITECTURE
+═══════════════════════════════════════════════════ -->
+<section id="brand-arch" class="compact dark">
+  <span class="print-page-marker" style="color:#555;">20</span>
+  <span class="section-num light">16 · Brand Architecture</span>
+  <h2 class="section-title" style="color:white;margin-bottom:60px;">One system.<br/>Multiple signals.</h2>
+
+  <div class="arch-tree">
+    <div class="arch-box parent" style="min-width:320px;text-align:center;">
+      <p style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:#888;margin-bottom:6px;">Parent brand</p>
+      <p style="font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:white;">shobotics</p>
+      <p style="font-size:11px;color:#666;margin-top:6px;">Systems · Technology · Engineering · Creative</p>
+    </div>
+    <div class="arch-connector"></div>
+    <div class="arch-children" style="max-width:720px;">
+      <div class="arch-box child" style="padding:24px;text-align:center;background:#111;border-color:#333;">
+        <p style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:#555;margin-bottom:6px;">Sub-brand</p>
+        <p style="font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;color:white;">Dhyaan</p>
+        <p style="font-size:11px;color:#555;margin-top:6px;line-height:1.5;">Neurotech · Wearables<br/>Mindfulness · Physiology</p>
+        <div style="margin-top:16px;display:flex;flex-wrap:wrap;gap:4px;justify-content:center;">
+          <span style="padding:3px 8px;border:0.5px solid #EAC7F0;border-radius:2px;font-size:10px;color:#EAC7F0;font-family:'IBM Plex Mono',monospace;letter-spacing:0.08em;">Softer</span>
+          <span style="padding:3px 8px;border:0.5px solid #EAC7F0;border-radius:2px;font-size:10px;color:#EAC7F0;font-family:'IBM Plex Mono',monospace;letter-spacing:0.08em;">Calmer</span>
+          <span style="padding:3px 8px;border:0.5px solid #EAC7F0;border-radius:2px;font-size:10px;color:#EAC7F0;font-family:'IBM Plex Mono',monospace;letter-spacing:0.08em;">Embodied</span>
+        </div>
+      </div>
+      <div class="arch-box child" style="padding:24px;text-align:center;background:#0a0a0a;border-color:#222;">
+        <p style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:#555;margin-bottom:6px;">Parent</p>
+        <p style="font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;color:#AE72F9;">Shobotics</p>
+        <p style="font-size:11px;color:#555;margin-top:6px;line-height:1.5;">Core brand identity<br/>Systems · Research · Platform</p>
+        <div style="margin-top:16px;display:flex;flex-wrap:wrap;gap:4px;justify-content:center;">
+          <span style="padding:3px 8px;border:0.5px solid #AE72F9;border-radius:2px;font-size:10px;color:#AE72F9;font-family:'IBM Plex Mono',monospace;letter-spacing:0.08em;">Technical</span>
+          <span style="padding:3px 8px;border:0.5px solid #AE72F9;border-radius:2px;font-size:10px;color:#AE72F9;font-family:'IBM Plex Mono',monospace;letter-spacing:0.08em;">Precise</span>
+        </div>
+      </div>
+      <div class="arch-box child" style="padding:24px;text-align:center;background:#111;border-color:#333;">
+        <p style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:#555;margin-bottom:6px;">Sub-brand</p>
+        <p style="font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;color:white;">Studio</p>
+        <p style="font-size:11px;color:#555;margin-top:6px;line-height:1.5;">AI Film · Creative Tech<br/>Animation · New Media</p>
+        <div style="margin-top:16px;display:flex;flex-wrap:wrap;gap:4px;justify-content:center;">
+          <span style="padding:3px 8px;border:0.5px solid #888;border-radius:2px;font-size:10px;color:#888;font-family:'IBM Plex Mono',monospace;letter-spacing:0.08em;">Cinematic</span>
+          <span style="padding:3px 8px;border:0.5px solid #888;border-radius:2px;font-size:10px;color:#888;font-family:'IBM Plex Mono',monospace;letter-spacing:0.08em;">Expressive</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:48px;padding:28px 32px;border:0.5px solid #222;background:#0a0a0a;">
+    <p style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#555;margin-bottom:12px;">Shared DNA across all brands</p>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;">
+      <span style="padding:6px 14px;border:0.5px solid #333;font-size:12px;color:#888;">Minimal layouts</span>
+      <span style="padding:6px 14px;border:0.5px solid #333;font-size:12px;color:#888;">Purple/black/white foundation</span>
+      <span style="padding:6px 14px;border:0.5px solid #333;font-size:12px;color:#888;">Signal field graphic language</span>
+      <span style="padding:6px 14px;border:0.5px solid #333;font-size:12px;color:#888;">Human + technical tension</span>
+      <span style="padding:6px 14px;border:0.5px solid #333;font-size:12px;color:#888;">Premium restraint</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     21 · DO / DON'T SUMMARY
+═══════════════════════════════════════════════════ -->
+<section id="do-dont" class="compact">
+  <span class="print-page-marker">21</span>
+  <span class="section-num">Quick Reference</span>
+  <h2 class="section-title" style="margin-bottom:48px;">Do / Don't.</h2>
+
+  <div class="dd-grid">
+    <div class="dd-panel do-panel">
+      <span class="dd-badge do">Do</span>
+      <ul style="list-style:none;display:flex;flex-direction:column;gap:12px;">
+        <li style="font-size:14px;color:#333;display:flex;gap:10px;align-items:flex-start;"><span style="color:#2A7A3A;flex-shrink:0;">✓</span>Use generous whitespace as a design element</li>
+        <li style="font-size:14px;color:#333;display:flex;gap:10px;align-items:flex-start;"><span style="color:#2A7A3A;flex-shrink:0;">✓</span>Use the logo as supplied artwork only</li>
+        <li style="font-size:14px;color:#333;display:flex;gap:10px;align-items:flex-start;"><span style="color:#2A7A3A;flex-shrink:0;">✓</span>Use purple sparingly — as an accent, not a flood</li>
+        <li style="font-size:14px;color:#333;display:flex;gap:10px;align-items:flex-start;"><span style="color:#2A7A3A;flex-shrink:0;">✓</span>Use thin linework aligned with Signal Field weight</li>
+        <li style="font-size:14px;color:#333;display:flex;gap:10px;align-items:flex-start;"><span style="color:#2A7A3A;flex-shrink:0;">✓</span>Use black for clarity and structure</li>
+        <li style="font-size:14px;color:#333;display:flex;gap:10px;align-items:flex-start;"><span style="color:#2A7A3A;flex-shrink:0;">✓</span>Use lavender for support surfaces and footer bands</li>
+        <li style="font-size:14px;color:#333;display:flex;gap:10px;align-items:flex-start;"><span style="color:#2A7A3A;flex-shrink:0;">✓</span>Keep layouts calm, precise, and intentional</li>
+        <li style="font-size:14px;color:#333;display:flex;gap:10px;align-items:flex-start;"><span style="color:#2A7A3A;flex-shrink:0;">✓</span>Let one dominant idea control each page</li>
+        <li style="font-size:14px;color:#333;display:flex;gap:10px;align-items:flex-start;"><span style="color:#2A7A3A;flex-shrink:0;">✓</span>Use Cormorant Garamond for display headings</li>
+        <li style="font-size:14px;color:#333;display:flex;gap:10px;align-items:flex-start;"><span style="color:#2A7A3A;flex-shrink:0;">✓</span>Use IBM Plex Mono for all technical labels</li>
+      </ul>
+    </div>
+    <div class="dd-panel dont-panel">
+      <span class="dd-badge dont">Don't</span>
+      <ul style="list-style:none;display:flex;flex-direction:column;gap:12px;">
+        <li style="font-size:14px;color:#888;display:flex;gap:10px;align-items:flex-start;text-decoration:line-through;"><span style="color:#B00;text-decoration:none;flex-shrink:0;">✕</span>Rebuild the logo from a font</li>
+        <li style="font-size:14px;color:#888;display:flex;gap:10px;align-items:flex-start;text-decoration:line-through;"><span style="color:#B00;text-decoration:none;flex-shrink:0;">✕</span>Overuse handwritten typography</li>
+        <li style="font-size:14px;color:#888;display:flex;gap:10px;align-items:flex-start;text-decoration:line-through;"><span style="color:#B00;text-decoration:none;flex-shrink:0;">✕</span>Use neon gradients or rainbow palettes</li>
+        <li style="font-size:14px;color:#888;display:flex;gap:10px;align-items:flex-start;text-decoration:line-through;"><span style="color:#B00;text-decoration:none;flex-shrink:0;">✕</span>Use generic AI blue / glowing circuit imagery</li>
+        <li style="font-size:14px;color:#888;display:flex;gap:10px;align-items:flex-start;text-decoration:line-through;"><span style="color:#B00;text-decoration:none;flex-shrink:0;">✕</span>Crowd the page with multiple competing elements</li>
+        <li style="font-size:14px;color:#888;display:flex;gap:10px;align-items:flex-start;text-decoration:line-through;"><span style="color:#B00;text-decoration:none;flex-shrink:0;">✕</span>Add heavy drop shadows</li>
+        <li style="font-size:14px;color:#888;display:flex;gap:10px;align-items:flex-start;text-decoration:line-through;"><span style="color:#B00;text-decoration:none;flex-shrink:0;">✕</span>Use purple for body text</li>
+        <li style="font-size:14px;color:#888;display:flex;gap:10px;align-items:flex-start;text-decoration:line-through;"><span style="color:#B00;text-decoration:none;flex-shrink:0;">✕</span>Look like corporate SaaS, wellness spa, or gamer-tech</li>
+        <li style="font-size:14px;color:#888;display:flex;gap:10px;align-items:flex-start;text-decoration:line-through;"><span style="color:#B00;text-decoration:none;flex-shrink:0;">✕</span>Flood entire layouts with saturated colour</li>
+        <li style="font-size:14px;color:#888;display:flex;gap:10px;align-items:flex-start;text-decoration:line-through;"><span style="color:#B00;text-decoration:none;flex-shrink:0;">✕</span>Use fast, chaotic animations</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     22 · ASSET LIBRARY
+═══════════════════════════════════════════════════ -->
+<section id="asset-library" class="compact dark">
+  <span class="print-page-marker" style="color:#555;">22</span>
+  <span class="section-num light">17 · Asset Library</span>
+  <h2 class="section-title" style="color:white;margin-bottom:48px;">File system.</h2>
+
+  <div class="grid-2" style="gap:60px;align-items:start;">
+    <div>
+      <h3 class="sub-heading" style="color:#444;">Folder Structure</h3>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#888;line-height:2.2;padding:24px;background:#0a0a0a;border:0.5px solid #1a1a1a;">
+        <span style="color:#AE72F9;">shobotics-brand/</span><br/>
+        &nbsp;&nbsp;<span style="color:#666;">├── /logos</span><br/>
+        &nbsp;&nbsp;<span style="color:#666;">├── /colours</span><br/>
+        &nbsp;&nbsp;<span style="color:#666;">├── /typography</span><br/>
+        &nbsp;&nbsp;<span style="color:#666;">├── /patterns</span><br/>
+        &nbsp;&nbsp;<span style="color:#666;">│&nbsp;&nbsp;&nbsp;└── signal-field/</span><br/>
+        &nbsp;&nbsp;<span style="color:#666;">├── /icons</span><br/>
+        &nbsp;&nbsp;<span style="color:#666;">├── /templates</span><br/>
+        &nbsp;&nbsp;<span style="color:#666;">├── /mockups</span><br/>
+        &nbsp;&nbsp;<span style="color:#666;">└── /exports</span>
+      </div>
+
+      <h3 class="sub-heading" style="color:#444;">Naming Convention</h3>
+      <div style="display:flex;flex-direction:column;gap:6px;padding:20px;background:#0a0a0a;border:0.5px solid #1a1a1a;">
+        <p style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#888;">shobotics-logo-primary-purple.svg</p>
+        <p style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#888;">shobotics-logo-black.svg</p>
+        <p style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#888;">shobotics-logo-white.svg</p>
+        <p style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#888;">signal-field-hero-black.svg</p>
+        <p style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#888;">signal-field-bg-grey.svg</p>
+        <p style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#888;">shobotics-deck-cover-16x9.fig</p>
+        <p style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#888;">shobotics-social-square-1080.fig</p>
+      </div>
+    </div>
+
+    <div>
+      <h3 class="sub-heading" style="color:#444;">Asset Dependency Table</h3>
+      <div style="overflow-x:auto;">
+        <table class="asset-table" style="background:#0a0a0a;">
+          <thead>
+            <tr>
+              <th>Asset</th>
+              <th>Format</th>
+              <th>Type</th>
+              <th>Fallback</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="color:#aaa;">Shobotics wordmark</td>
+              <td><span class="tag locked">Locked</span></td>
+              <td><span class="tag adobe">Adobe</span></td>
+              <td style="color:#666;font-size:12px;">Use supplied PNG/SVG only</td>
+            </tr>
+            <tr>
+              <td style="color:#aaa;">Display typeface</td>
+              <td><span class="tag adobe">Adobe Fonts</span></td>
+              <td><span class="tag editable">Role-based</span></td>
+              <td style="color:#666;font-size:12px;">Cormorant Garamond (Google)</td>
+            </tr>
+            <tr>
+              <td style="color:#aaa;">Body typeface</td>
+              <td><span class="tag open">Open source</span></td>
+              <td><span class="tag editable">Editable</span></td>
+              <td style="color:#666;font-size:12px;">Inter (Google Fonts)</td>
+            </tr>
+            <tr>
+              <td style="color:#aaa;">Technical typeface</td>
+              <td><span class="tag open">Open source</span></td>
+              <td><span class="tag editable">Editable</span></td>
+              <td style="color:#666;font-size:12px;">IBM Plex Mono (Google)</td>
+            </tr>
+            <tr>
+              <td style="color:#aaa;">Signal field SVGs</td>
+              <td><span class="tag editable">Editable</span></td>
+              <td><span class="tag open">In-house</span></td>
+              <td style="color:#666;font-size:12px;">Recreatable from rules</td>
+            </tr>
+            <tr>
+              <td style="color:#aaa;">Deck templates</td>
+              <td><span class="tag adobe">Adobe / Figma</span></td>
+              <td><span class="tag editable">Editable</span></td>
+              <td style="color:#666;font-size:12px;">Google Slides + guide</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="margin-top:24px;padding:16px 20px;border:0.5px solid #222;background:#0a0a0a;">
+        <p style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:#555;margin-bottom:8px;">Note on Adobe fonts</p>
+        <p style="font-size:13px;color:#666;line-height:1.6;">Exact Adobe font names may be substituted only with approved licensed equivalents. The Shobotics wordmark must always be used as artwork, never rebuilt manually.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     DOCUMENT FOOTER
+═══════════════════════════════════════════════════ -->
+<div class="doc-footer">
+  <span>confidential</span>
+  <span>shobotics · brand guidelines v1.0 · 2026</span>
+  <span>do not share</span>
+</div>
+
+</main>
+
+<script>
+const links = document.querySelectorAll('#sidebar a');
+const sections = document.querySelectorAll('section[id]');
+
+function setActive() {
+  let current = '';
+  sections.forEach(s => {
+    const top = s.getBoundingClientRect().top;
+    if (top <= 100) current = s.id;
+  });
+  links.forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+  });
+}
+
+window.addEventListener('scroll', setActive, { passive: true });
+setActive();
+</script>
+
+</body>
+</html>

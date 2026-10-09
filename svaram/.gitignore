@@ -1,0 +1,27 @@
+# Study data stays local. Keep survey source and documentation in Git.
+/svaram-data/data/
+/svaram-data/recordings/
+/svaram-data/sessions/
+/svaram-data/audio/
+/svaram-data/exports/
+/svaram-data/backups/
+/svaram-h10/sessions/
+/svaram-h10/exports/
+
+# Databases and SQLite transaction files, including temporary sidecar files.
+*.sqlite
+*.sqlite-*
+*.sqlite3
+*.sqlite3-*
+*.db
+*.db-*
+
+# Downloads from the standalone baseline form, wherever saved in this repo.
+baseline_*.json
+
+# Downloads from the standalone consent form. Identity records contain names and signatures.
+consent_*.json
+consent-identity_*.json
+
+# Local operating-system files.
+.DS_Store

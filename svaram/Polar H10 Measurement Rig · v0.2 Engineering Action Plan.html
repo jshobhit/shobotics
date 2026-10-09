@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<!-- saved from url=(0127)file:///Users/shobhit/.codex/.chatgpt-projects/g-p-69ef51bd0dfc8191920d272d1c32b283/polar-h10-v0.2-engineering-action-plan.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<meta name="description" content="Polar H10 measurement rig v0.2: engineering action plan, data contract, requirements, implementation gates, and acceptance tests.">
+<title>Polar H10 Measurement Rig · v0.2 Engineering Action Plan</title>
+<style>
+:root{--ink:#182e32;--muted:#53666a;--paper:#f5f6f2;--white:#fff;--line:#d8e1dc;--green:#126455;--pale:#e9f2eb;--amber:#805119;--amber-bg:#fff4df;--mono:ui-monospace,SFMono-Regular,Consolas,monospace}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:24px}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.58 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}a{color:var(--green);text-underline-offset:3px}a:focus-visible{outline:3px solid var(--green);outline-offset:4px}.skip{position:absolute;left:16px;top:-80px;background:white;padding:10px;z-index:5}.skip:focus{top:12px}.masthead{background:var(--ink);color:#fff;padding:52px max(28px,calc((100vw - 1280px)/2)) 42px;border-top:7px solid #82b99c}.brand{font-size:19px;font-weight:750;letter-spacing:-.7px;margin-bottom:30px}.brand span{color:#add7be}.eyebrow{text-transform:uppercase;letter-spacing:1.8px;font-size:11px;font-weight:750;color:#acd3c2}.masthead h1{font-size:clamp(32px,4.4vw,54px);line-height:1.1;letter-spacing:-1.8px;margin:13px 0 18px;max-width:850px}.masthead p{max-width:790px;color:#d6e4df;margin:0;font-size:17px}.meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}.meta span{border:1px solid #526d69;padding:5px 11px;border-radius:4px;font-size:12px;color:#e5eee9}.layout{max-width:1336px;margin:auto;padding:34px 28px 70px;display:grid;grid-template-columns:210px minmax(0,1fr);gap:42px}nav{position:sticky;top:24px;align-self:start;max-height:calc(100vh - 48px);overflow:auto}nav strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:1.5px;margin:0 0 12px;color:var(--muted)}nav a{display:block;text-decoration:none;color:var(--muted);font-size:13px;padding:6px 10px;border-left:2px solid var(--line)}nav a:hover{color:var(--green);background:var(--pale);border-color:var(--green)}nav small{display:block;color:var(--muted);margin-top:20px;font-size:11px}main{min-width:0}.intro{border:1px solid #bed4c4;background:var(--pale);border-radius:8px;padding:22px 24px;margin-bottom:30px}.intro h2{margin:0 0 9px;font-size:20px}.intro p{margin:8px 0}.intro .rule{font-weight:700;color:var(--green)}section{margin:0 0 34px;scroll-margin-top:24px}.section-head{display:flex;align-items:baseline;gap:13px;border-bottom:2px solid var(--ink);padding-bottom:11px;margin-bottom:18px}.number{color:var(--green);font:600 13px var(--mono)}h2{font-size:25px;letter-spacing:-.5px;line-height:1.25;margin:0}h3{font-size:16px;margin:22px 0 9px}p{margin:9px 0 13px}.sub{color:var(--muted);font-size:13px}.tag{display:inline-block;background:var(--pale);color:var(--green);font-size:10px;font-weight:750;text-transform:uppercase;letter-spacing:.8px;padding:3px 7px;border-radius:3px;vertical-align:middle}.tag.decision{background:var(--amber-bg);color:var(--amber)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}.card{background:var(--white);border:1px solid var(--line);border-radius:7px;padding:19px 21px}.card h3{margin-top:0}.card p:last-child{margin-bottom:0}.callout{background:var(--amber-bg);border-left:3px solid #bc8942;padding:13px 17px;margin:15px 0;font-size:13px}.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:6px;background:var(--white)}table{border-collapse:collapse;width:100%;font-size:13px;line-height:1.5}th{text-align:left;background:#eaf0eb;font-size:11px;text-transform:uppercase;letter-spacing:.65px;color:#38564d}th,td{padding:12px 14px;vertical-align:top;border-bottom:1px solid var(--line)}tr:last-child td{border-bottom:0}td:first-child{font-weight:650}td p{margin:0 0 5px}td p:last-child{margin:0}.req{list-style:none;padding:0;margin:0}.req li{position:relative;padding:8px 0 8px 73px;border-bottom:1px solid var(--line)}.req li:last-child{border:0}.rid{position:absolute;left:0;top:10px;font:600 11px var(--mono);color:var(--green)}code{font:0.88em var(--mono);background:#eaf0eb;padding:2px 4px;border-radius:3px;overflow-wrap:anywhere}pre{font:12px/1.7 var(--mono);background:#183338;color:#e4f1e9;padding:20px;border-radius:6px;overflow:auto;margin:13px 0}pre code{background:none;color:inherit;padding:0;font:inherit;overflow-wrap:normal}.flow{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin:15px 0}.flow div{background:var(--ink);color:#fff;border-radius:5px;padding:14px 12px;font-size:12px}.flow b{display:block;color:#abd9bb;font:11px var(--mono);margin-bottom:6px}.flow small{display:block;color:#d4e1da;margin-top:5px;line-height:1.4}.compact{margin:8px 0;padding-left:20px}.compact li{margin:5px 0}.phase{display:grid;grid-template-columns:40px 1fr;gap:13px;background:white;border:1px solid var(--line);padding:16px 18px;margin-bottom:9px;border-radius:6px}.phase b.step{width:31px;height:31px;background:var(--pale);color:var(--green);display:grid;place-items:center;border-radius:50%;font:600 12px var(--mono)}.phase h3{margin:0 0 4px}.phase p{margin:0;font-size:13px}.foot{border-top:1px solid var(--line);margin-top:32px;padding-top:16px;font-size:12px;color:var(--muted)}.checks td:first-child{white-space:nowrap;font:600 11px var(--mono);color:var(--green)}.checks td:nth-child(2){min-width:140px}.checks td:last-child{min-width:250px}.states td:first-child{font-family:var(--mono);font-size:11px}::selection{background:#b9dfc8}
+@media(max-width:1020px){.layout{grid-template-columns:175px minmax(0,1fr);gap:25px}.flow{grid-template-columns:1fr 1fr}.flow div:last-child{grid-column:1/-1}}
+@media(max-width:760px){.masthead{padding:34px 22px}.masthead h1{letter-spacing:-1px}.layout{display:block;padding:22px 18px 45px}nav{position:static;max-height:none;display:flex;flex-wrap:wrap;gap:5px;margin-bottom:26px}nav strong{width:100%;margin-bottom:4px}nav a{font-size:11px;border:1px solid var(--line);border-radius:4px;padding:5px 8px;background:#fff}nav small{display:none}.grid{grid-template-columns:1fr}.intro{padding:18px}h2{font-size:22px}.req li{padding-left:64px}.rid{font-size:10px}th,td{padding:10px}.card{padding:17px}.section-head{gap:10px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+@media print{@page{size:A4;margin:15mm}body{background:white;font-size:10px;line-height:1.4}.masthead{background:white;color:var(--ink);padding:0 0 18px;border-top:0;border-bottom:2px solid var(--ink)}.masthead h1{font-size:29px;letter-spacing:-.7px}.masthead p,.eyebrow,.brand span{color:var(--muted)}.masthead p{font-size:12px}.brand{margin-bottom:13px}.meta{margin-top:12px}.meta span{color:var(--ink);border-color:var(--line);font-size:9px}nav,.skip{display:none}.layout{display:block;max-width:none;padding:20px 0}section{margin-bottom:24px}h2{font-size:19px}h3{font-size:12px}table,.sub,.callout,.phase p{font-size:9px}th{font-size:8px}th,td{padding:7px 8px}.table-wrap{overflow:visible}.section-head,h3{break-after:avoid}tr,.card,.phase,.intro,.req li{break-inside:avoid}thead{display:table-header-group}.req li{padding:5px 0 5px 60px}.rid{top:6px;font-size:9px}.flow div{background:#eef3ef;color:var(--ink)}.flow b,.flow small{color:var(--ink)}pre{background:#f0f3f0;color:var(--ink);font-size:9px;white-space:pre-wrap}.foot{font-size:9px}a{color:inherit;text-decoration:none}}
+</style>
+</head>
+<body>
+<a class="skip" href="file:///Users/shobhit/.codex/.chatgpt-projects/g-p-69ef51bd0dfc8191920d272d1c32b283/polar-h10-v0.2-engineering-action-plan.html#contract">Skip to build contract</a>
+<header class="masthead">
+<div class="brand">shobotics<span> / engineering</span></div>
+<div class="eyebrow">Measurement systems · pre-implementation contract</div>
+<h1>Polar H10 measurement rig<br>v0.2 engineering action plan</h1>
+<p>Two independent windows. One durable session package. Reproducible HR, HRV, and estimated respiration analysis.</p>
+<div class="meta"><span>Version 0.2</span><span>07 Oct 2026</span><span>Local Mac application</span><span>Requirements + verification</span></div>
+</header>
+<div class="layout">
+<nav aria-label="Document sections">
+<strong>Build contract</strong>
+<a href="file:///Users/shobhit/.codex/.chatgpt-projects/g-p-69ef51bd0dfc8191920d272d1c32b283/polar-h10-v0.2-engineering-action-plan.html#contract">00 · Read first</a><a href="file:///Users/shobhit/.codex/.chatgpt-projects/g-p-69ef51bd0dfc8191920d272d1c32b283/polar-h10-v0.2-engineering-action-plan.html#scope">01 · Scope &amp; boundaries</a><a href="file:///Users/shobhit/.codex/.chatgpt-projects/g-p-69ef51bd0dfc8191920d272d1c32b283/polar-h10-v0.2-engineering-action-plan.html#architecture">02 · Architecture</a><a href="file:///Users/shobhit/.codex/.chatgpt-projects/g-p-69ef51bd0dfc8191920d272d1c32b283/polar-h10-v0.2-engineering-action-plan.html#data">03 · Data contract</a><a href="file:///Users/shobhit/.codex/.chatgpt-projects/g-p-69ef51bd0dfc8191920d272d1c32b283/polar-h10-v0.2-engineering-action-plan.html#metrics">04 · Metrics</a><a href="file:///Users/shobhit/.codex/.chatgpt-projects/g-p-69ef51bd0dfc8191920d272d1c32b283/polar-h10-v0.2-engineering-action-plan.html#dashboard">05 · Dashboard</a><a href="file:///Users/shobhit/.codex/.chatgpt-projects/g-p-69ef51bd0dfc8191920d272d1c32b283/polar-h10-v0.2-engineering-action-plan.html#analysis">06 · Session Analysis</a><a href="file:///Users/shobhit/.codex/.chatgpt-projects/g-p-69ef51bd0dfc8191920d272d1c32b283/polar-h10-v0.2-engineering-action-plan.html#labels">07 · Label model</a><a href="file:///Users/shobhit/.codex/.chatgpt-projects/g-p-69ef51bd0dfc8191920d272d1c32b283/polar-h10-v0.2-engineering-action-plan.html#report">08 · report.html</a><a href="file:///Users/shobhit/.codex/.chatgpt-projects/g-p-69ef51bd0dfc8191920d272d1c32b283/polar-h10-v0.2-engineering-action-plan.html#states">09 · Session states</a><a href="file:///Users/shobhit/.codex/.chatgpt-projects/g-p-69ef51bd0dfc8191920d272d1c32b283/polar-h10-v0.2-engineering-action-plan.html#reliability">10 · Reliability</a><a href="file:///Users/shobhit/.codex/.chatgpt-projects/g-p-69ef51bd0dfc8191920d272d1c32b283/polar-h10-v0.2-engineering-action-plan.html#phases">11 · Implementation order</a><a href="file:///Users/shobhit/.codex/.chatgpt-projects/g-p-69ef51bd0dfc8191920d272d1c32b283/polar-h10-v0.2-engineering-action-plan.html#tests">12 · Acceptance tests</a><a href="file:///Users/shobhit/.codex/.chatgpt-projects/g-p-69ef51bd0dfc8191920d272d1c32b283/polar-h10-v0.2-engineering-action-plan.html#decisions">13 · Pre-build decisions</a>
+<small>Requirement IDs support focused implementation and review. Acceptance tests are the release gate.</small>
+</nav>
+<main>
+<section id="contract" class="intro">
+<h2>00 / Instructions to the coding agent</h2>
+<p class="rule">Read this contract before you change application code.</p>
+<p>The agent shall inspect the existing application. The agent shall map each requirement to an existing module or a planned change. The agent shall complete Phase 0 before implementation.</p>
+<p><span class="tag">Contract</span> The source is <em>Draft Polar H10 PRD</em>, conversation <code>6ac34cd5-183c-83ee-bd11-175843b41afb</code>. The explicit v0.2 request takes priority. The full alignment plan supplies the audio, survey, label, tab, and lifecycle details. Original reliability requirements remain in force.</p>
+<p><span class="tag decision">Decision</span> Section 13 identifies details that the source did not settle. Proposed engineering defaults in this document shall not be represented as prior user decisions. The agent shall resolve them before the affected code changes.</p>
+<p class="sub">Language: ASD-STE100-style controlled English; no claim of formal certification. “Shall” specifies required behavior. Examples do not specify participant results or clinical thresholds.</p>
+</section>
+
+<section id="scope">
+<div class="section-head"><span class="number">01</span><h2>Scope &amp; boundaries</h2></div>
+<div class="grid"><div class="card"><h3>Build</h3><p>The application shall record one participant through one Polar H10 on a MacBook. It shall store local raw streams, events, optional audio, and an optional baseline survey.</p><p>Window 1 shall control acquisition. Window 2 shall inspect stored sessions. Each finalized, successfully analysed session shall contain a portable <code>report.html</code>.</p></div><div class="card"><h3>Preserve</h3><p>Raw measurements shall remain primary data. Analysis shall remain reproducible derived data.</p><p>The agent shall reuse the existing recorder, BLE integration, and supported export paths where they satisfy this contract. Existing session folders shall not be renamed or rewritten automatically.</p></div></div>
+<h3>Explicitly out of scope</h3>
+<p>Cloud sync; accounts; remote dashboards; remote databases; patient-record systems; hospital/PACS integration; multi-participant or multi-H10 recording; complex study management; diagnostic ECG interpretation; causal or significance claims; custom analysis ranges; historical label editing; raw-data editing; overlapping labels; frequency-domain HRV research tools; embedded questionnaire authoring; new survey scoring; live heavy HRV or respiration analysis.</p>
+<p class="sub">No framework migration, database replacement, or unrelated redesign is authorized by this revamp. Optional post-session backup is not a new v0.2 deliverable.</p>
+</section>
+
+<section id="architecture">
+<div class="section-head"><span class="number">02</span><h2>Architecture</h2></div>
+<div class="flow" aria-label="Processing sequence"><div><b>01 / ACQUIRE</b>H10 + optional audio<small>Timestamped streams</small></div><div><b>02 / PERSIST</b>Session recorder<small>Bounded buffers → chunks</small></div><div><b>03 / CONTEXT</b>Event recorder<small>Labels, gaps, state, quality</small></div><div><b>04 / ANALYSE</b>Analysis engine<small>Stored raw → derived data</small></div><div><b>05 / PRESENT</b>Report renderer<small>Derived data → HTML</small></div></div>
+<p class="sub">The event recorder runs beside acquisition and storage. The diagram shows responsibility order, not a serial dependency for samples.</p>
+<ul class="req">
+<li><span class="rid">ARC-01</span>The recorder shall own the session clock, state, and persistence. Both windows shall consume this state through defined interfaces.</li>
+<li><span class="rid">ARC-02</span>The Dashboard shall use bounded preview buffers. Rendering shall not block sample storage.</li>
+<li><span class="rid">ARC-03</span>The analysis engine shall run after recording stops. Analysis of an older session shall not block a current recording.</li>
+<li><span class="rid">ARC-04</span>The report shall be the canonical presentation of completed analysis. Analysis tabs shall reuse its sections and stored results. The host shall not recalculate metrics.</li>
+<li><span class="rid">ARC-05</span>Opening or closing Session Analysis shall not start, stop, pause, or disconnect acquisition.</li>
+</ul>
+</section>
+
+<section id="data">
+<div class="section-head"><span class="number">03</span><h2>Data contract</h2></div>
+<h3>Session identity</h3>
+<pre><code>Date_patientNo_SessionID
+DDMonYYYY_PatientNo_SessionID
+28Sep2026_001_002</code></pre>
+<ul class="req">
+<li><span class="rid">DAT-01</span>The folder name shall use the session start date, Patient No., and Session ID. The date shall use two-digit day, English month abbreviation, and four-digit year.</li>
+<li><span class="rid">DAT-02</span>The application shall require Patient No., Session ID, and Facilitator ID. It shall store IDs as strings. It shall preserve leading zeros. Facilitator ID shall occur in metadata only.</li>
+<li><span class="rid">DAT-03</span>The application shall validate IDs before creating storage. It shall reject path separators and traversal values. It shall never overwrite an existing session folder.</li>
+<li><span class="rid">DAT-04</span>The application shall retain absolute start/stop times and timezone information. All streams and events shall refer to one monotonic session timeline.</li>
+<li><span class="rid">DAT-05</span>The application shall retain original sensor times and host receipt times when available. It shall store clock mapping, timestamp reconstruction, and reconnect boundaries.</li>
+</ul>
+<h3>Session package</h3>
+<pre><code>sessions/28Sep2026_001_002/
+├── manifest.json
+├── report.html                  # successful analysis; regenerable
+├── raw/
+│   ├── ecg/                     # immutable numbered chunks
+│   ├── rr/
+│   ├── heart_rate/              # device-reported HR; preserve source
+│   ├── accelerometer/
+│   └── audio/                  # only when enabled
+├── events/
+│   ├── labels.jsonl
+│   ├── connection.jsonl
+│   ├── recording.jsonl
+│   └── quality.jsonl
+├── derived/
+│   ├── heart_rate.json
+│   ├── hrv.json
+│   ├── respiration.json
+│   ├── quality.json
+│   └── label_metrics.json
+└── survey/baseline.json          # only when attached</code></pre>
+<p class="sub">The raw HR path and quality-event path make retained source streams explicit. Phase 0 may map them to equivalent existing storage without changing their meaning. Chunk encoding remains an implementation decision.</p>
+<div class="table-wrap"><table><thead><tr><th>Object</th><th>Required fields / semantics</th></tr></thead><tbody>
+<tr><td>Manifest</td><td>Schema version; folder key; three operator IDs; device ID; app version; <code>data_source</code>; enabled streams; configuration; absolute times; elapsed and recorded duration; recording status; analysis/report status; stream index; gaps; errors; recovery history; survey association; analysis version/configuration.</td></tr>
+<tr><td>Chunk</td><td>Session key; signal type; sequence; segment ID; start/end time; sample count; units; sample rate or interval encoding; payload; checksum and checksum algorithm. Index shall identify the relative file path.</td></tr>
+<tr><td>Event</td><td>Schema version; session key; sequence; event type; session timestamp; payload. Interval events shall identify start/end boundaries. Recovery shall detect a partial trailing record.</td></tr>
+<tr><td>Derived result</td><td>Metric ID; value or <code>null</code>; unit; interval; segment/label references; source stream; valid count; excluded count; quality; unavailable reason; algorithm version; parameters; input checksums.</td></tr>
+<tr><td>Survey</td><td>Imported baseline JSON; participant identifier; import provenance; validation result. The application shall preserve the source identity. A mismatch shall remain visible.</td></tr>
+</tbody></table></div>
+<p class="sub"><strong>Proposed schema convention:</strong> use integer session-relative microseconds; use UTC ISO 8601 for absolute times; use half-open intervals <code>[start, end)</code>. Freeze names and types in Phase 0. No consumer may infer units from a filename.</p>
+<ul class="req">
+<li><span class="rid">DAT-06</span>The manifest shall record whether each stream is enabled, available, missing, or failed. An absent optional stream shall not be represented as zero-valued measurements.</li>
+<li><span class="rid">DAT-07</span>The session shall retain <code>data_source = simulated</code> for simulated capture. Derived files, reports, and exports shall retain that designation.</li>
+<li><span class="rid">DAT-08</span>The application shall store raw and derived data separately. Regeneration shall not modify raw chunks or recorded events.</li>
+</ul>
+</section>
+
+<section id="metrics">
+<div class="section-head"><span class="number">04</span><h2>Measured &amp; derived metrics</h2></div>
+<p>HRV shall be a primary displayed metric. Its provenance shall remain <strong>derived from beat intervals</strong>. Respiration shall be identified as <strong>ECG-derived respiration estimate</strong>.</p>
+<div class="table-wrap"><table><thead><tr><th>Class</th><th>Metric / stream</th><th>Contract</th></tr></thead><tbody>
+<tr><td>Device-reported</td><td>ECG; RR intervals; HR; 3-axis acceleration</td><td>Preserve original values, units, timing, and configured rates. Retain the existing 130 Hz ECG target. Store actual negotiated rates. Record RR when available.</td></tr>
+<tr><td>Optional measured</td><td>Audio waveform</td><td>Retain sample rate, channel layout, device, and alignment to the session clock.</td></tr>
+<tr><td>Derived HRV</td><td>RMSSD (primary); SDNN; pNN50; mean RR; mean HR; valid RR %</td><td>Compute from identified valid intervals. Show milliseconds, bpm, and percent as applicable. Preserve device HR separately from RR-derived HR.</td></tr>
+<tr><td>Derived respiration</td><td>Estimated waveform; rate in breaths/min</td><td>Store method, parameters, quality, and unavailable intervals. Do not describe the estimate as direct respiration measurement.</td></tr>
+<tr><td>Derived context</td><td>Signal quality; rolling variability; label summaries</td><td>Retain interval boundaries and coverage. Use the same session axis as the source data.</td></tr>
+</tbody></table></div>
+<ul class="req">
+<li><span class="rid">MET-01</span>The engine shall retain original RR values. It shall record exclusions or corrections separately. It shall not silently substitute ECG-derived intervals for device RR.</li>
+<li><span class="rid">MET-02</span>The engine shall calculate full-session summaries and eligible contiguous label-segment summaries. It shall identify repeated occurrences of the same label separately.</li>
+<li><span class="rid">MET-03</span>The engine shall not form successive RR pairs across pauses, missing data, rejected intervals, or disconnected segments. Label-specific calculations shall also stop at label boundaries.</li>
+<li><span class="rid">MET-04</span>The engine shall return <code>null</code> with a reason when duration, beat count, or quality is insufficient. The UI shall show “Insufficient data” or the specific reason.</li>
+<li><span class="rid">MET-05</span>The engine shall store analysis windows, cleaning rules, minimum durations, quality thresholds, and algorithm versions. The same inputs and configuration shall reproduce the same numeric results within a declared tolerance.</li>
+<li><span class="rid">MET-06</span>The engine shall calculate plot reductions after recording. Reduced plot data shall not replace source samples or determine summary statistics.</li>
+</ul>
+<div class="callout"><strong>Definition gate.</strong> Freeze SDNN variance convention, pNN50 denominator, mean-HR method, coverage denominator, RR cleaning, and eligible window lengths before implementation. Do not invent clinical limits. Compare repeated labels descriptively; do not concatenate separated intervals into a false continuous record.</div>
+</section>
+
+<section id="dashboard">
+<div class="section-head"><span class="number">05</span><h2>Window 1 · Clinical Measurement Dashboard</h2></div>
+<p>The window shall use the exact title <strong>Clinical Measurement Dashboard</strong>. The existing shobotics logo shall appear above it. The UI shall use system nomenclature without marketing text.</p>
+<div class="table-wrap"><table><thead><tr><th>Section</th><th>Required controls and behavior</th></tr></thead><tbody>
+<tr><td>1 · Sensor Connection Status<br><code>UI-01</code></td><td><p><strong>Polar H10:</strong> Scan, Select, Connect, Disconnect, Simulate. Show device ID, available battery level, and Connected / Disconnected / Reconnecting / Simulated state.</p><p><strong>Audio Input:</strong> Select a Mac audio device. Show live level and Connected / No Input / Recording / Error state. Audio shall be optional.</p><p><strong>Survey Form Input:</strong> Import baseline JSON. Show Not attached / Attached / Mismatch. Warn on Patient No. mismatch. Survey attachment shall be optional. The Dashboard shall not embed the questionnaire.</p></td></tr>
+<tr><td>2 · Session controls<br><code>UI-02</code></td><td><p>Show the ECG Signal Integrity Monitor, Session Clock, and required Patient No. / Session ID / Facilitator ID fields.</p><p>Provide Start, Pause, Resume, and Stop according to session state. Show current HR, data-write status, and dropout status.</p><p>The integrity monitor shall evaluate BLE continuity, sample continuity, dropout, flat signal, excessive noise, and gross amplitude abnormality. Show GOOD / DEGRADED / POOR / DROPOUT with text. Store timestamped quality states.</p></td></tr>
+<tr><td>3 · Live measurement<br><code>UI-03</code></td><td><p>Show label buttons, a full-session-so-far timeline, a scrolling ECG scope, and the current label near the scope.</p><p>Show label bands, the current position, pauses, and data gaps on the timeline. Enable label controls only in RECORDING. Start with Silence.</p></td></tr>
+</tbody></table></div>
+<ul class="req">
+<li><span class="rid">UI-04</span>The clock shall start at recording start. It shall continue through pauses and dropouts. System wall-clock changes shall not change elapsed session time.</li>
+<li><span class="rid">UI-05</span>The application shall lock session identity and data-source mode during an active session. It shall not mix simulated and participant data in one session.</li>
+<li><span class="rid">UI-06</span>The scope shall remain a monitoring aid. A scope or Analysis window failure shall not stop the recorder.</li>
+<li><span class="rid">UI-07</span>The UI shall provide visible keyboard focus and text labels. Signal, connection, and recording states shall not depend on color alone.</li>
+</ul>
+</section>
+
+<section id="analysis">
+<div class="section-head"><span class="number">06</span><h2>Window 2 · Session Analysis</h2></div>
+<ul class="req">
+<li><span class="rid">ANA-01</span>The window shall open stored sessions independently of the Dashboard. It shall use the full session. It shall provide no custom-range control.</li>
+<li><span class="rid">ANA-02</span>The Overview tab shall open the selected session’s <code>report.html</code>. Other tabs shall navigate canonical report sections or reuse the same stored analysis.</li>
+<li><span class="rid">ANA-03</span>All time-series plots shall use the same elapsed-time axis. Label regions shall appear behind traces. Identical labels shall use identical styling within the report.</li>
+</ul>
+<div class="table-wrap"><table><thead><tr><th>Tab</th><th>Required content</th></tr></thead><tbody>
+<tr><td>Overview</td><td>Highlights first; HR over time; HRV; estimated respiration; RR variability; label comparison. Sections shall render charts as the user approaches them.</td></tr>
+<tr><td>ECG &amp; HRV</td><td>ECG quality summary; HR over time; RR series; RMSSD; SDNN; pNN50; mean RR; mean HR; valid RR %. Include eligible label-segment summaries.</td></tr>
+<tr><td>Respiration &amp; RR</td><td>RR series and rolling variability; estimated respiration waveform; respiration rate; mean respiration rate by label; RMSSD by label; data confidence. Do not retain separate Respiration and RR/Variability tabs.</td></tr>
+<tr><td>Session Data</td><td>Identity, source, device, versions, stream coverage, labels, pauses, gaps, quality, survey status, and recovery/report status.</td></tr>
+</tbody></table></div>
+<p class="sub">Label context applies to HR, HRV trends, RR, estimated respiration, and ECG quality. Summary cards shall state their scope. Label tables shall identify each segment and its duration.</p>
+</section>
+
+<section id="labels">
+<div class="section-head"><span class="number">07</span><h2>Label model</h2></div>
+<ul class="req">
+<li><span class="rid">LAB-01</span>The session shall have one primary active label while recording. Start shall open a Silence segment at time zero.</li>
+<li><span class="rid">LAB-02</span>A label change shall close the current segment and open the next at the same session timestamp. Segments shall not overlap.</li>
+<li><span class="rid">LAB-03</span>Each segment shall retain a stable ID, label ID, start time, and end time. The manifest shall retain the label names and report styling map.</li>
+<li><span class="rid">LAB-04</span>Label controls shall be disabled in PAUSED and all non-recording states. Stop shall close the open segment. Historical label editing shall be unavailable.</li>
+<li><span class="rid">LAB-05</span>Reports shall display pauses and data gaps separately from labels. Label coverage shall not imply valid physiological coverage.</li>
+</ul>
+<p><strong>Protocol examples:</strong> Silence, Gong, Voice, Instrument A, Instrument B, Transition. These names are examples except for the required default Silence.</p>
+<p class="sub"><strong>Proposed boundary behavior:</strong> ignore repeated clicks on the active label; close its segment at Pause; open a new segment with the retained label at Resume. Keep the label through a BLE dropout and overlay the data gap. Confirm these defaults in Phase 0.</p>
+</section>
+
+<section id="report">
+<div class="section-head"><span class="number">08</span><h2>report.html behavior</h2></div>
+<ul class="req">
+<li><span class="rid">REP-01</span>Stop shall trigger finalization, analysis, and report generation in that order. The renderer shall publish <code>report.html</code> only after a successful write.</li>
+<li><span class="rid">REP-02</span>The report shall contain embedded styles, required scripts, and compact derived plot data. It shall open locally without a network connection or running Dashboard.</li>
+<li><span class="rid">REP-03</span>The report shall not embed the full raw recording. It shall identify the session, analysis version, source, and recording completeness.</li>
+<li><span class="rid">REP-04</span>The report shall show Highlights at the top: duration, valid ECG coverage, mean HR, RMSSD, SDNN, estimated respiration rate, label count, and recording quality. Unavailable metrics shall show a reason.</li>
+<li><span class="rid">REP-05</span>The document structure and Highlights shall appear immediately. Charts shall initialize near the viewport. A hidden tab shall initialize its charts when opened. Scrolling shall not trigger analysis.</li>
+<li><span class="rid">REP-06</span>The report shall retain gaps in plots. Every time-series chart shall show labels behind its trace. Text and a legend shall explain labels and gaps.</li>
+<li><span class="rid">REP-07</span>The report shall be descriptive. It shall not diagnose a condition or claim that a stimulus caused a physiological change.</li>
+<li><span class="rid">REP-08</span>The application shall regenerate missing or failed reports from stored valid data. Regeneration shall retain raw checksums. Recovered-session reports shall state missing coverage.</li>
+<li><span class="rid">REP-09</span>The renderer shall escape imported text and embedded data. Patient, facilitator, label, and survey values shall not execute as HTML or script.</li>
+</ul>
+<p class="sub">Implementation direction: viewport intersection detection for chart initialization; precomputed plot reductions; embedded fallback summaries; atomic report replacement. Printing shall make all report sections available. A rendering error shall expose an error message without altering the session.</p>
+</section>
+
+<section id="states">
+<div class="section-head"><span class="number">09</span><h2>Session state machine</h2></div>
+<pre><code>IDLE → READY → RECORDING ⇄ PAUSED
+                    └────────┴→ FINALIZING → COMPLETE
+Active-session interruption → INCOMPLETE → recovery → RECOVERED</code></pre>
+<div class="table-wrap"><table class="states"><thead><tr><th>State</th><th>Allowed action / transition</th><th>Required effect</th></tr></thead><tbody>
+<tr><td>IDLE</td><td>Configure → READY</td><td>No active session. Start remains disabled until identity, source readiness, and writable storage are valid.</td></tr>
+<tr><td>READY</td><td>Start → RECORDING; invalid input → IDLE</td><td>Reserve a new folder; initialize manifest, streams, and active marker; start clock; open Silence. Failed initialization shall not show RECORDING.</td></tr>
+<tr><td>RECORDING</td><td>Pause → PAUSED; Stop → FINALIZING</td><td>Persist samples and events. Enable labels. A short BLE dropout shall retain this state with a separate connection warning.</td></tr>
+<tr><td>PAUSED</td><td>Resume → RECORDING; Stop → FINALIZING</td><td>Flush samples captured before Pause. Stop accepting new measurement samples for storage. Record the pause. Keep the clock and event log active. Resume shall start a new recording segment.</td></tr>
+<tr><td>FINALIZING</td><td>Success → COMPLETE</td><td>Freeze stop time; close segments; flush chunks; verify manifest; run analysis; publish report. Disable recording controls for this session.</td></tr>
+<tr><td>COMPLETE</td><td>Open report; create next session</td><td>Recording is finalized. Analysis and report are valid. Insufficient-data results are valid results when clearly identified.</td></tr>
+<tr><td>INCOMPLETE</td><td>Recover → RECOVERED</td><td>Preserve valid chunks. Identify unfinished writes, missing coverage, and the last durable time. Never imply a normal stop.</td></tr>
+<tr><td>RECOVERED</td><td>Analyse; regenerate; open report; create next session</td><td>Retain recovery provenance. Do not resume acquisition into the recovered session. Show incomplete coverage.</td></tr>
+</tbody></table></div>
+<ul class="req">
+<li><span class="rid">STA-01</span>The application shall derive control availability from session state. It shall reject invalid transitions and repeated Start or Stop requests.</li>
+<li><span class="rid">STA-02</span>The application shall store recording status separately from analysis and report status. A report failure shall not mark valid raw capture as corrupt.</li>
+<li><span class="rid">STA-03</span>The application shall expose finalization failures and a retry action. It shall not display COMPLETE before the report is valid.</li>
+</ul>
+<p class="sub"><strong>Proposed failure mapping:</strong> after raw commit, keep a report failure as a retryable FINALIZING substatus and release acquisition resources for the next session. A storage failure shall end safe capture as INCOMPLETE. Confirm this mapping in Phase 0; do not create an invisible “stuck” session.</p>
+</section>
+
+<section id="reliability">
+<div class="section-head"><span class="number">10</span><h2>Reliability constraints</h2></div>
+<ul class="req">
+<li><span class="rid">REL-01</span>The recorder shall use bounded memory and persistent chunks. It shall retain the existing 10-second target chunk duration. It shall measure durable-write lag.</li>
+<li><span class="rid">REL-02</span>The writer shall write to a temporary file, verify the write, and publish by atomic rename. It shall use a documented durability policy. A failed write shall not replace a valid chunk.</li>
+<li><span class="rid">REL-03</span>The manifest shall index committed chunks and checksums. Opening a session shall detect missing, duplicate, or corrupt chunks. Valid chunks shall remain accessible.</li>
+<li><span class="rid">REL-04</span>The application shall maintain an active-session marker. Startup recovery shall reconcile valid chunks with the manifest. It shall identify partial chunks and truncated event tails without overwriting them.</li>
+<li><span class="rid">REL-05</span>The application shall record disconnect and reconnect boundaries. It shall attempt reconnection. It shall preserve the elapsed timeline without fabricated samples.</li>
+<li><span class="rid">REL-06</span>Pause shall stop storage of new physiological and audio samples. Resume shall not backfill paused samples. Analysis shall exclude pause gaps.</li>
+<li><span class="rid">REL-07</span>A disk, permission, queue, or stream error shall be visible and recorded where storage permits. The application shall never continue to claim successful recording after silent data loss.</li>
+<li><span class="rid">REL-08</span>A report or analysis failure shall leave committed raw data intact. Retrying derived work shall not require another measurement session.</li>
+<li><span class="rid">REL-09</span>A 60-minute session shall not require its complete data in RAM. Quality flags shall not delete poor-quality raw data.</li>
+</ul>
+<div class="callout"><strong>Durability gate.</strong> The original plan requests a normal unsaved interval below 10 seconds and a target chunk duration of 10 seconds. Phase 0 shall select a flush schedule with enough margin for writing and syncing. The agent shall measure the bound; a chunk timer alone does not prove it.</div>
+</section>
+
+<section id="phases">
+<div class="section-head"><span class="number">11</span><h2>Implementation order &amp; exit gates</h2></div>
+<div class="phase"><b class="step">0</b><div><h3>Inspect and freeze · before code changes</h3><p>Inspect the repository, existing schemas, acquisition workers, timing, exports, logo, and tests. Produce one concise module/requirement map. Record decisions from Section 13. Identify compatibility risks. Exit: exact change list, frozen contracts, and verification commands.</p></div></div>
+<div class="phase"><b class="step">1</b><div><h3>Data contract</h3><p>Implement identity, versioned manifest, paths, event schema, metric schema, and compatibility handling. Exit: AT-01, AT-02, AT-15, AT-18, AT-27.</p></div></div>
+<div class="phase"><b class="step">2</b><div><h3>Recorder and context</h3><p>Implement IDs, state transitions, pause/resume, labels, optional audio, and survey import. Preserve chunk storage. Exit: AT-03–07, AT-19–21, AT-24, AT-26.</p></div></div>
+<div class="phase"><b class="step">3</b><div><h3>Analysis engine</h3><p>Implement RR validation, HRV, label summaries, quality, and retained ECG-derived respiration. Exit: independently calculated fixtures, eligibility cases, and AT-08, AT-14, AT-17.</p></div></div>
+<div class="phase"><b class="step">4</b><div><h3>Report generator</h3><p>Implement Highlights, embedded results, label bands, lazy charts, and safe regeneration. Exit: AT-09–11, AT-16, AT-17, AT-22, AT-28.</p></div></div>
+<div class="phase"><b class="step">5</b><div><h3>Dashboard</h3><p>Build the three sections on the stable recorder interfaces. Apply nomenclature and the existing logo. Exit: state-driven controls, visible source/quality/write status, and AT-23–25.</p></div></div>
+<div class="phase"><b class="step">6</b><div><h3>Analysis window</h3><p>Host the report and its four analysis views. Remove custom ranges and duplicate calculations. Exit: AT-10–14, AT-22, AT-25.</p></div></div>
+<div class="phase"><b class="step">7</b><div><h3>Recovery and regression</h3><p>Inject disconnects, crashes, partial writes, corruption, and report failure. Verify old-session behavior. Exit: AT-05–07, AT-16–19, AT-26, AT-27.</p></div></div>
+<div class="phase"><b class="step">8</b><div><h3>Study dry run</h3><p>Run a simulated session and a real H10 session through capture, report, reopen, and export. Exit: all applicable acceptance tests pass; hardware-only tests have recorded evidence.</p></div></div>
+<p class="sub">The agent shall work phase by phase. Each handoff shall contain changed modules, requirement IDs, checks run, and remaining blockers. The agent shall avoid repeating this contract in prompts or progress logs.</p>
+</section>
+
+<section id="tests">
+<div class="section-head"><span class="number">12</span><h2>Acceptance tests</h2></div>
+<p>The release shall satisfy all tests. Simulation shall not count as real-device validation. Test evidence shall include relevant manifest, event, checksum, metric, or UI observations.</p>
+<div class="table-wrap"><table class="checks"><thead><tr><th>ID</th><th>Exercise</th><th>Pass condition</th></tr></thead><tbody>
+<tr><td>AT-01</td><td>Start on 28 Sep 2026 with patient 001, session 002.</td><td>Folder is exactly <code>28Sep2026_001_002</code>. Facilitator remains in metadata. Leading zeros remain.</td></tr>
+<tr><td>AT-02</td><td>Omit each mandatory ID; use unsafe paths; repeat a folder key.</td><td>Start is rejected with a reason. No existing files change.</td></tr>
+<tr><td>AT-03</td><td>Start a valid session.</td><td>RECORDING is visible. Clock starts. Silence begins at zero. Storage is active before samples are accepted.</td></tr>
+<tr><td>AT-04</td><td>Change labels several times.</td><td>Adjacent segment boundaries match; no overlap; current label updates; events survive reopening.</td></tr>
+<tr><td>AT-05</td><td>Disconnect H10 for 20 seconds; reconnect.</td><td>Session continues. Gap and connection events remain identifiable. No fabricated samples or RR pairs bridge the gap.</td></tr>
+<tr><td>AT-06</td><td>Pause, wait, resume, then stop.</td><td>Clock continues. No new paused measurement samples are stored. A new segment starts on Resume. Labels are disabled while paused.</td></tr>
+<tr><td>AT-07</td><td>Terminate the app after 30 minutes.</td><td>Committed ECG/RR chunks remain readable. Startup identifies INCOMPLETE. Recovery preserves valid chunks and records missing coverage.</td></tr>
+<tr><td>AT-08</td><td>Analyse constant, variable, invalid, and short RR fixtures.</td><td>Eligible metrics match independently calculated values within frozen tolerance. Constant valid RR gives zero variability. Insufficient data returns null with a reason.</td></tr>
+<tr><td>AT-09</td><td>Stop a valid recording.</td><td>Raw chunks and manifest finalize before analysis. The session contains a valid report with Highlights first.</td></tr>
+<tr><td>AT-10</td><td>Open report locally with Dashboard closed and network off.</td><td>Required content renders without external assets. Opening or closing Analysis during another recording does not interrupt writes.</td></tr>
+<tr><td>AT-11</td><td>Compare HR, HRV, RR, respiration, and quality charts.</td><td>Time and label boundaries align. Label styling is stable. Pauses and gaps remain visible.</td></tr>
+<tr><td>AT-12</td><td>Open every analysis tab.</td><td>All views cover the full session by default, including elapsed gaps.</td></tr>
+<tr><td>AT-13</td><td>Inspect analysis controls.</td><td>No custom-range selector exists. Respiration and RR share one tab.</td></tr>
+<tr><td>AT-14</td><td>Inspect respiration outputs.</td><td>UI and report identify ECG-derived estimation. Data includes method, version, and unavailable reasons.</td></tr>
+<tr><td>AT-15</td><td>Record, reopen, regenerate, and export a simulation.</td><td>Every stage retains a visible simulated designation and stored source marker.</td></tr>
+<tr><td>AT-16</td><td>Force report generation to fail.</td><td>Raw checksums remain unchanged. Capture stays finalized. Error and retry are visible. COMPLETE is not falsely displayed.</td></tr>
+<tr><td>AT-17</td><td>Remove derived artifacts from a test copy; regenerate.</td><td>Versioned analysis reproduces expected numeric results. Raw checksums and events remain unchanged.</td></tr>
+<tr><td>AT-18</td><td>Remove, duplicate, and corrupt separate test chunks.</td><td>Integrity failures identify affected chunks. Valid chunks remain accessible. Recovery never silently repairs physiological data.</td></tr>
+<tr><td>AT-19</td><td>Run 60 minutes with storage instrumentation.</td><td>Buffers remain bounded. Completed chunks persist during capture. Measured normal unsaved interval meets the frozen bound below 10 seconds.</td></tr>
+<tr><td>AT-20</td><td>Run without audio; then with audio; then interrupt audio.</td><td>H10-only recording works. Enabled audio uses session time. Errors are visible. The frozen audio-failure policy is followed.</td></tr>
+<tr><td>AT-21</td><td>Import matching, mismatched, and malformed surveys.</td><td>Matching JSON is associated and copied. Mismatch is warned without relabeling the source. Malformed input is rejected. No survey is required to record.</td></tr>
+<tr><td>AT-22</td><td>Open Overview; scroll to respiration; open a hidden tab.</td><td>Highlights and structure appear first. Offscreen charts remain uninitialized until approached. Charts initialize once. No new analysis runs.</td></tr>
+<tr><td>AT-23</td><td>Inspect Dashboard and operate it by keyboard.</td><td>Exact title, logo, three sections, named controls, readable statuses, and visible focus are present. Labels activate only while recording.</td></tr>
+<tr><td>AT-24</td><td>Change wall time; cross midnight; issue invalid transitions.</td><td>Elapsed time remains monotonic. Folder identity stays fixed. Invalid and duplicate actions cause no extra sessions or corrupt transitions.</td></tr>
+<tr><td>AT-25</td><td>Freeze the ECG preview; open and close Analysis.</td><td>Chunk sequence and storage continue unaffected. A 60-minute dry run completes with both windows in use.</td></tr>
+<tr><td>AT-26</td><td>Inject disk-full, denied-write, and queue-overflow conditions.</td><td>No false recording-success indicator remains. Committed data survives. Failure and final session status are explicit.</td></tr>
+<tr><td>AT-27</td><td>Open a supported older session and export a v0.2 session.</td><td>Older raw files remain untouched. Unsupported versions are explicit. Export retains raw, derived, manifest, events, and report.</td></tr>
+<tr><td>AT-28</td><td>Use HTML-like label/survey text; resize and print report.</td><td>Imported text cannot execute. Content remains readable. Printed output includes all required sections.</td></tr>
+</tbody></table></div>
+</section>
+
+<section id="decisions">
+<div class="section-head"><span class="number">13</span><h2>Pre-build decision register</h2></div>
+<p>The agent shall use existing documented behavior where it meets the contract. It shall record a proposed value and its effect where evidence is absent. It shall seek a decision only for unresolved behavior that changes the build or research interpretation.</p>
+<div class="table-wrap"><table><thead><tr><th>Decision</th><th>Proposed default / required evidence</th><th>Freeze before</th></tr></thead><tbody>
+<tr><td>D-01 · Schema &amp; compatibility</td><td>Reuse the stack and chunk encoding. Freeze schema fields, units, clock mapping, and old-session reader behavior. Decide any export changes explicitly.</td><td>Phase 1</td></tr>
+<tr><td>D-02 · Identity</td><td>Use the local start date with saved timezone; retain the name across midnight. Reject collisions and request another Session ID. Freeze allowed ID characters and lengths.</td><td>Phase 1</td></tr>
+<tr><td>D-03 · Analysis validity</td><td>Freeze RR source/cleaning, metric formulas, minimum valid duration/count, rolling windows, quality thresholds, EDR method, and fixture tolerances. Use repository evidence and the study protocol.</td><td>Phase 3</td></tr>
+<tr><td>D-04 · Labels</td><td>Use one primary label. Confirm the button vocabulary, pause/resume behavior, repeated-click behavior, and segment-comparison policy. No concatenation across gaps.</td><td>Phase 2</td></tr>
+<tr><td>D-05 · Optional inputs</td><td>Freeze audio format and timestamp calibration. Proposed: keep H10 capture active after audio failure and record the error. Freeze baseline JSON validation and mismatch handling.</td><td>Phase 2</td></tr>
+<tr><td>D-06 · Durability &amp; errors</td><td>Set flush margin below the 10-second bound. Define disk/queue failure actions, finalization retry status, recovery rules, and safe Dashboard-close behavior.</td><td>Phase 2</td></tr>
+<tr><td>D-07 · Report semantics</td><td>Proposed: show elapsed and recorded durations separately; calculate ECG coverage over expected unpaused recording time; label count means segment count. Name denominators. Distinguish insufficient data from processing failure.</td><td>Phase 3</td></tr>
+</tbody></table></div>
+<h3>Completion evidence</h3>
+<p>The agent shall deliver the implemented requirement map, test results, one simulated session package, one real-H10 dry-run record, and documented remaining limitations. A hardware test that was not run shall remain “Not run.” The agent shall not report the revamp complete while a required acceptance test is unresolved.</p>
+<div class="foot">Source basis: the v0.2 change request and engineering alignment in “Draft Polar H10 PRD,” plus its original durability requirements. This document specifies future application work. It does not claim that the application has been modified or verified.</div>
+</section>
+</main>
+</div>
+
+
+</body></html>

@@ -1,0 +1,1569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shobotics Brand Guidelines</title>
+  
+  <!-- 
+    ========================================================================
+    TYPOGRAPHY & FONTS IMPORT
+    ========================================================================
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* 
+      ======================================================================
+      DESIGN SYSTEM TOKENS (CSS VARIABLES)
+      ======================================================================
+    */
+    :root {
+      /* Brand Color Palette */
+      --purple: #AE72F9;
+      --black: #000000;
+      --ink: #171717;
+      --muted: #6A6572;
+      --lav: #EAC7F0;
+      --lav2: #F6EAF8;
+      --white: #FFFFFF;
+      --line: #D9D5DE;
+      --soft: #F7F5F8;
+
+      /* Document Layout Dimensions */
+      --page-w: 1120px;
+      --page-h: 792px;
+    }
+
+    /* 
+      ======================================================================
+      BASE RESET & LAYOUT SYSTEM
+      ======================================================================
+    */
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      background: #D8D8D8;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      color: var(--ink);
+      background: #D8D8D8;
+      counter-reset: page;
+    }
+
+    .doc {
+      width: var(--page-w);
+      margin: 0 auto;
+    }
+
+    /* Print-like Paginated Container */
+    .page {
+      width: var(--page-w);
+      min-height: var(--page-h);
+      height: var(--page-h);
+      background: var(--white);
+      margin: 24px 0;
+      position: relative;
+      overflow: hidden;
+      padding: 68px 76px 58px;
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.18);
+      page-break-after: always;
+    }
+
+    /* Print Media Queries */
+    @page {
+      size: 1120px 792px;
+      margin: 0;
+    }
+
+    @media print {
+      html, body {
+        background: white;
+      }
+      .doc {
+        width: 100%;
+      }
+      .page {
+        margin: 0;
+        box-shadow: none;
+        width: 1120px;
+        height: 792px;
+        page-break-after: always;
+      }
+    }
+
+    /* 
+      ======================================================================
+      TYPOGRAPHY & HIERARCHY
+      ======================================================================
+    */
+    h1, h2, h3, p {
+      margin: 0;
+    }
+
+    h1, .display {
+      font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+      font-weight: 300;
+      letter-spacing: -0.02em;
+    }
+
+    h1 {
+      font-size: 78px;
+      line-height: 0.95;
+    }
+
+    h2 {
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-weight: 300;
+      font-size: 54px;
+      line-height: 1;
+      margin-bottom: 18px;
+    }
+
+    h3 {
+      font-size: 15px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 17px;
+      line-height: 1.55;
+      color: #333333;
+    }
+
+    .small {
+      font-size: 12px;
+      line-height: 1.45;
+      color: var(--muted);
+    }
+
+    .eyebrow {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--purple);
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+
+    .quote {
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-size: 36px;
+      line-height: 1.1;
+      color: #111111;
+    }
+
+    .mono {
+      font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+      font-size: 14px;
+    }
+
+    /* 
+      ======================================================================
+      OFFICIAL LOGO SYSTEM & STYLING UTILITIES
+      ======================================================================
+    */
+    .logo-img {
+      height: 48px;
+      width: auto;
+      display: inline-block;
+      vertical-align: middle;
+      transition: transform 0.2s ease, filter 0.2s ease;
+    }
+
+    /* Shobotics Purple (#AE72F9) derived from white asset source */
+    .logo-img.purple {
+      filter: brightness(0) invert(53%) sepia(87%) saturate(1915%) hue-rotate(224deg) brightness(101%) contrast(98%);
+    }
+
+    /* Signal Black (#000000) derived from white asset source */
+    .logo-img.black {
+      filter: brightness(0);
+    }
+
+    /* Default White (#FFFFFF) */
+    .logo-img.white {
+      filter: none;
+    }
+
+    /* 
+      ======================================================================
+      GRAPHIC FIELDS & ACCENTS (TOPOGRAPHY SVGs)
+      ======================================================================
+    */
+    .topo {
+      position: absolute;
+      inset: auto -130px -140px auto;
+      width: 560px;
+      height: 560px;
+      opacity: 0.95;
+    }
+
+    .topo svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .topo.light {
+      opacity: 0.18;
+      inset: 32px auto auto -160px;
+      transform: rotate(8deg);
+    }
+
+    .line-grid {
+      height: 220px;
+      border-radius: 22px;
+      background: repeating-radial-gradient(ellipse at 70% 50%, transparent 0 9px, #111 10px 11px);
+      border: 1px solid var(--line);
+      opacity: 0.85;
+    }
+
+    /* 
+      ======================================================================
+      LAYOUT CONSTRUCTS & GRID SYSTEM
+      ======================================================================
+    */
+    .grid2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 34px;
+      align-items: start;
+    }
+
+    .grid3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+
+    .grid4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+
+    .divider {
+      height: 1px;
+      background: var(--line);
+      margin: 22px 0;
+    }
+
+    .rule {
+      height: 1px;
+      background: var(--line);
+      margin: 22px 0;
+    }
+
+    /* Card Panels */
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 22px;
+      background: #FFFFFF;
+      min-height: 120px;
+    }
+
+    .card.lav {
+      background: var(--lav2);
+      border-color: #EAD8EF;
+    }
+
+    .pill {
+      display: inline-flex;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 8px 12px;
+      margin: 0 6px 8px 0;
+      font-size: 13px;
+      color: #333333;
+      background: #FFFFFF;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    li {
+      font-size: 15px;
+      line-height: 1.48;
+      margin-bottom: 7px;
+      color: #303030;
+    }
+
+    .mock {
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: #FFFFFF;
+      padding: 22px;
+      min-height: 210px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Table of Contents List */
+    .toc {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px 55px;
+      margin-top: 52px;
+    }
+
+    .toc-item {
+      display: grid;
+      grid-template-columns: 58px 1fr;
+      align-items: center;
+      gap: 18px;
+      border-bottom: 1px solid #DDDDDD;
+      padding: 10px 0 18px;
+    }
+
+    .toc-num {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #D9BBFF, var(--purple));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-family: Georgia, serif;
+      font-size: 22px;
+    }
+
+    .toc-title {
+      font-size: 26px;
+      font-family: "Cormorant Garamond", Georgia, serif;
+      color: #333333;
+    }
+
+    /* 
+      ======================================================================
+      BRAND PRESENTATION COMPONENT MODULES
+      ======================================================================
+    */
+    .swatch {
+      height: 150px;
+      border-radius: 4px;
+      border: 1px solid #E9E6EA;
+      margin-bottom: 14px;
+    }
+
+    .usagebar {
+      height: 16px;
+      display: flex;
+      overflow: hidden;
+      border-radius: 999px;
+      border: 1px solid #DDDDDD;
+      margin: 18px 0;
+    }
+
+    .logo-demo {
+      height: 112px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #FFFFFF;
+      margin-bottom: 14px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .logo-demo.dark {
+      background: #050505;
+    }
+
+    .logo-demo.lav {
+      background: var(--lav2);
+    }
+
+    .logo-container {
+      border: 4px solid #000000;
+      border-radius: 22px;
+      padding: 14px 30px;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .logo-container.dark {
+      background: #000000;
+      border-color: #000000;
+    }
+
+    .dont {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: #FFFFFF;
+      color: #C73C3C;
+      border: 1px solid #FFC5C5;
+      border-radius: 999px;
+      padding: 4px 9px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .do {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: #EFFBED;
+      color: #247C3C;
+      border: 1px solid #BAE8C4;
+      border-radius: 999px;
+      padding: 4px 9px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .type-sample {
+      border-bottom: 1px solid var(--line);
+      padding: 14px 0;
+    }
+
+    .sample-h {
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-size: 44px;
+      line-height: 1.0;
+    }
+
+    .sample-b {
+      font-size: 18px;
+    }
+
+    .button {
+      display: inline-flex;
+      padding: 11px 18px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 13px;
+      margin-right: 8px;
+      border: 1px solid #000000;
+    }
+
+    .primary {
+      background: var(--purple);
+      border-color: var(--purple);
+      color: #111111;
+    }
+
+    .secondary {
+      background: white;
+      color: #111111;
+    }
+
+    .ghost {
+      border: 0;
+      color: #111111;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    td, th {
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      padding: 10px 8px;
+      vertical-align: top;
+    }
+
+    th {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+    }
+
+    .cover-title {
+      position: absolute;
+      left: 78px;
+      bottom: 165px;
+      width: 570px;
+    }
+
+    /* 
+      ======================================================================
+      DOCUMENT FOOTER BAND
+      ======================================================================
+    */
+    .footer {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 42px;
+      background: var(--lav);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 64px;
+      color: #9865A5;
+      font-size: 13px;
+    }
+
+    .footer .center {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .page-num:after {
+      counter-increment: page;
+      content: counter(page, decimal-leading-zero);
+      color: #FFFFFF;
+      margin-left: 10px;
+    }
+
+    .asset-warning {
+      border: 1px solid var(--lav);
+      background: #FBF4FD;
+      padding: 12px 16px;
+      border-radius: 18px;
+      font-size: 13px;
+      line-height: 1.45;
+      color: #44384D;
+    }
+  </style>
+</head>
+<body>
+  <div class="doc">
+
+    <!-- 
+      ======================================================================
+      PAGE 01 · COVER PAGE
+      ======================================================================
+    -->
+    <section class="page">
+      <!-- Background Signal Line SVGs -->
+      <div class="topo">
+        <svg viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g stroke="#000" stroke-width="1.2">
+            <path d="M250 10c70 20 120 60 130 120s-20 130-90 160-140 10-180-50S70 100 130 50 190-10 250 10Z"/>
+            <path d="M250 30c58 18 98 52 106 102s-17 108-74 133-116 8-148-41-35-116 15-158 84-50 101-36Z"/>
+            <path d="M250 50c47 15 76 44 82 84s-13 86-59 107-92 6-117-34-27-92 12-125 68-43 82-32Z"/>
+            <path d="M250 70c36 11 56 34 60 65s-10 65-43 82-68 4-86-27-20-69 9-94 51-33 60-26Z"/>
+            <path d="M250 90c24 8 37 24 40 45s-6 44-28 56-45 2-57-18-13-46 6-62 34-24 39-21Z"/>
+            <path d="M250 112c13 4 20 13 22 25s-3 25-15 32-25 1-32-10-7-26 4-35 18-14 21-12Z"/>
+          </g>
+        </svg>
+      </div>
+      
+      <div class="topo light">
+        <svg viewBox="0 0 500 500">
+          <g fill="none" stroke="#000" stroke-width="1">
+            <path d="M40 250 C120 100, 220 440, 460 140"/>
+            <path d="M20 285 C130 125, 235 455, 475 175"/>
+            <path d="M0 320 C140 155, 245 470, 490 210"/>
+            <path d="M-20 355 C150 185, 260 485, 505 245"/>
+            <path d="M-40 390 C165 215, 275 500, 520 280"/>
+          </g>
+        </svg>
+      </div>
+
+      <!-- Main Cover Logo -->
+      <div style="margin-top: 8px;">
+        <img src="assets/logo-white.png" alt="Shobotics Logo" class="logo-img purple" style="height: 64px;">
+      </div>
+
+      <!-- Cover Title Details -->
+      <div class="cover-title">
+        <h1>Brand Guidelines</h1>
+        <p style="margin-top: 22px; max-width: 520px; color: #5A565E;">
+          A visual operating system for the world of Shobotics: precise systems, imperfect human signal.
+        </p>
+      </div>
+
+      <!-- Warning Annotation -->
+      <div class="asset-warning" style="position: absolute; right: 78px; bottom: 118px; width: 330px;">
+        Use the official Shobotics wordmark as locked artwork. The brand-approved logo file is now dynamically linked and active in this document.
+      </div>
+
+      <!-- Standard Document Footer -->
+      <div class="footer">
+        <span>confidential</span>
+        <span class="center">
+          <img src="assets/logo-white.png" alt="Shobotics Logo" class="logo-img white" style="height: 18px;">
+        </span>
+        <span>do not share <span class="page-num"></span></span>
+      </div>
+    </section>
+
+    <!-- 
+      ======================================================================
+      PAGE 02 · TABLE OF CONTENTS
+      ======================================================================
+    -->
+    <section class="page">
+      <div class="eyebrow">Contents</div>
+      <h2>Document map</h2>
+      
+      <div class="toc">
+        <div class="toc-item">
+          <div class="toc-num">1</div>
+          <div class="toc-title">Brand Essence</div>
+        </div>
+        <div class="toc-item">
+          <div class="toc-num">2</div>
+          <div class="toc-title">Logo System</div>
+        </div>
+        <div class="toc-item">
+          <div class="toc-num">3</div>
+          <div class="toc-title">Colour System</div>
+        </div>
+        <div class="toc-item">
+          <div class="toc-num">4</div>
+          <div class="toc-title">Typography</div>
+        </div>
+        <div class="toc-item">
+          <div class="toc-num">5</div>
+          <div class="toc-title">Layout & Grid</div>
+        </div>
+        <div class="toc-item">
+          <div class="toc-num">6</div>
+          <div class="toc-title">Graphic Language</div>
+        </div>
+        <div class="toc-item">
+          <div class="toc-num">7</div>
+          <div class="toc-title">Imagery & UI</div>
+        </div>
+        <div class="toc-item">
+          <div class="toc-num">8</div>
+          <div class="toc-title">Applications & Assets</div>
+        </div>
+      </div>
+
+      <!-- Standard Document Footer -->
+      <div class="footer">
+        <span>confidential</span>
+        <span class="center">
+          <img src="assets/logo-white.png" alt="Shobotics Logo" class="logo-img white" style="height: 18px;">
+        </span>
+        <span>do not share <span class="page-num"></span></span>
+      </div>
+    </section>
+
+    <!-- 
+      ======================================================================
+      PAGE 03 · BRAND ESSENCE
+      ======================================================================
+    -->
+    <section class="page">
+      <div class="eyebrow">01 Brand Essence</div>
+      <h2>Precise systems, imperfect human signal.</h2>
+      
+      <div class="grid2">
+        <div>
+          <p class="quote">Shobotics is rigorous technology touched by a human hand.</p>
+          <div class="rule"></div>
+          <p>
+            Shobotics operates at the intersection of systems engineering, neurotechnology, artificial intelligence, visual culture, and human consciousness. The brand should feel intelligent, minimal, experimental, calm, premium, and slightly punk without becoming chaotic.
+          </p>
+        </div>
+        <div class="card lav">
+          <h3>Brand personality</h3>
+          <span class="pill">Precise</span>
+          <span class="pill">Conscious</span>
+          <span class="pill">Experimental</span>
+          <span class="pill">Human</span>
+          <span class="pill">Technical</span>
+          <span class="pill">Minimal</span>
+          <span class="pill">Premium</span>
+          <span class="pill">Slightly punk</span>
+          <span class="pill">Calm</span>
+          <span class="pill">Future-facing</span>
+        </div>
+      </div>
+
+      <div class="grid2" style="margin-top: 34px;">
+        <div class="card">
+          <h3>The brand is</h3>
+          <ul>
+            <li>Minimal but not empty.</li>
+            <li>Technical but not sterile.</li>
+            <li>Human but not messy.</li>
+            <li>Experimental but not vague.</li>
+            <li>Premium but not corporate.</li>
+            <li>Slightly punk but disciplined.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>The brand is not</h3>
+          <ul>
+            <li>Generic SaaS or startup blue.</li>
+            <li>Neon cyberpunk or gamer-tech.</li>
+            <li>Wellness cliché or spiritual stock art.</li>
+            <li>Corporate consulting deck language.</li>
+            <li>Overdesigned mystical branding.</li>
+            <li>AI brain icons and circuit-board clichés.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Standard Document Footer -->
+      <div class="footer">
+        <span>confidential</span>
+        <span class="center">
+          <img src="assets/logo-white.png" alt="Shobotics Logo" class="logo-img white" style="height: 18px;">
+        </span>
+        <span>do not share <span class="page-num"></span></span>
+      </div>
+    </section>
+
+    <!-- 
+      ======================================================================
+      PAGE 04 · LOGO SYSTEM
+      ======================================================================
+    -->
+    <section class="page">
+      <div class="eyebrow">02 Logo System</div>
+      <h2>Use the wordmark as artwork.</h2>
+      
+      <div class="grid3">
+        <!-- Purple logo on White -->
+        <div class="logo-demo">
+          <span class="do">approved</span>
+          <img src="assets/logo-white.png" alt="Shobotics Logo" class="logo-img purple" style="height: 38px;">
+        </div>
+        
+        <!-- Black logo on White -->
+        <div class="logo-demo">
+          <span class="do">approved</span>
+          <img src="assets/logo-white.png" alt="Shobotics Logo" class="logo-img black" style="height: 38px;">
+        </div>
+        
+        <!-- White logo on Black -->
+        <div class="logo-demo dark">
+          <span class="do">approved</span>
+          <img src="assets/logo-white.png" alt="Shobotics Logo" class="logo-img white" style="height: 38px;">
+        </div>
+        
+        <!-- Container Black logo -->
+        <div class="logo-demo">
+          <span class="do">container</span>
+          <div class="logo-container">
+            <img src="assets/logo-white.png" alt="Shobotics Logo" class="logo-img black" style="height: 26px;">
+          </div>
+        </div>
+        
+        <!-- Container Dark White logo -->
+        <div class="logo-demo">
+          <span class="do">container</span>
+          <div class="logo-container dark">
+            <img src="assets/logo-white.png" alt="Shobotics Logo" class="logo-img white" style="height: 26px;">
+          </div>
+        </div>
+        
+        <!-- Purple on Lavender accent logo -->
+        <div class="logo-demo lav">
+          <span class="do">accent</span>
+          <img src="assets/logo-white.png" alt="Shobotics Logo" class="logo-img purple" style="height: 32px;">
+        </div>
+      </div>
+
+      <div class="grid2" style="margin-top: 26px;">
+        <div class="card">
+          <h3>Rules</h3>
+          <ul>
+            <li>Use the official handwritten wordmark supplied as SVG, PDF, or transparent PNG.</li>
+            <li>Do not rebuild the logo using a font, even if the font appears similar.</li>
+            <li>Minimum clear space equals the height of the lowercase “s” around all sides.</li>
+            <li>Digital minimum width: 120 px. Print minimum width: 25 mm.</li>
+          </ul>
+        </div>
+        <div class="card lav">
+          <h3>Background control</h3>
+          <ul>
+            <li>Use purple or black logo on white/light backgrounds.</li>
+            <li>Use white logo on black/dark backgrounds.</li>
+            <li>Place inside a clean container when background linework is dense.</li>
+            <li>Never sacrifice legibility for aesthetic texture.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Standard Document Footer -->
+      <div class="footer">
+        <span>confidential</span>
+        <span class="center">
+          <img src="assets/logo-white.png" alt="Shobotics Logo" class="logo-img white" style="height: 18px;">
+        </span>
+        <span>do not share <span class="page-num"></span></span>
+      </div>
+    </section>
+
+    <!-- 
+      ======================================================================
+      PAGE 05 · LOGO MISUSE
+      ======================================================================
+    -->
+    <section class="page">
+      <div class="eyebrow">02 Logo Misuse</div>
+      <h2>Do not improvise the mark.</h2>
+      
+      <div class="grid4">
+        <!-- Misuse: Stretched -->
+        <div class="logo-demo">
+          <span class="dont">wrong</span>
+          <img src="assets/logo-white.png" alt="Shobotics Logo" class="logo-img purple" style="height: 38px; transform: scaleX(1.5);">
+        </div>
+        
+        <!-- Misuse: Shadowed -->
+        <div class="logo-demo">
+          <span class="dont">wrong</span>
+          <img src="assets/logo-white.png" alt="Shobotics Logo" class="logo-img black" style="height: 38px; filter: brightness(0) drop-shadow(0 0 12px #AE72F9);">
+        </div>
+        
+        <!-- Misuse: Rotated & Wrong Color -->
+        <div class="logo-demo">
+          <span class="dont">wrong</span>
+          <img src="assets/logo-white.png" alt="Shobotics Logo" class="logo-img" style="height: 38px; transform: rotate(12deg); filter: brightness(0) invert(72%) sepia(85%) saturate(1482%) hue-rotate(167deg) brightness(101%) contrast(104%);">
+        </div>
+        
+        <!-- Misuse: Low Contrast Striped Pattern -->
+        <div class="logo-demo" style="background: repeating-linear-gradient(45deg, #FFFFFF, #FFFFFF 5px, #AE72F9 6px, #AE72F9 10px);">
+          <span class="dont">wrong</span>
+          <img src="assets/logo-white.png" alt="Shobotics Logo" class="logo-img black" style="height: 38px;">
+        </div>
+      </div>
+
+      <div class="grid2" style="margin-top: 38px;">
+        <div>
+          <h3>Never</h3>
+          <ul>
+            <li>Stretch, skew, rotate, compress, or rebuild the mark.</li>
+            <li>Add shadows, glows, outlines, textures, gradients, or extra symbols.</li>
+            <li>Set the word “shobotics” in a random handwritten font as the logo.</li>
+            <li>Use unapproved colours or place the mark on low-contrast backgrounds.</li>
+          </ul>
+        </div>
+        <div class="asset-warning">
+          <strong>Production note:</strong> The brand guidelines are now fully production-ready. The hand-crafted SVG/PNG logo file is loaded dynamically. Do not fallback to standard cursor font definitions inside applications.
+        </div>
+      </div>
+
+      <!-- Standard Document Footer -->
+      <div class="footer">
+        <span>confidential</span>
+        <span class="center">
+          <img src="assets/logo-white.png" alt="Shobotics Logo" class="logo-img white" style="height: 18px;">
+        </span>
+        <span>do not share <span class="page-num"></span></span>
+      </div>
+    </section>
+
+    <!-- 
+      ======================================================================
+      PAGE 06 · COLOUR SYSTEM
+      ======================================================================
+    -->
+    <section class="page">
+      <div class="eyebrow">03 Colour System</div>
+      <h2>White space, black signal, purple charge.</h2>
+      
+      <div class="grid4">
+        <div>
+          <div class="swatch" style="background: #AE72F9;"></div>
+          <h3>Shobotics Purple</h3>
+          <p class="small">#AE72F9<br>Brand accent, active states, small highlights, CTAs.</p>
+        </div>
+        <div>
+          <div class="swatch" style="background: #000000;"></div>
+          <h3>Signal Black</h3>
+          <p class="small">#000000<br>Primary text, diagrams, linework, high-contrast structure.</p>
+        </div>
+        <div>
+          <div class="swatch" style="background: #EAC7F0;"></div>
+          <h3>Soft Lavender</h3>
+          <p class="small">#EAC7F0<br>Footer bands, subtle panels, dividers, quiet emphasis.</p>
+        </div>
+        <div>
+          <div class="swatch" style="background: #FFFFFF;"></div>
+          <h3>System White</h3>
+          <p class="small">#FFFFFF<br>Dominant background and negative space.</p>
+        </div>
+      </div>
+      
+      <!-- Proportion Bar Visualization -->
+      <div class="usagebar">
+        <div style="width: 70%; background: #FFFFFF;"></div>
+        <div style="width: 20%; background: #000000;"></div>
+        <div style="width: 8%; background: #EAC7F0;"></div>
+        <div style="width: 2%; background: #AE72F9;"></div>
+      </div>
+      <p class="small">
+        Recommended proportion across most applications: 70% white / negative space, 20% black typography and linework, 8% lavender support, 2% saturated purple accent.
+      </p>
+
+      <div class="grid2" style="margin-top: 34px;">
+        <div class="card">
+          <h3>Use</h3>
+          <ul>
+            <li>Purple sparingly for hierarchy and memory.</li>
+            <li>Black for diagrams, serious text, and precision.</li>
+            <li>Lavender for soft surfaces, footer bands, and section rhythm.</li>
+            <li>White as the default state of the brand.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Avoid</h3>
+          <ul>
+            <li>Full-page purple unless explicitly intentional.</li>
+            <li>Startup-blue, neon green, rainbow gradients, and random accents.</li>
+            <li>Low-contrast lavender text on white.</li>
+            <li>Generic sci-fi glow treatments.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Standard Document Footer -->
+      <div class="footer">
+        <span>confidential</span>
+        <span class="center">
+          <img src="assets/logo-white.png" alt="Shobotics Logo" class="logo-img white" style="height: 18px;">
+        </span>
+        <span>do not share <span class="page-num"></span></span>
+      </div>
+    </section>
+
+    <!-- 
+      ======================================================================
+      PAGE 07 · TYPOGRAPHY
+      ======================================================================
+    -->
+    <section class="page">
+      <div class="eyebrow">04 Typography</div>
+      <h2>Define type by role, not dependency.</h2>
+      <p style="max-width: 780px;">
+        Because the original typography may be Adobe-native, do not make the design system dependent on unavailable font files. Preserve the wordmark as artwork and use licensed, replaceable fonts for all editable text.
+      </p>
+      
+      <div class="rule"></div>
+      
+      <!-- Typography Samples -->
+      <div class="type-sample">
+        <div class="small">LOGO / LOCKED ASSET</div>
+        <div style="margin: 12px 0;">
+          <img src="assets/logo-white.png" alt="Shobotics Logo" class="logo-img purple" style="height: 48px;">
+        </div>
+        <p class="small">Use only supplied logo artwork. Do not rebuild manually.</p>
+      </div>
+      
+      <div class="type-sample">
+        <div class="small">DISPLAY / HEADINGS</div>
+        <div class="sample-h">Elegant, quiet, editorial intelligence.</div>
+        <p class="small">Fallback: Cormorant Garamond Light, Playfair Display, Fraunces, or equivalent licensed display face.</p>
+      </div>
+      
+      <div class="type-sample">
+        <div class="small">BODY / READING</div>
+        <div class="sample-b">Use a clean modern sans for readable documents, websites, technical notes, and investor material.</div>
+        <p class="small">Fallback: Inter, Helvetica, Neue Haas Grotesk, Avenir, or equivalent.</p>
+      </div>
+      
+      <div class="type-sample">
+        <div class="small">TECHNICAL / DATA</div>
+        <div class="mono">COGSTATE_PROB 0.72 · SIGNAL_QUALITY GOOD · LOOP_LATENCY 41ms</div>
+        <p class="small">Fallback: IBM Plex Mono, Space Mono, JetBrains Mono, or equivalent.</p>
+      </div>
+
+      <!-- Standard Document Footer -->
+      <div class="footer">
+        <span>confidential</span>
+        <span class="center">
+          <img src="assets/logo-white.png" alt="Shobotics Logo" class="logo-img white" style="height: 18px;">
+        </span>
+        <span>do not share <span class="page-num"></span></span>
+      </div>
+    </section>
+
+    <!-- 
+      ======================================================================
+      PAGE 08 · LAYOUT & GRID
+      ======================================================================
+    -->
+    <section class="page">
+      <div class="eyebrow">05 Layout & Grid</div>
+      <h2>Controlled asymmetry with breathing room.</h2>
+      
+      <div class="grid2">
+        <div>
+          <p>
+            Layouts should feel like a precise lab notebook from the future: spacious, structured, slightly asymmetrical, and never overfilled. The contour system may occupy large areas, but information must remain calm and legible.
+          </p>
+          <div class="rule"></div>
+          <ul>
+            <li>Use a 12-column grid for web and presentation pages.</li>
+            <li>Use large margins and avoid edge-to-edge clutter.</li>
+            <li>One dominant idea per page or screen.</li>
+            <li>Prefer asymmetry, but anchor it with strong alignment.</li>
+            <li>Standardize footer bands for confidential documents.</li>
+          </ul>
+        </div>
+        <div class="mock">
+          <div class="topo light" style="inset: -90px -110px auto auto; opacity: 0.15;"></div>
+          <div class="eyebrow">Example slide</div>
+          <h2 style="font-size: 40px;">One idea, plenty of air.</h2>
+          <p class="small" style="max-width: 430px;">The graphic system supports the message. It should not compete with it.</p>
+          <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 28px; background: var(--lav);"></div>
+        </div>
+      </div>
+
+      <div class="grid3" style="margin-top: 34px;">
+        <div class="card">
+          <h3>Margins</h3>
+          <p class="small">Keep generous outer margins. Do not let text touch edges or line-art clusters.</p>
+        </div>
+        <div class="card">
+          <h3>Alignment</h3>
+          <p class="small">Use consistent left alignment for content-heavy pages. Center only for covers or intentional pauses.</p>
+        </div>
+        <div class="card">
+          <h3>Density</h3>
+          <p class="small">Documents may be comprehensive, but pages should never feel like dashboards unless they are UI screens.</p>
+        </div>
+      </div>
+
+      <!-- Standard Document Footer -->
+      <div class="footer">
+        <span>confidential</span>
+        <span class="center">
+          <img src="assets/logo-white.png" alt="Shobotics Logo" class="logo-img white" style="height: 18px;">
+        </span>
+        <span>do not share <span class="page-num"></span></span>
+      </div>
+    </section>
+
+    <!-- 
+      ======================================================================
+      PAGE 09 · GRAPHIC LANGUAGE
+      ======================================================================
+    -->
+    <section class="page">
+      <div class="eyebrow">06 Graphic Language</div>
+      <h2>Neural topography / signal field.</h2>
+      
+      <div class="grid2">
+        <div>
+          <p>
+            The contour-line motif is the most ownable graphic device in the current brand language. Treat it as a formal system, not a random decoration.
+          </p>
+          <div class="rule"></div>
+          <h3>Rules</h3>
+          <ul>
+            <li>Use thin black or light grey contour lines.</li>
+            <li>Forms should feel organic, neural, topographic, or field-like.</li>
+            <li>Use low opacity when placed behind text.</li>
+            <li>Crop asymmetrically for premium compositions.</li>
+            <li>Use purple only as rare signal emphasis, not as linework default.</li>
+          </ul>
+        </div>
+        <div class="line-grid"></div>
+      </div>
+
+      <div class="grid3" style="margin-top: 30px;">
+        <div class="card">
+          <h3>Approved</h3>
+          <p class="small">Thin contour fields, neural flows, terrain-like signal maps, quiet generative patterns.</p>
+        </div>
+        <div class="card">
+          <h3>Avoid</h3>
+          <p class="small">Stock AI brains, circuit boards, chrome robots, neon waves, generic crypto gradients.</p>
+        </div>
+        <div class="card">
+          <h3>Opacity</h3>
+          <p class="small">5–15% behind text. 40–100% only as hero artwork or cropped edge motif.</p>
+        </div>
+      </div>
+
+      <!-- Standard Document Footer -->
+      <div class="footer">
+        <span>confidential</span>
+        <span class="center">
+          <img src="assets/logo-white.png" alt="Shobotics Logo" class="logo-img white" style="height: 18px;">
+        </span>
+        <span>do not share <span class="page-num"></span></span>
+      </div>
+    </section>
+
+    <!-- 
+      ======================================================================
+      PAGE 10 · IMAGERY & ILLUSTRATION
+      ======================================================================
+    -->
+    <section class="page">
+      <div class="eyebrow">07 Imagery, Illustration & Iconography</div>
+      <h2>Human, technical, never stock-generic.</h2>
+      
+      <div class="grid3">
+        <div class="card">
+          <h3>Photography</h3>
+          <ul>
+            <li>Minimal, high-contrast, quiet, premium.</li>
+            <li>Human but not corporate.</li>
+            <li>Prefer hands, devices, materials, labs, creative process, rituals.</li>
+            <li>Avoid over-smiling wellness clichés and startup stock photos.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Illustration</h3>
+          <ul>
+            <li>Thin line-based and organic.</li>
+            <li>Sketchbook meets systems diagram.</li>
+            <li>Minimal colour, mostly black/white/purple.</li>
+            <li>Slightly imperfect, but not messy.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Iconography</h3>
+          <ul>
+            <li>24 px base grid.</li>
+            <li>Thin consistent stroke.</li>
+            <li>Rounded but precise.</li>
+            <li>No filled cartoon icons.</li>
+            <li>No overly literal AI/neuro clichés.</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="rule"></div>
+      
+      <div class="grid2">
+        <div>
+          <h3>Product / 3D direction</h3>
+          <p>
+            Use matte surfaces, soft shadows, minimal environments, and black/white/purple control. Do not create glossy sci-fi renders unless the context deliberately calls for speculative art.
+          </p>
+        </div>
+        <div>
+          <h3>Composition direction</h3>
+          <p>
+            Imagery should feel observational and authored. It should show systems, process, attention, and tactile intelligence rather than generic “innovation” symbolism.
+          </p>
+        </div>
+      </div>
+
+      <!-- Standard Document Footer -->
+      <div class="footer">
+        <span>confidential</span>
+        <span class="center">
+          <img src="assets/logo-white.png" alt="Shobotics Logo" class="logo-img white" style="height: 18px;">
+        </span>
+        <span>do not share <span class="page-num"></span></span>
+      </div>
+    </section>
+
+    <!-- 
+      ======================================================================
+      PAGE 11 · UI & COMPONENT DESIGN
+      ======================================================================
+    -->
+    <section class="page">
+      <div class="eyebrow">08 UI Components & Data</div>
+      <h2>Interface language: calm control.</h2>
+      
+      <div class="grid2">
+        <div class="card lav">
+          <h3>Buttons</h3>
+          <p class="small">Primary actions use purple sparingly. Secondary actions use black outline. Tertiary actions are text-only.</p>
+          <div style="margin-top: 18px;">
+            <span class="button primary">Primary action</span>
+            <span class="button secondary">Secondary</span>
+            <span class="button ghost">Tertiary</span>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Cards / surfaces</h3>
+          <ul>
+            <li>White or very soft lavender surfaces.</li>
+            <li>Thin black or grey borders.</li>
+            <li>Soft radius; avoid heavy shadows.</li>
+            <li>Leave internal padding generous.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="grid2" style="margin-top: 28px;">
+        <div>
+          <h3>Data visualisation</h3>
+          <ul>
+            <li>Black/white should be the default data layer.</li>
+            <li>Purple identifies the active signal, selected state, or key insight.</li>
+            <li>Lavender can be used for uncertainty bands or background ranges.</li>
+            <li>Avoid rainbow charts unless scientifically necessary.</li>
+          </ul>
+        </div>
+        
+        <!-- Live Data Chart Mockup -->
+        <div class="mock">
+          <div class="small mono">SESSION STATE</div>
+          <div style="height: 118px; display: flex; align-items: flex-end; gap: 10px; margin-top: 20px;">
+            <div style="width: 32px; height: 44px; background: #000000;"></div>
+            <div style="width: 32px; height: 74px; background: #000000;"></div>
+            <div style="width: 32px; height: 98px; background: #AE72F9;"></div>
+            <div style="width: 32px; height: 60px; background: #000000;"></div>
+            <div style="width: 32px; height: 86px; background: #EAC7F0;"></div>
+          </div>
+          <p class="small" style="margin-top: 18px;">Use purple to isolate signal, not to decorate every metric.</p>
+        </div>
+      </div>
+
+      <!-- Standard Document Footer -->
+      <div class="footer">
+        <span>confidential</span>
+        <span class="center">
+          <img src="assets/logo-white.png" alt="Shobotics Logo" class="logo-img white" style="height: 18px;">
+        </span>
+        <span>do not share <span class="page-num"></span></span>
+      </div>
+    </section>
+
+    <!-- 
+      ======================================================================
+      PAGE 12 · MOTION SYSTEM
+      ======================================================================
+    -->
+    <section class="page">
+      <div class="eyebrow">09 Motion Language</div>
+      <h2>Systems coming into coherence.</h2>
+      
+      <div class="grid2">
+        <div>
+          <p>
+            Motion should be slow, deliberate, and signal-like. It should never feel like generic cyberpunk energy or aggressive glitch aesthetics.
+          </p>
+          <div class="rule"></div>
+          <ul>
+            <li>Use gradual reveals, fades, line drawing, and subtle drift.</li>
+            <li>Animate contour fields like slow signal stabilization.</li>
+            <li>Keep UI interactions responsive but calm.</li>
+            <li>Use micro-motion to show focus, not spectacle.</li>
+            <li>Avoid fast glitch, noisy flicker, excessive parallax, and gaming HUD effects.</li>
+          </ul>
+        </div>
+        <div class="card lav">
+          <h3>Motion metaphor</h3>
+          <p class="quote" style="font-size: 30px;">A system finding signal through noise.</p>
+          <p class="small" style="margin-top: 12px;">Best used for website hero sections, product UI state changes, deck transitions, and AI film visual identity.</p>
+        </div>
+      </div>
+
+      <!-- Standard Document Footer -->
+      <div class="footer">
+        <span>confidential</span>
+        <span class="center">
+          <img src="assets/logo-white.png" alt="Shobotics Logo" class="logo-img white" style="height: 18px;">
+        </span>
+        <span>do not share <span class="page-num"></span></span>
+      </div>
+    </section>
+
+    <!-- 
+      ======================================================================
+      PAGE 13 · VOICE & TONE
+      ======================================================================
+    -->
+    <section class="page">
+      <div class="eyebrow">10 Voice & Tone</div>
+      <h2>Intelligent without startup fluff.</h2>
+      
+      <div class="grid2">
+        <div class="card">
+          <h3>Shobotics sounds like</h3>
+          <ul>
+            <li>Intelligent but not academic.</li>
+            <li>Experimental but not vague.</li>
+            <li>Calm but not passive.</li>
+            <li>Premium but not pretentious.</li>
+            <li>Human but not sloppy.</li>
+            <li>Slightly punk, but disciplined.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Preferred phrases</h3>
+          <ul>
+            <li>Conscious technology.</li>
+            <li>Systems for attention, perception, and creative intelligence.</li>
+            <li>Built with precision, designed for humans.</li>
+            <li>Signal over noise.</li>
+            <li>Human-first systems engineering.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="grid2" style="margin-top: 28px;">
+        <div class="card lav">
+          <h3>Avoid</h3>
+          <ul>
+            <li>“Revolutionary AI-powered solution.”</li>
+            <li>“Disrupting everything.”</li>
+            <li>“Unlock your full potential.”</li>
+            <li>“Next-gen seamless ecosystem.”</li>
+            <li>Buzzwords without proof.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Tone rule</h3>
+          <p>
+            Speak as if explaining a sophisticated system to an intelligent person. Be direct, precise, and visually restrained. The brand can be strange, but the language must stay clear.
+          </p>
+        </div>
+      </div>
+
+      <!-- Standard Document Footer -->
+      <div class="footer">
+        <span>confidential</span>
+        <span class="center">
+          <img src="assets/logo-white.png" alt="Shobotics Logo" class="logo-img white" style="height: 18px;">
+        </span>
+        <span>do not share <span class="page-num"></span></span>
+      </div>
+    </section>
+
+    <!-- 
+      ======================================================================
+      PAGE 14 · BRAND ARCHITECTURE
+      ======================================================================
+    -->
+    <section class="page">
+      <div class="eyebrow">11 Brand Architecture</div>
+      <h2>One parent system, multiple expressions.</h2>
+      
+      <div class="grid3">
+        <div class="card">
+          <h3>Shobotics</h3>
+          <p class="small">Parent technology company. Uses the full visual system: wordmark, contour field, purple/black/white palette, technical-human tone.</p>
+        </div>
+        <div class="card">
+          <h3>Dhyaan</h3>
+          <p class="small">Neurotech / mindfulness wearable. May inherit the system with calmer surfaces, more physiological/data language, and softer human interface cues.</p>
+        </div>
+        <div class="card">
+          <h3>Shobotics Studio</h3>
+          <p class="small">AI film and creative technology arm. May use more expressive motion, cinematic cropping, and bolder applications while retaining the core system.</p>
+        </div>
+      </div>
+
+      <div class="rule"></div>
+      
+      <table>
+        <tr>
+          <th>Element</th>
+          <th>Parent</th>
+          <th>Sub-brand inheritance</th>
+        </tr>
+        <tr>
+          <td>Colour</td>
+          <td>Purple / black / white / lavender</td>
+          <td>May tune emphasis, but should not introduce unrelated palettes casually.</td>
+        </tr>
+        <tr>
+          <td>Graphic field</td>
+          <td>Neural topography</td>
+          <td>Dhyaan can use softer signal fields; Studio can use cinematic crops.</td>
+        </tr>
+        <tr>
+          <td>Typography</td>
+          <td>Locked wordmark + display/body/mono system</td>
+          <td>Sub-brands may add one accent typeface with approval.</td>
+        </tr>
+        <tr>
+          <td>Tone</td>
+          <td>Precise, human, experimental</td>
+          <td>Dhyaan more calm; Studio more expressive; both remain disciplined.</td>
+        </tr>
+      </table>
+
+      <!-- Standard Document Footer -->
+      <div class="footer">
+        <span>confidential</span>
+        <span class="center">
+          <img src="assets/logo-white.png" alt="Shobotics Logo" class="logo-img white" style="height: 18px;">
+        </span>
+        <span>do not share <span class="page-num"></span></span>
+      </div>
+    </section>
+
+    <!-- 
+      ======================================================================
+      PAGE 15 · APPLICATIONS & MOCKUPS
+      ======================================================================
+    -->
+    <section class="page">
+      <div class="eyebrow">12 Applications</div>
+      <h2>How the system shows up.</h2>
+      
+      <div class="grid2">
+        <div class="mock">
+          <div style="margin-bottom: 20px;">
+            <img src="assets/logo-white.png" alt="Shobotics Logo" class="logo-img purple" style="height: 36px;">
+          </div>
+          <h2 style="font-size: 38px; margin-top: 46px;">Technology for conscious systems.</h2>
+          <p class="small">Website hero mockup: clean space, one strong line, cropped contour field.</p>
+          <div class="topo" style="width: 260px; height: 260px; right: -80px; bottom: -90px; opacity: 0.35;"></div>
+        </div>
+        <div class="mock">
+          <div class="eyebrow">Investor one-pager</div>
+          <h2 style="font-size: 34px;">Signal over noise.</h2>
+          <p class="small">Use editorial hierarchy, restrained palette, and technical clarity. Avoid dense decoration.</p>
+          <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 32px; background: var(--lav);"></div>
+        </div>
+      </div>
+
+      <div class="grid3" style="margin-top: 26px;">
+        <div class="card">
+          <h3>Decks</h3>
+          <p class="small">Use paginated, spacious sections with one key idea per slide.</p>
+        </div>
+        <div class="card">
+          <h3>Social</h3>
+          <p class="small">Crop line fields dramatically. Use short, intelligent copy. Avoid quote-card clutter.</p>
+        </div>
+        <div class="card">
+          <h3>Documents</h3>
+          <p class="small">Use footer bands, clear sections, and black technical diagrams with purple highlights.</p>
+        </div>
+      </div>
+
+      <!-- Standard Document Footer -->
+      <div class="footer">
+        <span>confidential</span>
+        <span class="center">
+          <img src="assets/logo-white.png" alt="Shobotics Logo" class="logo-img white" style="height: 18px;">
+        </span>
+        <span>do not share <span class="page-num"></span></span>
+      </div>
+    </section>
+
+    <!-- 
+      ======================================================================
+      PAGE 16 · ASSETS & HANDOFF
+      ======================================================================
+    -->
+    <section class="page">
+      <div class="eyebrow">13 Asset Library & Handoff</div>
+      <h2>What designers must receive.</h2>
+      
+      <table>
+        <tr>
+          <th>Asset</th>
+          <th>Required format</th>
+          <th>Usage note</th>
+        </tr>
+        <tr>
+          <td>Primary wordmark</td>
+          <td>SVG, PDF vector, transparent PNG</td>
+          <td>Use as locked artwork. Never rebuild with font.</td>
+        </tr>
+        <tr>
+          <td>Logo colour variants</td>
+          <td>SVG + PNG</td>
+          <td>Purple, black, white, container variants.</td>
+        </tr>
+        <tr>
+          <td>Contour-line motifs</td>
+          <td>SVG patterns + PNG exports</td>
+          <td>Provide light grey, black, cropped hero, and subtle background versions.</td>
+        </tr>
+        <tr>
+          <td>Colour tokens</td>
+          <td>CSS variables / Figma styles</td>
+          <td>Use exact hex values and semantic names.</td>
+        </tr>
+        <tr>
+          <td>Typography styles</td>
+          <td>Figma text styles / CSS styles</td>
+          <td>Role-based hierarchy with approved font substitutions.</td>
+        </tr>
+        <tr>
+          <td>Presentation templates</td>
+          <td>PPTX / Keynote / Figma</td>
+          <td>Cover, section divider, content slide, diagram slide, application slide.</td>
+        </tr>
+        <tr>
+          <td>UI tokens</td>
+          <td>Figma components / CSS</td>
+          <td>Buttons, cards, data states, forms, navigation.</td>
+        </tr>
+      </table>
+      
+      <div class="asset-warning" style="margin-top: 28px;">
+        <strong>Adobe workaround:</strong> Keep exact Adobe-dependent typography inside Adobe tools only. For AI/browser/Figma workflows, use the locked logo artwork and the fallback font hierarchy defined here. This prevents illegal font extraction and keeps the brand replicable.
+      </div>
+
+      <!-- Standard Document Footer -->
+      <div class="footer">
+        <span>confidential</span>
+        <span class="center">
+          <img src="assets/logo-white.png" alt="Shobotics Logo" class="logo-img white" style="height: 18px;">
+        </span>
+        <span>do not share <span class="page-num"></span></span>
+      </div>
+    </section>
+
+    <!-- 
+      ======================================================================
+      PAGE 17 · DO / DON'T SYSTEM SUMMARY
+      ======================================================================
+    -->
+    <section class="page">
+      <div class="eyebrow">14 Do / Don’t Summary</div>
+      <h2>Final consistency checks.</h2>
+      
+      <div class="grid2">
+        <div class="card">
+          <h3>Do</h3>
+          <ul>
+            <li>Use the official wordmark artwork.</li>
+            <li>Keep white space dominant.</li>
+            <li>Use black linework and technical clarity.</li>
+            <li>Use purple as a memorable accent.</li>
+            <li>Use contour fields as the signature visual system.</li>
+            <li>Write with precision and restraint.</li>
+            <li>Show systems, process, signal, attention, and human intelligence.</li>
+          </ul>
+        </div>
+        <div class="card lav">
+          <h3>Don’t</h3>
+          <ul>
+            <li>Turn the brand into generic AI/SaaS visuals.</li>
+            <li>Overuse purple or neon gradients.</li>
+            <li>Use stock AI brains, chrome robots, or circuit-board clichés.</li>
+            <li>Let handwritten typography dominate readable content.</li>
+            <li>Overcrowd pages with dashboards or decorative noise.</li>
+            <li>Use vague startup claims without substance.</li>
+            <li>Recreate proprietary Adobe fonts without a license.</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="rule"></div>
+      <p class="quote">The brand should feel like a precise lab notebook from the future, touched by a human hand.</p>
+
+      <!-- Standard Document Footer -->
+      <div class="footer">
+        <span>confidential</span>
+        <span class="center">
+          <img src="assets/logo-white.png" alt="Shobotics Logo" class="logo-img white" style="height: 18px;">
+        </span>
+        <span>do not share <span class="page-num"></span></span>
+      </div>
+    </section>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,38 @@
+# Only these projects belong to this repository.
+/*
+!/.gitignore
+!/README.md
+!/svaram/
+!/website/
+!/radioreport/
+
+# Local dependencies, builds, and caches.
+.DS_Store
+Thumbs.db
+node_modules/
+.next/
+.venv/
+venv/
+__pycache__/
+.pytest_cache/
+*.py[cod]
+build/
+dist/
+*.app/
+*.egg-info/
+*.tsbuildinfo
+*.log
+.svaram.lock
+
+# Local credentials; sanitized examples may be committed.
+.env
+.env.*
+!.env.example
+!.env.sample
+*.pem
+*.key
+
+# Participant exports, including HTML and CSV downloads.
+/svaram/svaram-data/baseline_*
+/svaram/svaram-data/consent_*
+/svaram/svaram-data/consent-identity_*

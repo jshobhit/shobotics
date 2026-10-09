@@ -1,0 +1,23 @@
+{
+  "name": "radiology-reporting-suite",
+  "version": "2.0.0",
+  "description": "Local-first radiology reporting workflow: guided New Case -> Dictation -> Processing -> Review -> Export flow with a cases dashboard, browser-native voice dictation, and text-based PDF export. RadioReport v2 design. No backend, no AI model calls, no network calls.",
+  "private": true,
+  "license": "UNLICENSED",
+  "main": "index.html",
+  "scripts": {
+    "start": "python3 -m http.server 8080"
+  },
+  "engines": {
+    "node": "not required - static HTML/CSS/JS"
+  },
+  "dependencies": {
+    "jspdf": "2.5.1"
+  },
+  "notes": [
+    "No build step. jsPDF is vendored locally in lib/ and webfonts are self-hosted in assets/fonts/ (no CDN dependency at runtime).",
+    "Run `npm start` (or any static file server) and open http://localhost:8080.",
+    "Data persists in browser localStorage only - nothing leaves the machine.",
+    "The Processing / AI-parse step is a visual transition only; there is no backend or model call."
+  ]
+}

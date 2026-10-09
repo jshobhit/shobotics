@@ -1,0 +1,23 @@
+## OS / editor cruft
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.vscode/
+.idea/
+
+## Logs
+*.log
+npm-debug.log*
+
+## Local env / secrets (future Whisper/OpenAI integration will need this)
+.env
+.env.local
+*.key
+
+## Vendored library leftovers (source maps / npm metadata, not needed at runtime)
+lib/*.map
+lib/jspdf-package-info.json
+
+## Node (if tooling is ever added later)
+node_modules/

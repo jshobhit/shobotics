@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>RadioReport — Radiology Reporting Suite</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23c94cff' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='12' cy='12' r='4'/%3E%3Cpath d='M3 11v2M6 9.5v5M18 9.5v5M21 11v2'/%3E%3C/svg%3E" />
+<link rel="stylesheet" href="css/fonts.css" />
+<link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+<div class="app-bg">
+  <div class="app-col" id="app-col">
+
+    <!-- ===== Top bar ===== -->
+    <header class="topbar">
+      <div class="topbar-slot topbar-left">
+        <button id="btn-back" class="btn-back" type="button" hidden>‹ Back</button>
+      </div>
+      <div class="wordmark">RADIOREPORT</div>
+      <div class="topbar-slot topbar-right">
+        <button id="btn-settings" class="btn-gear" type="button" aria-label="Letterhead settings" title="Letterhead settings">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06A2 2 0 1 1 7.04 4.3l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9c.16.31.4.58.7.78.3.2.65.31 1 .32H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        </button>
+        <div id="progress-dots" class="progress-dots" hidden></div>
+      </div>
+    </header>
+
+    <main class="screens">
+
+      <!-- ============ 0 · DASHBOARD ============ -->
+      <section id="screen-dashboard" class="screen">
+        <div class="dash-head">
+          <h1 class="display display-lg">Cases</h1>
+          <p class="subtle">Stored locally in this browser · nothing leaves this machine.</p>
+        </div>
+        <div class="dash-search">
+          <input id="dash-search" type="search" placeholder="Search patient, study…" autocomplete="off" />
+        </div>
+        <div id="dash-list" class="dash-list"><!-- rendered by app.js --></div>
+        <div class="screen-footer">
+          <button id="btn-new-case" class="btn-primary" type="button">＋ New case</button>
+        </div>
+      </section>
+
+      <!-- ============ 1 · NEW CASE ============ -->
+      <section id="screen-new" class="screen">
+        <div class="screen-title"><h1 class="display display-lg">New case</h1></div>
+
+        <div class="form-body">
+          <div class="field">
+            <label class="field-label" for="f-name">PATIENT</label>
+            <input id="f-name" class="input" type="text" autocomplete="off" />
+          </div>
+
+          <div class="grid-age-sex">
+            <div class="field">
+              <label class="field-label" for="f-age">AGE</label>
+              <input id="f-age" class="input input-mono" inputmode="numeric" autocomplete="off" />
+            </div>
+            <div class="field">
+              <label class="field-label">SEX</label>
+              <div id="sex-seg" class="segmented" role="group" aria-label="Sex">
+                <button type="button" class="seg-btn" data-sex="F">F</button>
+                <button type="button" class="seg-btn" data-sex="M">M</button>
+                <button type="button" class="seg-btn" data-sex="O">O</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="field-label">MODALITY</label>
+            <button id="modality-toggle" class="select-toggle" type="button" aria-haspopup="listbox" aria-expanded="false">
+              <span id="modality-value">MRI</span>
+              <span class="chev">▼</span>
+            </button>
+            <div id="modality-menu" class="select-menu" role="listbox" hidden><!-- options rendered by app.js --></div>
+          </div>
+
+          <div class="field">
+            <label class="field-label">REGION</label>
+            <div id="region-pills" class="pills"><!-- rendered by app.js --></div>
+          </div>
+        </div>
+
+        <div class="screen-footer">
+          <button id="btn-start-dictation" class="btn-primary" type="button">
+            <span class="dot-white"></span> Start Dictation
+          </button>
+        </div>
+      </section>
+
+      <!-- ============ 2 · DICTATION ============ -->
+      <section id="screen-dictate" class="screen">
+        <div class="dictate-meta"><span id="dictate-patient"></span></div>
+
+        <div class="dictate-stage">
+          <div id="dictate-timer" class="timer">00:00</div>
+          <div id="waveform" class="waveform"><!-- bars rendered by app.js --></div>
+
+          <div class="rec-ring-wrap">
+            <div id="rec-rings" class="rec-rings" hidden>
+              <div class="rec-ring"></div>
+              <div class="rec-ring rec-ring-2"></div>
+            </div>
+            <button id="rec-toggle" class="rec-btn" type="button" aria-label="Pause recording">
+              <span id="rec-glyph-stop" class="rec-glyph-stop"></span>
+              <span id="rec-glyph-pause" class="rec-glyph-pause" hidden><i></i><i></i></span>
+            </button>
+          </div>
+
+          <div id="rec-label" class="rec-label">READY</div>
+        </div>
+
+        <div class="transcript-shell">
+          <div class="transcript"><span id="transcript-text"></span><span class="caret">▍</span></div>
+        </div>
+
+        <div class="screen-footer dictate-actions">
+          <button id="btn-retake" class="btn-ghost" type="button">↺ Retake</button>
+          <button id="btn-finish" class="btn-primary btn-finish is-disabled" type="button">Finish →</button>
+        </div>
+      </section>
+
+      <!-- ============ 3 · PROCESSING ============ -->
+      <section id="screen-processing" class="screen screen-center">
+        <div class="proc-scan">
+          <div class="proc-line"></div>
+          <div id="proc-dots"><!-- rendered by app.js --></div>
+        </div>
+        <div class="proc-caption">
+          <div class="display display-md">Parsing case…</div>
+          <div id="proc-label" class="mono-tag">PARSING DICTATION</div>
+        </div>
+      </section>
+
+      <!-- ============ 4 · REVIEW ============ -->
+      <section id="screen-review" class="screen">
+        <div class="review-head">
+          <h1 class="display display-md">Review</h1>
+          <div id="review-meta" class="subtle"></div>
+        </div>
+        <div id="review-legend" class="legend">
+          <span class="legend-item"><i class="sw" style="background:#c94cff"></i>DICTATED</span>
+          <span class="legend-item"><i class="sw" style="background:#5c5470"></i>TEMPLATE</span>
+          <span class="legend-item"><i class="sw" style="background:#eac7f0"></i>AI</span>
+        </div>
+        <div id="review-body" class="review-body"><!-- sections rendered by app.js --></div>
+        <div class="screen-footer">
+          <button id="btn-approve" class="btn-primary" type="button">Approve &amp; export →</button>
+        </div>
+      </section>
+
+      <!-- ============ 5 · EXPORT ============ -->
+      <section id="screen-export" class="screen">
+        <div class="export-scroll">
+          <div class="letterhead">
+            <div class="lh-top">
+              <div>
+                <div id="lh-facility" class="lh-title">Radiology Report</div>
+                <div id="lh-radiologist" class="lh-sub"></div>
+              </div>
+              <div id="lh-accession" class="mono-tag lh-accession"></div>
+            </div>
+            <div class="lh-grid">
+              <div><span class="lh-k">Patient · </span><strong id="lh-name"></strong></div>
+              <div><span class="lh-k">Age/Sex · </span><strong id="lh-agesex"></strong></div>
+              <div><span class="lh-k">Study · </span><strong id="lh-study"></strong></div>
+              <div><span class="lh-k">Date · </span><strong id="lh-date"></strong></div>
+            </div>
+            <div class="lh-body">
+              <div class="lh-section">
+                <div class="lh-sec-label">PROTOCOL</div>
+                <div id="lh-protocol"></div>
+              </div>
+              <div class="lh-section">
+                <div class="lh-sec-label">FINDINGS</div>
+                <div id="lh-findings" class="lh-findings"></div>
+              </div>
+              <div class="lh-section">
+                <div class="lh-sec-label">IMPRESSION</div>
+                <div id="lh-impression" class="lh-impression"></div>
+              </div>
+              <div id="lh-sign" class="lh-sign"></div>
+            </div>
+          </div>
+        </div>
+        <div class="screen-footer export-actions">
+          <button id="btn-export-pdf" class="btn-primary" type="button">Export PDF</button>
+          <div class="export-row">
+            <button id="btn-pacs" class="btn-soft" type="button">Send to PACS</button>
+            <button id="btn-copy" class="btn-ghost btn-sm" type="button">Copy text</button>
+            <button id="btn-newcase-2" class="btn-ghost btn-sm" type="button">New case</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ SETTINGS ============ -->
+      <section id="screen-settings" class="screen">
+        <div class="screen-title"><h1 class="display display-md">Letterhead</h1></div>
+        <p class="subtle">Reused on every report you export.</p>
+        <div class="form-body">
+          <div class="field">
+            <label class="field-label" for="s-facility">FACILITY NAME</label>
+            <input id="s-facility" class="input" type="text" autocomplete="off" />
+          </div>
+          <div class="field">
+            <label class="field-label" for="s-radname">RADIOLOGIST</label>
+            <input id="s-radname" class="input" type="text" autocomplete="off" placeholder="Dr. E. Vance" />
+          </div>
+          <div class="field">
+            <label class="field-label" for="s-radcred">CREDENTIALS</label>
+            <input id="s-radcred" class="input" type="text" autocomplete="off" placeholder="MD" />
+          </div>
+        </div>
+        <div class="screen-footer">
+          <button id="btn-save-settings" class="btn-primary" type="button">Save</button>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+<script src="lib/jspdf.umd.min.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/validation.js"></script>
+<script src="js/dictation.js"></script>
+<script src="js/pdf-export.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
