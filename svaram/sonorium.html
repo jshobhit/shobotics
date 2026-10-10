@@ -1,0 +1,836 @@
+<title>Sonorium Session Desk</title>
+<style>
+/* Layout: desktop instrument window. Title bar (logo, session, sensor, record). Left: vitals, HR/HRV trend with label lanes, sweeping ECG.
+   Right rail: label toggles with hotkeys. Dialogs: New recording (documents, IDs) and Review (per-label table, exports).
+   Signal only renders from a connected Polar H10. */
+:root {
+  --bg: #F2EDE7; --surface: #FFFDF8; --surface-2: #F6F1EA; --line: #E1D8CF; --line-2: #CFC4BA;
+  --ink: #2C2132; --ink-2: #5A4E5D; --ink-3: #8A7F8B;
+  --primary: #30003F; --on-primary: #FFFDF8; --accent: #6E4A78;
+  --ok: #3E7B4C; --warn: #A86A12; --crit: #B23A3A; --ok-bg: #E2EDD8; --warn-bg: #F7E8D0; --crit-bg: #F5DCD8;
+  --trace: #30003F; --paper: rgba(214,120,110,.15); --paper-major: rgba(214,120,110,.30);
+  --f-silence: #A79CA4; --f-metal: #B98328; --f-drum: #A65A44; --f-earth: #3F8791; --f-breath: #6F934A;
+  --on-label: #FFFFFF;
+  --ui: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+  --r: 6px;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #151018; --surface: #1F1823; --surface-2: #281F2D; --line: #372C3D; --line-2: #4A3D51;
+  --ink: #F2EAEE; --ink-2: #C8BCC6; --ink-3: #94889A;
+  --primary: #E2C6EC; --on-primary: #24002F; --accent: #C9A3D8;
+  --ok: #8FCB98; --warn: #E7B55E; --crit: #F08F86; --ok-bg: #22301F; --warn-bg: #382A15; --crit-bg: #3C1F1F;
+  --trace: #F3C1B9; --paper: rgba(240,179,171,.07); --paper-major: rgba(240,179,171,.16);
+  --f-silence: #6E6373; --f-metal: #E0AE55; --f-drum: #D9846C; --f-earth: #6EB8C2; --f-breath: #9CC274;
+  --on-label: #160E1A; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #151018; --surface: #1F1823; --surface-2: #281F2D; --line: #372C3D; --line-2: #4A3D51;
+  --ink: #F2EAEE; --ink-2: #C8BCC6; --ink-3: #94889A;
+  --primary: #E2C6EC; --on-primary: #24002F; --accent: #C9A3D8;
+  --ok: #8FCB98; --warn: #E7B55E; --crit: #F08F86; --ok-bg: #22301F; --warn-bg: #382A15; --crit-bg: #3C1F1F;
+  --trace: #F3C1B9; --paper: rgba(240,179,171,.07); --paper-major: rgba(240,179,171,.16);
+  --f-silence: #6E6373; --f-metal: #E0AE55; --f-drum: #D9846C; --f-earth: #6EB8C2; --f-breath: #9CC274;
+  --on-label: #160E1A; color-scheme: dark }
+
+* { box-sizing: border-box }
+html, body { height: 100%; background: var(--bg); color: var(--ink) }
+body { margin: 0; font: 13px/1.4 var(--ui); padding-inline: 12px; padding-block: 0 12px; overflow: hidden }
+button, input { font: inherit; color: inherit }
+button { cursor: pointer }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px }
+.mono { font-family: var(--mono); font-variant-numeric: tabular-nums }
+.cap { font-size: 10.5px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-3) }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap }
+.spacer { flex: 1 }
+kbd { font: 600 10px/1 var(--mono); min-width: 17px; height: 17px; padding: 0 4px; display: inline-grid; place-items: center; border-radius: 4px;
+  border: 1px solid var(--line-2); border-bottom-width: 2px; background: var(--surface); color: var(--ink-2) }
+
+.app { height: 100%; display: grid; grid-template-rows: auto minmax(0, 1fr); gap: 10px }
+
+/* Title bar */
+.bar { display: flex; align-items: center; gap: 14px; height: 50px; border-bottom: 1px solid var(--line); min-width: 0 }
+.brand { display: flex; align-items: center; gap: 12px; flex: none }
+.brand svg { height: 28px; width: auto; color: var(--primary); display: block }
+.brand span { font-size: 15px; font-weight: 700; padding-left: 12px; border-left: 1px solid var(--line); line-height: 22px }
+.sess { display: flex; align-items: center; gap: 10px; min-width: 0; overflow: hidden; color: var(--ink-2) }
+.sess .ids { font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
+.pill { display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 9px; border-radius: 99px; font-size: 12px; font-weight: 600;
+  background: var(--surface-2); border: 1px solid var(--line); color: var(--ink-2); white-space: nowrap }
+.pill i { width: 7px; height: 7px; border-radius: 50%; background: var(--ink-3); flex: none }
+.pill.ok i { background: var(--ok) } .pill.warn i { background: var(--warn) }
+.pill.rec { background: var(--crit-bg); border-color: transparent; color: var(--crit) } .pill.rec i { background: var(--crit); animation: blink 1.2s infinite }
+.pill.good { background: var(--ok-bg); border-color: transparent; color: var(--ok) } .pill.good i { background: var(--ok) }
+@keyframes blink { 50% { opacity: .2 } }
+@media (prefers-reduced-motion: reduce) { .pill.rec i { animation: none } }
+.clock { font: 500 20px/1 var(--mono); letter-spacing: -.02em; min-width: 64px; text-align: right }
+.btn { height: 30px; padding: 0 11px; border-radius: var(--r); border: 1px solid var(--line-2); background: var(--surface); font-weight: 600; font-size: 12.5px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 7px; white-space: nowrap }
+.btn:hover:not(:disabled) { background: var(--surface-2) }
+.btn:disabled { opacity: .45; cursor: not-allowed }
+.btn.primary { background: var(--primary); border-color: var(--primary); color: var(--on-primary) }
+.btn.primary:hover:not(:disabled) { background: var(--primary); filter: brightness(1.15) }
+.btn.primary kbd { background: transparent; border-color: currentColor; color: inherit; opacity: .7 }
+.btn.ghost { border-color: transparent; background: transparent; color: var(--ink-2) }
+.btn.lg { height: 36px; padding: 0 16px; font-size: 13px }
+.hold { position: relative; overflow: hidden; color: var(--crit); border-color: var(--crit) }
+.hold .fill { position: absolute; inset: 0; background: var(--crit); opacity: .2; transform-origin: left; transform: scaleX(0) }
+.hold.armed .fill { transform: scaleX(1); transition: transform 1.2s linear }
+
+/* Body */
+.body { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 10px; min-height: 0 }
+.left { display: flex; flex-direction: column; gap: 10px; min-height: 0; min-width: 0 }
+.box { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; min-width: 0 }
+.box-h { display: flex; align-items: center; gap: 10px; padding: 7px 12px; border-bottom: 1px solid var(--line); flex-wrap: wrap }
+.box-h h2 { margin: 0; font-size: 12.5px; font-weight: 700 }
+.alert { display: flex; align-items: center; gap: 10px; padding: 7px 12px; border-radius: 8px; background: var(--crit-bg); color: var(--crit); font-weight: 600 }
+.alert span { flex: 1 }
+
+.vitals { display: grid; grid-template-columns: 1.2fr 1.2fr 1fr 1fr 1.3fr .9fr }
+.v { padding: 8px 12px; display: flex; flex-direction: column; gap: 3px; min-width: 0 }
+.v + .v { border-left: 1px solid var(--line) }
+.v .n { font: 500 24px/1.05 var(--mono); letter-spacing: -.02em; white-space: nowrap }
+.v .n small { font: 600 10.5px var(--ui); color: var(--ink-3); margin-left: 4px; letter-spacing: .04em }
+.v.big .n { font-size: 30px }
+.v .s { font-size: 11px; color: var(--ink-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
+.down { color: var(--ok) } .up { color: var(--warn) }
+.heart { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--crit); margin-right: 5px; vertical-align: 1px; transition: transform .08s }
+.heart.beat { transform: scale(1.8) }
+
+.chart { flex: 1; min-height: 200px; display: flex; flex-direction: column }
+.cv { position: relative; flex: 1; min-height: 0 }
+.cv canvas { position: absolute; inset: 0; width: 100%; height: 100% }
+.ecg { flex: none; height: 164px; display: flex; flex-direction: column }
+.seg { display: inline-flex; align-items: center; border: 1px solid var(--line-2); border-radius: var(--r); overflow: hidden }
+.seg span { padding: 0 8px; font-size: 11px; color: var(--ink-3); font-weight: 600; border-right: 1px solid var(--line-2); height: 22px; line-height: 22px; background: var(--surface-2) }
+.seg button { border: 0; background: var(--surface); height: 22px; padding: 0 9px; font-size: 11.5px; font-weight: 600; color: var(--ink-2) }
+.seg button + button { border-left: 1px solid var(--line-2) }
+.seg button[aria-pressed="true"] { background: var(--primary); color: var(--on-primary) }
+
+/* Label rail */
+.rail { display: flex; flex-direction: column; min-height: 0; overflow: auto }
+.rail .box-h { position: sticky; top: 0; background: var(--surface); z-index: 1 }
+.now { margin-left: auto; font-size: 11.5px; color: var(--ink-2); white-space: nowrap }
+.pal { padding: 8px 10px 10px; display: flex; flex-direction: column; gap: 9px }
+.fam .cap { display: flex; align-items: center; gap: 6px; margin-bottom: 4px }
+.fam .cap i { width: 8px; height: 8px; border-radius: 2px }
+.keys { display: grid; grid-template-columns: 1fr 1fr; gap: 4px }
+.key { height: 32px; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 7px; padding: 0 7px 0 5px;
+  border-radius: var(--r); border: 1px solid var(--line); background: var(--surface); font-size: 12px; font-weight: 600; text-align: left }
+.key .nm { overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+.key .tm { font: 500 10.5px var(--mono); opacity: .85 }
+.key:hover:not(:disabled) { border-color: var(--c) }
+.key[aria-pressed="true"] { background: var(--c); border-color: var(--c); color: var(--on-label) }
+.key[aria-pressed="true"] kbd { background: transparent; border-color: currentColor; color: inherit; opacity: .8 }
+.key:disabled { opacity: .5; cursor: not-allowed }
+.railnote { padding: 0 10px 10px; margin: 0; font-size: 11.5px; color: var(--ink-3) }
+
+/* Dialogs */
+dialog { border: 1px solid var(--line-2); border-radius: 10px; padding: 0; background: var(--surface); color: var(--ink); width: min(600px, calc(100% - 32px)); max-height: calc(100% - 32px) }
+#dlgReview { width: min(860px, calc(100% - 32px)) }
+dialog::backdrop { background: rgba(18, 8, 24, .42) }
+.dh { display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-bottom: 1px solid var(--line) }
+.dh h2 { margin: 0; font-size: 15px; font-weight: 700 }
+.dcol { padding: 14px 16px; display: flex; flex-direction: column; gap: 12px; min-width: 0 }
+.docs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px }
+.doc { border: 1px dashed var(--line-2); border-radius: var(--r); padding: 10px; display: flex; flex-direction: column; gap: 6px; min-width: 0 }
+.doc.has { border-style: solid; border-color: var(--line); background: var(--surface-2) } .doc.drag { border-color: var(--accent); background: var(--surface-2) }
+.doc .row { display: flex; align-items: center; gap: 8px } .doc b { flex: 1; font-size: 12.5px }
+.req { font-size: 10.5px; font-weight: 700; padding: 3px 7px; border-radius: 99px; background: var(--warn-bg); color: var(--warn) } .req.ok { background: var(--ok-bg); color: var(--ok) }
+.files { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px }
+.files li { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 6px; font-size: 11.5px; align-items: center }
+.files .nm { font-family: var(--mono); overflow: hidden; text-overflow: ellipsis; white-space: nowrap } .files .sz { font-family: var(--mono); color: var(--ink-3) }
+.files button { border: 0; background: none; color: var(--ink-3); font-size: 11px; font-weight: 600; padding: 0 2px } .files button:hover { color: var(--crit) }
+.drop { font-size: 11.5px; color: var(--ink-3) }
+.fields { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px }
+.field { display: flex; flex-direction: column; gap: 4px; min-width: 0 }
+.field label { font-size: 11.5px; font-weight: 600; color: var(--ink-2) }
+.field input { height: 32px; border-radius: var(--r); border: 1px solid var(--line-2); background: var(--surface); padding: 0 9px; width: 100%; min-width: 0; font-family: var(--mono) }
+.field input.auto { border-color: var(--ok); background: var(--ok-bg) }
+.field input::placeholder { color: var(--ink-3) }
+.field small { font-size: 10.5px; color: var(--ink-3); min-height: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+.df { display: flex; align-items: center; gap: 10px; padding: 10px 16px; border-top: 1px solid var(--line); flex-wrap: wrap }
+.df .hint { flex: 1; font-size: 12px; color: var(--ink-3); min-width: 180px } .df .hint.warn { color: var(--warn) }
+.stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden }
+.stats div { background: var(--surface); padding: 8px 10px; display: flex; flex-direction: column; gap: 2px } .stats .mono { font-size: 16px }
+.tbl { max-height: 300px; overflow: auto; border: 1px solid var(--line); border-radius: var(--r) }
+table { width: 100%; border-collapse: collapse; font-size: 12px }
+th, td { padding: 5px 9px; text-align: left; border-bottom: 1px solid var(--line); white-space: nowrap }
+th { position: sticky; top: 0; background: var(--surface-2); font-size: 10.5px; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3) }
+td.num, th.num { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums }
+td i { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 6px }
+.note { font-size: 12px; color: var(--ink-2); margin: 0; min-height: 1.3em }
+
+@media (max-width: 960px) {
+  body { overflow: auto }
+  .app { height: auto }
+  .bar { height: auto; flex-wrap: wrap; padding-block: 8px }
+  .body { grid-template-columns: minmax(0, 1fr) }
+  .chart { flex: none; height: 320px }
+  .rail { overflow: visible }
+  .vitals { grid-template-columns: repeat(3, minmax(0, 1fr)) }
+  .v:nth-child(4) { border-left: 0 } .v:nth-child(n+4) { border-top: 1px solid var(--line) }
+}
+@media (max-width: 560px) { .fields, .docs, .stats { grid-template-columns: 1fr } }
+</style>
+
+<div class="app">
+  <header class="bar">
+    <div class="brand">
+      <svg viewBox="0 10 147.69 38" role="img" aria-label="Shobotics"><g fill="currentColor"><path d="M113.88,26.23c.75,1.48.77,3.16.82,4.76l.13,4.17c0,.24.1.42.12.73l.09,1.63c.08,1.17-.17,2.33-.96,3.22-1.03.14-1.59-.72-1.83-1.62-.69-3.25.36-6.99-.47-9.86-.68-2.37-2.48-2.23-4.81-2.04-1.1.09-2.87.97-2.9,2.36-.1,4.24.53,8.4,1.58,12.42.3,1.16.73,2.13.54,3.35-.08.55-.51,1.13-1.2.89-1.99-.71-2.34-3.93-2.73-5.98-.58-3.05-.64-6.11-.88-9.19-.33-4.22-5.37-3.01-5.07-4.71.03-.17.14-.33.39-.46l2.59-1.32c1.93-.99,1.51-2.92,1.42-4.4-.2-3.29-.3-6.58-.91-9.98-.18-1-.29-2.18.4-2.98.29-.27,1.29-.32,1.61-.09.94.67,1.36,1.89,1.4,3.03l.26,7.11c.24,1.73.05,3.64.87,5.26.65,1.31,2.35,1.5,3.6,1.74l3.92.74c.82.15,1.37.87,2.05,1.2l-.03.02Z"/><path d="M73.82,32.79c-.18,5.26-7.23,12.54-11.86,7.38-1.29-1.78-1.03-4.15-1.1-6.29-.08-5.97-1.58-16.36-.96-20.07.51-2.56,1.82-.62,2.19.97,1.21,3.16.14,8.65,2.81,10.84,1.39.86,3.22.55,4.76,1.03,2.69.65,4.47,3.12,4.18,5.95,0,0-.02.19-.02.19ZM64.83,32.41c-.69,1.49-1.44,6.55,1.04,6.68,3.1-.31,4.72-5.21,4.41-8.32-1.09-4.37-4.61-1.28-5.38,1.47,0,0-.07.17-.07.17Z"/><path d="M26.37,35.68c-.25,1.32-.3,3.12-1.22,4-.65.68-1.85.58-2.12-.41-.44-1.78.09-4.05-.05-5.95-.56-5.48-.44-10.02-.71-15.49.02-1.62-.35-3.39,0-4.79.36-1.17,1.79-1.27,2.27-.11,1.2,4.52-.12,9.69.94,14.16.46,2.66,1.62.86,3.56-.46.61-.41,1.25-.77,1.87-.96,1.49-.49,2.71.42,3.29,1.84.92,2.72,2.79,12.14-.11,13.64-3.42.79-.86-7.29-1.71-9.28-.25-1.49-1.08-2.76-2.44-2.45-2.04.55-3.1,3.79-3.53,6.06l-.03.19h-.01Z"/><path d="M90.38,37.85c-3.99,1.48-9.91,2.16-13.62.27-1.73-.88-2.78-2.58-2.52-4.39.17-1.2.64-2.03,1.3-2.95.8-1.11,1.66-1.71,2.85-2.41,3.8-2.23,8.45-2.77,12.68-1.44,1.5.47,3,1.19,4.13,2.26,1.4,1.33,1.38,3.14.42,4.63-1.26,1.97-3.06,3.21-5.23,4.02h0ZM92.87,31.21c-.14-.37-.49-.83-1.02-1.05-7.37-3.02-15.76.7-14.61,4.17,1.51,4.54,17.09.83,15.63-3.12Z"/><path d="M56.51,36.12c-4.6,3.18-12.86,4.43-17.34,1.33-2.04-1.41-1.95-4.14-.58-5.97.64-.85,1.13-1.56,2.04-2.28,3.45-2.75,8.26-3.76,12.55-2.51,1.92.56,3.77.97,5.11,2.51,1.13,1.29,1.14,2.8.4,4.27-.55,1.07-1.15,1.94-2.18,2.65ZM55.88,31.54c-.15-2.56-8.71-3.66-12.66-1-.81.54-1.61.94-1.99,1.88-.57.52-.79,1.19-.62,2.01.93,1.87,3.59,2.19,5.9,1.95,3.34-.35,9.55-1.76,9.37-4.84Z"/><path d="M13.79,39.13c-1.87.64-3.64,1.21-5.54,1.68-.98.24-1.98.7-3.06.27-.6-.24-.54-1.27,0-1.69,1.18-.91,2.48-1.45,3.91-1.8,1.8-.44,3.48-.98,5.31-1.53,1.22-.37,2.37-1.24,3.15-2.2l-.28-.56-7.86-.06c-2.14-.02-5.62-.39-6.41-1.68-.15-.24-.24-1.01-.03-1.26l2.67-3.2c2.41-2.53,5.57-4.23,9.06-4.34.41-.01.85.22,1.04.38.23.19.42.71.26,1.05-.81,1.77-3.62.74-6.64,3.14-.53.42-.9.9-1.49,1.31-.39.27-.95,1.02-1.11,1.44-.01.71.82.79,1.34.75l9.05-.65c1.59-.11,3.22.66,3.83,2.17.25.61-.28,1.51-.53,1.96l-.69,1.21c-1.58,1.84-3.73,2.84-5.98,3.61Z"/><path d="M141.09,37.62c-2.36,1.1-10.66,4.08-10.75,2.37-.07-1.19,1-1.99,2.02-2.29l5.77-1.71c1.5-.45,2.83-.94,3.87-2.13.13-.15.22-.22.08-.52-.63-1.3-12.69.97-13.67-2.25-.51-1.67,2.29-4.56,3.3-5.13l3.64-2.07c2.67-1.51,5.34-1.43,5.31-.07,0,.3-.27.75-.64.91l-3.72,1.62c-1.5.66-3.2,1.41-4.02,3-.32.62.77,1.09,1.26,1.15,3.45.41,7.04-1.3,10.5-.12.36.25.97.77,1.21,1.14,1.4,2.21-1.76,4.97-4.17,6.1h0Z"/><path d="M123.97,36.41l3.65-.38c.21-.02.79.37.72.57-.47,1.28-1.59,1.8-2.71,2.33-2.26,1.06-4.92,1.32-7.12-.07-1.81-1.15-2.58-3.43-2.1-5.56,1.64-7.32,9.88-8.93,10.91-6.66.7,1.55-4.27,1.84-6.04,3.69-1.36,1.42-2.03,3.67-.55,5.22.75.79,2.11.98,3.23.86h0Z"/><path d="M112.94,18.88c-.66.47-2.28-.19-2.34-1.09-.08-1.2,1.81-2.9,2.81-2.19.67.48.48,2.61-.47,3.28Z"/></g></svg>
+      <span>Sonorium</span>
+    </div>
+    <div class="sess"><span class="ids mono" id="barIds">No session</span><span id="barDocs"></span></div>
+    <div class="spacer"></div>
+    <span class="pill" id="srcPill"><i></i><span>Polar H10 not connected</span></span>
+    <button class="btn" id="btnBle" type="button">Connect Polar H10</button>
+    <span class="pill" id="recPill" role="status" aria-live="polite"><i></i><span id="recText">Idle</span></span>
+    <span class="clock" id="clock">00:00</span>
+    <button class="btn hold" id="btnStop" type="button" hidden><span class="fill"></span><span>Hold to stop</span></button>
+    <button class="btn" id="btnReview" type="button" hidden>Review</button>
+    <button class="btn primary" id="btnNew" type="button">New recording <kbd>N</kbd></button>
+  </header>
+
+  <div class="body">
+    <div class="left">
+      <div class="alert" id="alert" hidden><span id="alertText"></span><button class="btn" id="btnReconnect" type="button" hidden>Reconnect</button></div>
+      <section class="box vitals" aria-label="Live vitals">
+        <div class="v big"><span class="cap"><span class="heart" id="heart"></span>Heart rate</span><span class="n" id="vHr">–<small>BPM</small></span><span class="s">8-beat mean</span></div>
+        <div class="v big"><span class="cap">HRV · RMSSD</span><span class="n" id="vHrv">–<small>MS</small></span><span class="s" id="vHrvS">15 s window</span></div>
+        <div class="v"><span class="cap">HR change</span><span class="n" id="vDHr">–</span><span class="s" id="vRHr">vs opening silence</span></div>
+        <div class="v"><span class="cap">HRV change</span><span class="n" id="vDHrv">–</span><span class="s" id="vRHrv">vs opening silence</span></div>
+        <div class="v"><span class="cap">Signal</span><span class="n" id="vQ" style="font-size:17px">–</span><span class="s" id="vQs">Artifact beats, 60 s</span></div>
+        <div class="v"><span class="cap">Beats</span><span class="n" id="vBeats" style="font-size:17px">–</span><span class="s">Recorded</span></div>
+      </section>
+      <section class="box chart">
+        <div class="box-h"><h2>Heart rate and HRV</h2><span class="spacer"></span>
+          <div class="seg" role="group" aria-label="HRV window"><span>HRV</span>
+            <button type="button" data-hrv="15" aria-pressed="true">15 s</button><button type="button" data-hrv="30" aria-pressed="false">30 s</button><button type="button" data-hrv="45" aria-pressed="false">45 s</button></div>
+          <div class="seg" role="group" aria-label="Time window"><span>View</span>
+            <button type="button" data-win="300" aria-pressed="true">5 min</button><button type="button" data-win="900" aria-pressed="false">15 min</button><button type="button" data-win="0" aria-pressed="false">All</button></div>
+        </div>
+        <div class="cv"><canvas id="trend" aria-label="Heart rate, RMSSD and label timeline"></canvas></div>
+      </section>
+      <section class="box ecg">
+        <div class="box-h"><h2>Live ECG</h2><span class="spacer"></span><span class="cap mono" id="ecgMeta">130 Hz · 25 mm/s · 10 mm/mV</span></div>
+        <div class="cv"><canvas id="ecg" aria-label="Live ECG sweep, 5 seconds"></canvas></div>
+      </section>
+    </div>
+
+    <aside class="box rail" aria-label="Labels">
+      <div class="box-h"><h2>Active labels</h2><span class="now" id="railNow">Not recording</span></div>
+      <div class="pal" id="pal"></div>
+      <p class="railnote">Toggle instruments as they start and stop. Several can be on at once. With nothing on, the label is Silence.</p>
+    </aside>
+  </div>
+</div>
+
+<dialog id="dlgNew" aria-labelledby="dlgNewTitle">
+  <form id="formNew" novalidate>
+    <div class="dh"><h2 id="dlgNewTitle">New recording</h2><span class="spacer"></span><button class="btn ghost" type="button" data-close>Cancel <kbd>Esc</kbd></button></div>
+    <div class="dcol">
+      <div class="docs">
+        <div class="doc" id="docConsent">
+          <div class="row"><b>Consent form</b><span class="req" id="reqConsent">Required</span><label class="btn" for="fileConsent">Attach</label>
+            <input class="sr-only" type="file" id="fileConsent" accept=".pdf,image/*" multiple></div>
+          <ul class="files" id="listConsent"><li class="drop">Drop a file or attach</li></ul>
+        </div>
+        <div class="doc" id="docQuest">
+          <div class="row"><b>Questionnaire</b><span class="req" id="reqQuest">Required</span><label class="btn" for="fileQuest">Attach</label>
+            <input class="sr-only" type="file" id="fileQuest" accept=".pdf,.csv,.json,.xlsx,.xls,.txt,image/*" multiple></div>
+          <ul class="files" id="listQuest"><li class="drop">Drop a file or attach</li></ul>
+        </div>
+      </div>
+      <div class="fields">
+        <div class="field"><label for="inP">Participant ID</label><input id="inP" placeholder="PT-025" autocomplete="off"><small id="srcP"></small></div>
+        <div class="field"><label for="inS">Session ID</label><input id="inS" placeholder="S-2026-019" autocomplete="off"><small id="srcS"></small></div>
+        <div class="field"><label for="inF">Facilitator ID</label><input id="inF" placeholder="FC-03" autocomplete="off"><small id="srcF"></small></div>
+      </div>
+    </div>
+    <div class="df"><span class="hint" id="newHint"></span><button class="btn" type="button" id="dlgBle" hidden>Connect Polar H10</button>
+      <button class="btn primary lg" id="btnStart" type="submit" disabled>Start recording <kbd>↵</kbd></button></div>
+  </form>
+</dialog>
+
+<dialog id="dlgReview" aria-labelledby="dlgRevTitle">
+  <div class="dh"><h2 id="dlgRevTitle">Session review</h2><span class="mono" id="revIds" style="color:var(--ink-2)"></span><span class="spacer"></span><button class="btn ghost" type="button" data-close>Close <kbd>Esc</kbd></button></div>
+  <div class="dcol">
+    <div class="stats">
+      <div><span class="cap">Duration</span><span class="mono" id="rDur"></span></div>
+      <div><span class="cap">Beats</span><span class="mono" id="rBeats"></span></div>
+      <div><span class="cap">Artifact beats</span><span class="mono" id="rArt"></span></div>
+      <div><span class="cap">Opening silence</span><span class="mono" id="rRef"></span></div>
+    </div>
+    <div class="tbl"><table><thead><tr><th>Label</th><th class="num">Start</th><th class="num">Duration</th><th class="num">Mean HR</th><th class="num">RMSSD</th><th class="num">ΔHR</th><th class="num">ΔRMSSD</th></tr></thead><tbody id="revRows"></tbody></table></div>
+    <p class="note" id="exportNote"></p>
+  </div>
+  <div class="df"><span class="hint">Package holds beats.csv, ecg.csv, session.json and the attached documents.</span>
+    <button class="btn" type="button" data-export="csv">Beats CSV</button><button class="btn" type="button" data-export="ecg">ECG CSV</button><button class="btn" type="button" data-export="json">JSON</button>
+    <button class="btn primary lg" type="button" data-export="zip">Save session package</button></div>
+</dialog>
+
+<script>
+/* ======================= Configuration ======================= */
+// Label palette; key = hotkey. "Silence" is what is recorded whenever nothing else is on.
+const FAMILIES = [
+  { name: "Control", color: "--f-silence", items: [["Silence", "0"]] },
+  { name: "Gongs and metal", color: "--f-metal", items: [["Plate Gong", "1"], ["Plate Bells", "2"], ["Tubular Bells", "3"], ["Spiral Chime", "4"], ["Tubular Resonators", "5"], ["Angel Chimes", "6"]] },
+  { name: "Drums and rattles", color: "--f-drum", items: [["Storm Drum", "Q"], ["Shamanic Drum", "W"], ["Ocean Drum", "E"], ["Rattles", "R"]] },
+  { name: "Stone, glass, water", color: "--f-earth", items: [["Sound Stone", "A"], ["Glassophone", "S"], ["Water Bowl", "D"]] },
+  { name: "Bed, breath, voice", color: "--f-breath", items: [["Sound Bed", "Z"], ["Flutes", "X"], ["Wind Breath", "C"], ["Natural Voice", "V"]] },
+];
+const HRV_WINDOWS = [15, 30, 45];   // seconds; the smallest is the default
+// ID auto-fill: patterns found in file names, CSV/JSON fields or PDF text. Adjust to your ID scheme.
+const ID_PATTERNS = { p: /\bPT-?\d{2,6}\b/i, s: /\bS-\d[\d-]{1,12}\d\b/i, f: /\bFC-?\d{1,4}\b/i };
+const ID_FIELDS = { p: /participant/i, s: /session/i, f: /facilitator/i };
+
+const LABEL = {}, HOTKEY = {};
+FAMILIES.forEach(f => f.items.forEach(([name, key]) => { LABEL[name] = { key, color: f.color }; HOTKEY[key] = name; }));
+const SILENCE = "Silence";
+
+/* ======================= State ======================= */
+const S = {
+  phase: "idle",                 // idle | live | done
+  exported: false,
+  ids: { p: "", s: "", f: "" },
+  docs: { consent: [], questionnaire: [] },   // recorded session: { name, size, type, sha256, addedAt, file }
+  draft: { consent: [], questionnaire: [] },  // being attached in the New recording dialog
+  found: {},                     // auto-filled IDs: { p: { value, from, conflict? } }
+  t0: 0, tEnd: 0, startedAt: null,
+  active: new Set(),
+  events: [],                    // { t, kind: on|off|signal|phase, text }
+  beats: [],                     // { t, rr, hr, art, rec, labels[] }, sorted by t
+  recentGood: [],                // last good RR values for artifact detection
+  hrv: { 15: [], 30: [], 45: [] }, hrvWin: 15,   // rolling RMSSD sampled once a second, per window
+  ecgRec: [],                    // [t, uV] while recording
+  connected: false, contact: true, win: 300,
+};
+const $ = id => document.getElementById(id);
+const now = () => performance.now() / 1000;
+const rel = t => t - S.t0;
+const recording = () => S.phase === "live";
+const fmt = s => { s = Math.max(0, Math.floor(s)); const h = Math.floor(s / 3600), m = Math.floor(s / 60) % 60, x = s % 60;
+  return (h ? h + ":" + String(m).padStart(2, "0") : String(m).padStart(2, "0")) + ":" + String(x).padStart(2, "0"); };
+const kb = n => n < 1048576 ? Math.max(1, Math.round(n / 1024)) + " KB" : (n / 1048576).toFixed(1) + " MB";
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const r1 = v => v == null ? null : +v.toFixed(1);
+
+let tokens = {};
+const css = n => tokens[n] || (tokens[n] = getComputedStyle(document.documentElement).getPropertyValue(n).trim());
+const colorOf = label => css(LABEL[label] ? LABEL[label].color : "--line");
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => tokens = {});
+new MutationObserver(() => tokens = {}).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+
+/* ======================= Beats and HRV ======================= */
+const lowerBound = t => { let lo = 0, hi = S.beats.length; while (lo < hi) { const m = (lo + hi) >> 1; S.beats[m].t <= t ? lo = m + 1 : hi = m; } return lo; };
+const beatsIn = (t1, t2) => S.beats.slice(lowerBound(t1), lowerBound(t2));
+const median = a => { const b = [...a].sort((x, y) => x - y); return b[b.length >> 1]; };
+function addBeat(t, rr) {
+  const last = S.beats[S.beats.length - 1]; if (last && t <= last.t) t = last.t + 0.001;   // keep beats sorted
+  const g = S.recentGood, art = g.length >= 5 && Math.abs(rr - median(g)) / median(g) > 0.2;   // >20 % off the recent median
+  if (!art) { g.push(rr); if (g.length > 7) g.shift(); }
+  S.beats.push({ t, rr, hr: 60000 / rr, art, rec: recording(), labels: recording() ? [...S.active] : null });
+  if (S.beats.length > 30000 && !recording()) S.beats.splice(0, 10000);
+  if (!art) { const h = $("heart"); h.classList.add("beat"); setTimeout(() => h.classList.remove("beat"), 90); }
+}
+function rmssdOf(w) {   // successive differences; skips pairs touching an artifact or a gap
+  let sum = 0, n = 0;
+  for (let i = 1; i < w.length; i++) if (!w[i].art && !w[i - 1].art && w[i].t - w[i - 1].t < 2.5) { const d = w[i].rr - w[i - 1].rr; sum += d * d; n++; }
+  return n >= 5 ? Math.sqrt(sum / n) : null;
+}
+const rmssd = (t1, t2) => rmssdOf(beatsIn(t1, t2));
+const meanHr = w => { const g = w.filter(b => !b.art); return g.length ? g.reduce((a, b) => a + b.hr, 0) / g.length : null; };
+const hrNow = () => { const g = []; for (let i = S.beats.length - 1; i >= 0 && g.length < 8; i--) if (!S.beats[i].art) g.push(S.beats[i]); return meanHr(g); };
+// Reference for % change: the Silence period that opens every recording (start until the first instrument).
+function reference() {
+  const iv = intervals().find(s => s.label === SILENCE && s.t1 - S.t0 < 0.5);
+  if (!iv) return null;
+  const w = beatsIn(iv.t1, iv.t2).filter(b => b.rec);
+  return { open: recording() && !!iv.open, ok: w.filter(b => !b.art).length >= 30, hr: meanHr(w), rmssd: rmssdOf(w), beats: w.length };
+}
+
+/* ======================= Labels ======================= */
+function logEvent(kind, text, t = now()) { S.events.push({ t, kind, text }); }
+function nextSet(set, label) {   // instruments toggle; Silence clears; an empty set becomes Silence
+  if (label === SILENCE) return new Set([SILENCE]);
+  const on = new Set(set); on.delete(SILENCE); on.has(label) ? on.delete(label) : on.add(label);
+  return on.size ? on : new Set([SILENCE]);
+}
+function applyActive(next, t = now()) {
+  S.active.forEach(l => { if (!next.has(l)) logEvent("off", l, t); });
+  next.forEach(l => { if (!S.active.has(l)) logEvent("on", l, t); });
+  S.active = next; renderPalette();
+}
+const toggle = label => recording() && applyActive(nextSet(S.active, label));
+function intervals() {
+  const end = S.phase === "done" ? S.tEnd : now(), open = {}, out = [];
+  for (const e of S.events) {
+    if (e.kind === "on") open[e.text] = e.t;
+    else if (e.kind === "off" && open[e.text] != null) { out.push({ label: e.text, t1: open[e.text], t2: e.t }); delete open[e.text]; }
+  }
+  for (const l in open) out.push({ label: l, t1: open[l], t2: end, open: true });
+  return out.sort((a, b) => a.t1 - b.t1);
+}
+const sinceOn = label => { for (let i = S.events.length - 1; i >= 0; i--) if (S.events[i].kind === "on" && S.events[i].text === label) return S.events[i].t; return now(); };
+
+/* ======================= Polar H10 (Web Bluetooth) ======================= */
+const PMD_SERVICE = "fb005c80-02e7-f387-1cad-8acd2d8df0c8", PMD_CONTROL = "fb005c81-02e7-f387-1cad-8acd2d8df0c8", PMD_DATA = "fb005c82-02e7-f387-1cad-8acd2d8df0c8";
+const ECG_START = new Uint8Array([0x02, 0x00, 0x00, 0x01, 0x82, 0x00, 0x01, 0x01, 0x0E, 0x00]);   // ECG, 130 Hz, 14 bit
+let bleDevice = null, ecgClock = 0, beatClock = 0;
+async function connectBle(reuse) {
+  if (!navigator.bluetooth) return showAlert("Bluetooth isn't available here. Open sonorium.html in Chrome or Edge on the desktop.");
+  try {
+    setConnected("connecting");
+    if (!reuse || !bleDevice) {
+      bleDevice = await navigator.bluetooth.requestDevice({ filters: [{ namePrefix: "Polar H10" }], optionalServices: ["heart_rate", PMD_SERVICE] });
+      bleDevice.addEventListener("gattserverdisconnected", onBleLost);
+    }
+    const server = await bleDevice.gatt.connect();
+    const hr = await (await server.getPrimaryService("heart_rate")).getCharacteristic("heart_rate_measurement");
+    hr.addEventListener("characteristicvaluechanged", e => onHrPacket(e.target.value));
+    await hr.startNotifications();
+    try {
+      const pmd = await server.getPrimaryService(PMD_SERVICE), ctrl = await pmd.getCharacteristic(PMD_CONTROL), data = await pmd.getCharacteristic(PMD_DATA);
+      await ctrl.startNotifications();
+      data.addEventListener("characteristicvaluechanged", e => onEcgPacket(e.target.value));
+      await data.startNotifications(); await ctrl.writeValue(ECG_START);
+      $("ecgMeta").textContent = "130 Hz · 25 mm/s · 10 mm/mV";
+    } catch (e) { $("ecgMeta").textContent = "ECG stream unavailable"; }
+    setConnected(true); hideAlert();
+    if (recording()) logEvent("signal", "Sensor reconnected");
+  } catch (e) {
+    setConnected(false);
+    if (e && e.name !== "NotFoundError") showAlert("Couldn't connect: " + (e.message || e) + ". Moisten the strap electrodes, wear it, and try again.");
+  }
+}
+function onHrPacket(dv) {
+  const flags = dv.getUint8(0); let i = (flags & 1) ? 3 : 2;
+  if (flags & 0x04) S.contact = !!(flags & 0x02);
+  if (flags & 0x08) i += 2;
+  if (!(flags & 0x10)) return;
+  const rrs = []; for (; i + 1 < dv.byteLength; i += 2) rrs.push(Math.round(dv.getUint16(i, true) * 1000 / 1024));
+  // Beat times run on their own RR clock; resync to arrival time if it drifts more than 2 s.
+  let arrive = now() - rrs.reduce((a, b) => a + b, 0) / 1000;
+  for (const rr of rrs) { arrive += rr / 1000; beatClock = beatClock && Math.abs(beatClock + rr / 1000 - arrive) < 2 ? beatClock + rr / 1000 : arrive; addBeat(beatClock, rr); }
+}
+function onEcgPacket(dv) {
+  if (dv.getUint8(0) !== 0x00) return;
+  const n = Math.floor((dv.byteLength - 10) / 3), tn = now();
+  if (tn - ecgClock > 1) ecgClock = tn - n / 130;
+  for (let k = 0; k < n; k++) {
+    const o = 10 + k * 3; let v = dv.getUint8(o) | (dv.getUint8(o + 1) << 8) | (dv.getUint8(o + 2) << 16); if (v & 0x800000) v -= 0x1000000;
+    ecgClock += 1 / 130; if (recording()) S.ecgRec.push([ecgClock, v]); sweep.queue.push(v);
+  }
+}
+function onBleLost() {
+  setConnected(false);
+  showAlert(recording() ? "Polar H10 disconnected at " + fmt(rel(now())) + ". Recording continues; beats resume on reconnect." : "Polar H10 disconnected.", true);
+  if (recording()) logEvent("signal", "Sensor lost");
+}
+
+/* ======================= Documents and ID auto-fill ======================= */
+const DOC = { consent: ["listConsent", "reqConsent", "docConsent"], questionnaire: ["listQuest", "reqQuest", "docQuest"] };
+const FIELD = { p: ["inP", "srcP"], s: ["inS", "srcS"], f: ["inF", "srcF"] };
+async function sha256(buf) { try { const h = await crypto.subtle.digest("SHA-256", buf); return [...new Uint8Array(h)].map(b => b.toString(16).padStart(2, "0")).join(""); } catch (e) { return null; } }
+const latin1 = u8 => new TextDecoder("latin1").decode(u8);
+async function inflate(u8) { return latin1(new Uint8Array(await new Response(new Blob([u8]).stream().pipeThrough(new DecompressionStream("deflate"))).arrayBuffer())); }
+async function pdfText(u8) {   // raw text plus inflated content streams; joins split TJ fragments like (PT-)-20(025)
+  const raw = latin1(u8), parts = [raw]; let i = 0, count = 0;
+  while ((i = raw.indexOf("stream", i)) !== -1 && count++ < 300) {
+    let s = i + 6; if (raw[s] === "\r") s++; if (raw[s] === "\n") s++;
+    const e = raw.indexOf("endstream", s); if (e < 0) break;
+    let z = e; while (raw[z - 1] === "\n" || raw[z - 1] === "\r") z--;
+    if (raw.slice(Math.max(0, i - 200), i).includes("FlateDecode")) { try { parts.push(await inflate(u8.subarray(s, z))); } catch (err) {} }
+    i = e + 9;
+  }
+  return parts.join("\n").replace(/\)\s*-?[\d.]*\s*\(/g, "");
+}
+async function extractIds(file, buf) {
+  const found = {}, name = file.name.toLowerCase();
+  const scan = text => { for (const k in ID_PATTERNS) if (!found[k]) { const m = text.match(ID_PATTERNS[k]); if (m) found[k] = m[0].toUpperCase(); } };
+  const fromField = (key, val) => { for (const k in ID_FIELDS) if (!found[k] && ID_FIELDS[k].test(key) && /id\b|_id|code|number/i.test(key) && String(val).trim()) found[k] = String(val).trim().replace(/^"|"$/g, ""); };
+  try {
+    if (name.endsWith(".json")) {
+      const walk = o => { if (o && typeof o === "object") for (const [k, v] of Object.entries(o)) typeof v === "object" ? walk(v) : fromField(k, v); };
+      walk(JSON.parse(new TextDecoder().decode(buf)));
+    } else if (/\.(csv|txt)$/.test(name)) {
+      const text = new TextDecoder().decode(buf), rows = text.split(/\r?\n/).filter(Boolean).map(r => r.split(","));
+      if (rows[0] && rows[1]) rows[0].forEach((h, i) => fromField(h, rows[1][i] ?? ""));   // header row + first data row
+      rows.forEach(r => r.length >= 2 && fromField(r[0], r[1]));                         // or key,value rows
+      scan(text);
+    } else if (name.endsWith(".pdf")) scan(await pdfText(new Uint8Array(buf)));
+  } catch (e) {}
+  scan(file.name.replace(/[_.]+/g, " "));
+  return found;
+}
+async function addDocs(kind, files) {
+  for (const file of files) {
+    const buf = await file.arrayBuffer();
+    S.draft[kind].push({ name: file.name, size: file.size, type: file.type, addedAt: new Date().toISOString(), sha256: await sha256(buf), file });
+    const ids = await extractIds(file, buf);
+    for (const k in ids) {
+      const input = $(FIELD[k][0]), prev = S.found[k];
+      if (prev && prev.value !== ids[k]) { prev.conflict = `${prev.value} in ${prev.from}, ${ids[k]} in ${file.name}`; continue; }
+      if (!prev) S.found[k] = { value: ids[k], from: file.name };
+      if (!input.value.trim()) { input.value = ids[k]; input.classList.add("auto"); $(FIELD[k][1]).textContent = "From " + file.name; }
+    }
+  }
+  renderDocs(); validateNew();
+}
+function renderDocs() {
+  for (const [kind, [list, req, box]] of Object.entries(DOC)) {
+    const items = S.draft[kind];
+    $(list).innerHTML = items.length ? items.map((f, i) => `<li><span class="nm" title="${esc(f.name)}">${esc(f.name)}</span><span class="sz">${kb(f.size)}</span><button type="button" data-remove="${kind}:${i}">Remove</button></li>`).join("") : `<li class="drop">Drop a file or attach</li>`;
+    $(req).textContent = items.length ? "Attached" : "Required"; $(req).className = "req" + (items.length ? " ok" : "");
+    $(box).classList.toggle("has", items.length > 0);
+  }
+}
+function resetDialog() {
+  S.draft = { consent: [], questionnaire: [] }; S.found = {};
+  for (const k in FIELD) { $(FIELD[k][0]).value = ""; $(FIELD[k][0]).classList.remove("auto"); $(FIELD[k][1]).textContent = ""; }
+  try { $("inF").value = localStorage.getItem("sonorium.facilitator") || ""; } catch (e) {}
+}
+
+/* ======================= Session flow ======================= */
+function openNew() {
+  if (recording()) return;
+  renderDocs(); validateNew(); $("dlgNew").showModal();
+}
+function startRecording() {
+  S.ids = { p: $("inP").value.trim(), s: $("inS").value.trim(), f: $("inF").value.trim() };
+  try { localStorage.setItem("sonorium.facilitator", S.ids.f); } catch (e) {}
+  S.docs = S.draft; resetDialog();
+  S.beats.forEach(b => { b.rec = false; b.labels = null; });
+  S.t0 = now(); S.startedAt = new Date(); S.events = []; S.ecgRec = []; S.exported = false; S.active = new Set();
+  S.phase = "live"; applyActive(new Set([SILENCE]), S.t0);
+  $("dlgNew").close(); wake(); render();
+}
+function stopRecording() {
+  S.tEnd = now(); applyActive(new Set(), S.tEnd); logEvent("phase", "Recording stopped", S.tEnd);
+  S.phase = "done"; release(); render(); openReview();
+}
+let lock = null;
+async function wake() { try { lock = await navigator.wakeLock?.request("screen"); } catch (e) {} }
+function release() { try { lock?.release(); } catch (e) {} lock = null; }
+
+/* ======================= Exports ======================= */
+const baseName = () => (S.ids.s || "session") + "_" + (S.ids.p || "participant");
+const cell = v => /[",\n]/.test(String(v)) ? '"' + String(v).replace(/"/g, '""') + '"' : v;
+const labelText = ls => (ls && ls.length ? ls : [SILENCE]).join("|");
+function beatsCsv() {
+  const rows = [["t_s", "wallclock", "rr_ms", "hr_bpm", "artifact", "labels", "participant_id", "session_id", "facilitator_id"]];
+  S.beats.filter(b => b.rec).forEach(b => rows.push([rel(b.t).toFixed(3), new Date(S.startedAt.getTime() + rel(b.t) * 1000).toISOString(), b.rr, b.hr.toFixed(1), b.art ? 1 : 0, labelText(b.labels), S.ids.p, S.ids.s, S.ids.f]));
+  return rows.map(r => r.map(cell).join(",")).join("\n");
+}
+function ecgCsv() {
+  const ev = S.events.filter(e => e.kind === "on" || e.kind === "off"), on = new Set(), rows = ["t_s,ecg_uv,labels"]; let i = 0;
+  for (const [t, v] of S.ecgRec) {
+    while (i < ev.length && ev[i].t <= t) { ev[i].kind === "on" ? on.add(ev[i].text) : on.delete(ev[i].text); i++; }
+    rows.push(rel(t).toFixed(4) + "," + Math.round(v) + "," + cell(labelText([...on])));
+  }
+  return rows.join("\n");
+}
+function segmentStats() {
+  const ref = reference(), base = ref && ref.ok ? ref : null;
+  return intervals().map(s => {
+    const w = beatsIn(s.t1, s.t2).filter(x => x.rec), hr = meanHr(w), rm = rmssdOf(w), isRef = s.label === SILENCE && s.t1 - S.t0 < 0.5;
+    return { ...s, hr, rmssd: rm, dHr: base && !isRef && hr ? 100 * (hr - base.hr) / base.hr : null, dRm: base && !isRef && base.rmssd && rm ? 100 * (rm - base.rmssd) / base.rmssd : null };
+  });
+}
+function sessionJson() {
+  const ref = reference(), meta = k => S.docs[k].map(f => ({ name: f.name, size_bytes: f.size, type: f.type, sha256: f.sha256, attached_at: f.addedAt }));
+  return JSON.stringify({
+    format: "sonorium-session/4", sensor: "Polar H10",
+    participant_id: S.ids.p, session_id: S.ids.s, facilitator_id: S.ids.f, started_at: S.startedAt.toISOString(), duration_s: r1(rel(S.tEnd)),
+    documents: { consent: meta("consent"), questionnaire: meta("questionnaire") },
+    reference: ref && ref.ok ? { label: "opening silence", hr_bpm: r1(ref.hr), rmssd_ms: r1(ref.rmssd), beats: ref.beats } : null,
+    label_intervals: segmentStats().map(s => ({ label: s.label, start_s: r1(rel(s.t1)), end_s: r1(rel(s.t2)), mean_hr_bpm: r1(s.hr), rmssd_ms: r1(s.rmssd), hr_change_pct: r1(s.dHr), rmssd_change_pct: r1(s.dRm) })),
+    rolling_rmssd: Object.fromEntries(HRV_WINDOWS.map(w => [w + "s", S.hrv[w].filter(p => p.t >= S.t0 && p.t <= S.tEnd).map(p => [+rel(p.t).toFixed(1), r1(p.v)])])),
+    events: S.events.map(e => ({ t_s: +rel(e.t).toFixed(2), kind: e.kind, text: e.text })),
+    beats: S.beats.filter(x => x.rec).map(x => ({ t_s: +rel(x.t).toFixed(3), rr_ms: x.rr, artifact: x.art, labels: x.labels })),
+  }, null, 2);
+}
+
+// Minimal store-only zip writer (no compression, no library).
+const CRC = (() => { const t = new Uint32Array(256); for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; } return t; })();
+const crc32 = u8 => { let c = 0xFFFFFFFF; for (let i = 0; i < u8.length; i++) c = CRC[(c ^ u8[i]) & 255] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; };
+function makeZip(entries) {   // entries: [{ name, data: Uint8Array }]
+  const enc = new TextEncoder(), d = new Date(), parts = [], central = []; let off = 0;
+  const time = (d.getHours() << 11) | (d.getMinutes() << 5) | (d.getSeconds() >> 1), date = ((d.getFullYear() - 1980) << 9) | ((d.getMonth() + 1) << 5) | d.getDate();
+  const put = (dv, fields) => fields.forEach(([o, v, n]) => n === 4 ? dv.setUint32(o, v, true) : dv.setUint16(o, v, true));
+  for (const e of entries) {
+    const name = enc.encode(e.name), data = e.data, crc = crc32(data);
+    const h = new DataView(new ArrayBuffer(30)), c = new DataView(new ArrayBuffer(46));
+    put(h, [[0, 0x04034b50, 4], [4, 20, 2], [6, 0x0800, 2], [8, 0, 2], [10, time, 2], [12, date, 2], [14, crc, 4], [18, data.length, 4], [22, data.length, 4], [26, name.length, 2], [28, 0, 2]]);
+    put(c, [[0, 0x02014b50, 4], [4, 20, 2], [6, 20, 2], [8, 0x0800, 2], [10, 0, 2], [12, time, 2], [14, date, 2], [16, crc, 4], [20, data.length, 4], [24, data.length, 4], [28, name.length, 2], [30, 0, 2], [32, 0, 2], [34, 0, 2], [36, 0, 2], [38, 0, 4], [42, off, 4]]);
+    parts.push(h, name, data); central.push(c, name); off += 30 + name.length + data.length;
+  }
+  const size = central.reduce((a, p) => a + p.byteLength, 0), end = new DataView(new ArrayBuffer(22));
+  put(end, [[0, 0x06054b50, 4], [8, entries.length, 2], [10, entries.length, 2], [12, size, 4], [16, off, 4]]);
+  return new Blob([...parts, ...central, end], { type: "application/zip" });
+}
+async function sessionZip() {
+  const enc = new TextEncoder(), dir = baseName() + "/";
+  const entries = [{ name: dir + "beats.csv", data: enc.encode(beatsCsv()) }, { name: dir + "ecg.csv", data: enc.encode(ecgCsv()) }, { name: dir + "session.json", data: enc.encode(sessionJson()) }];
+  for (const k of ["consent", "questionnaire"]) for (const f of S.docs[k]) entries.push({ name: dir + k + "/" + f.name, data: new Uint8Array(await f.file.arrayBuffer()) });
+  return makeZip(entries);
+}
+// Inside claude.ai the downloads capability asks the viewer; as a local file this is a normal browser download.
+const downloadsReady = Promise.resolve(window.claude?.use?.("downloads")).catch(() => null);
+async function save(kind) {
+  const note = $("exportNote"), file = baseName() + { zip: ".zip", csv: "_beats.csv", ecg: "_ecg.csv", json: ".json" }[kind];
+  note.textContent = "Preparing " + file + "…";
+  const data = kind === "zip" ? await sessionZip() : new Blob([{ csv: beatsCsv, ecg: ecgCsv, json: sessionJson }[kind]()], { type: "text/plain" });
+  const dl = await downloadsReady;
+  if (dl) {
+    try { await dl.save({ filename: file, data }); S.exported = true; note.textContent = "Saved " + file + "."; }
+    catch (e) { note.textContent = e.code === "declined" ? "Save cancelled." : e.code === "rate_limited" ? "A save prompt is already open." : "Couldn't save: " + (e.message || e.code); }
+    return;
+  }
+  const url = URL.createObjectURL(data), a = Object.assign(document.createElement("a"), { href: url, download: file });
+  document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 10000);
+  S.exported = true; note.textContent = "Downloaded " + file + ".";
+}
+
+/* ======================= Rendering ======================= */
+function showAlert(msg, reconnect) { $("alertText").textContent = msg; $("btnReconnect").hidden = !reconnect; $("alert").hidden = false; }
+function hideAlert() { $("alert").hidden = true; }
+function setConnected(state) {
+  if (state !== "connecting") S.connected = state === true;
+  const pill = $("srcPill"), label = state === "connecting" ? "Connecting…" : S.connected ? (S.contact ? "Polar H10 · skin contact" : "Polar H10 · no skin contact") : "Polar H10 not connected";
+  pill.className = "pill" + (state === "connecting" ? " warn" : S.connected ? (S.contact ? " ok" : " warn") : "");
+  pill.lastElementChild.textContent = label;
+  for (const b of [$("btnBle"), $("dlgBle")]) { b.hidden = S.connected; b.disabled = state === "connecting"; }
+  validateNew();
+}
+function validateNew() {
+  const miss = [];
+  if (!S.draft.consent.length) miss.push("consent form");
+  if (!S.draft.questionnaire.length) miss.push("questionnaire");
+  if (!($("inP").value.trim() && $("inS").value.trim() && $("inF").value.trim())) miss.push("IDs");
+  if (!S.connected) miss.push("a connected Polar H10");
+  const conflicts = Object.values(S.found).filter(f => f.conflict).map(f => f.conflict);
+  $("btnStart").disabled = miss.length > 0;
+  const h = $("newHint");
+  h.className = "hint" + (conflicts.length || (S.phase === "done" && !S.exported && !miss.length) ? " warn" : "");
+  h.textContent = miss.length ? "Needs " + miss.join(", ").replace(/, ([^,]*)$/, " and $1") + "."
+    : conflicts.length ? "IDs differ between files: " + conflicts.join("; ") + ". Check before starting."
+    : S.phase === "done" && !S.exported ? "The last session wasn't saved. Starting discards it." : "Ready to record.";
+}
+function paletteHTML() {
+  return FAMILIES.map(f => `<div class="fam"><div class="cap"><i style="background:var(${f.color})"></i>${f.name}</div><div class="keys">` +
+    f.items.map(([n]) => `<button type="button" class="key" data-label="${n}" style="--c:var(${LABEL[n].color})" aria-pressed="false"><kbd>${LABEL[n].key}</kbd><span class="nm">${n}</span><span class="tm"></span></button>`).join("") + `</div></div>`).join("");
+}
+function renderPalette() {
+  const live = recording();
+  $("pal").querySelectorAll(".key").forEach(k => {
+    const l = k.dataset.label, on = live && S.active.has(l);
+    k.disabled = !live; k.setAttribute("aria-pressed", String(on));
+    k.querySelector(".tm").textContent = on ? fmt(now() - sinceOn(l)) : "";
+  });
+  const n = [...S.active].filter(l => l !== SILENCE).length;
+  $("railNow").textContent = !live ? (S.phase === "done" ? "Stopped" : "Not recording") : n ? n + " active" : "Silence";
+}
+function render() {
+  const live = recording(), done = S.phase === "done";
+  $("barIds").textContent = S.ids.p ? [S.ids.p, S.ids.s, S.ids.f].join(" · ") : "No session";
+  $("barDocs").innerHTML = S.ids.p ? `<span class="pill good"><i></i>Consent ${S.docs.consent.length} · Questionnaire ${S.docs.questionnaire.length}</span>` : "";
+  $("recPill").className = "pill" + (live ? " rec" : ""); $("recText").textContent = live ? "Recording" : done ? "Stopped" : "Idle";
+  $("btnStop").hidden = !live; $("btnReview").hidden = !done; $("btnNew").hidden = live;
+  renderPalette();
+}
+function openReview() {
+  const rec = S.beats.filter(b => b.rec), ref = reference();
+  $("revIds").textContent = [S.ids.p, S.ids.s, S.ids.f].join(" · ");
+  $("rDur").textContent = fmt(rel(S.tEnd)); $("rBeats").textContent = rec.length.toLocaleString();
+  $("rArt").textContent = rec.length ? (100 * rec.filter(x => x.art).length / rec.length).toFixed(1) + " %" : "–";
+  $("rRef").textContent = ref && ref.ok ? Math.round(ref.hr) + " bpm · " + (ref.rmssd ? Math.round(ref.rmssd) + " ms" : "–") : "Under 30 beats";
+  const pct = (v, lowerIsCalmer) => v == null ? "–" : `<span class="${Math.abs(v) < 1 ? "" : (v < 0) === lowerIsCalmer ? "down" : "up"}">${v > 0 ? "+" : ""}${v.toFixed(1)}%</span>`;
+  $("revRows").innerHTML = segmentStats().map(s => `<tr><td><i style="background:${colorOf(s.label)}"></i>${esc(s.label)}</td><td class="num">${fmt(rel(s.t1))}</td><td class="num">${fmt(s.t2 - s.t1)}</td>
+    <td class="num">${s.hr ? s.hr.toFixed(1) : "–"}</td><td class="num">${s.rmssd ? s.rmssd.toFixed(1) : "–"}</td><td class="num">${pct(s.dHr, true)}</td><td class="num">${pct(s.dRm, false)}</td></tr>`).join("");
+  $("exportNote").textContent = S.exported ? "" : "Not saved yet.";
+  $("dlgReview").showModal();
+}
+function renderVitals() {
+  const t = now(), live = S.connected && S.beats.length && t - S.beats[S.beats.length - 1].t < 4;
+  const hr = live ? hrNow() : null, v = live ? rmssd(t - S.hrvWin, t) : null, ref = S.phase !== "idle" ? reference() : null;
+  $("vHr").innerHTML = (hr ? Math.round(hr) : "–") + "<small>BPM</small>";
+  $("vHrv").innerHTML = (v ? Math.round(v) : "–") + "<small>MS</small>";
+  $("vHrvS").textContent = S.hrvWin + " s window";
+  const base = ref && ref.ok && !ref.open ? ref : null;
+  const delta = (el, cur, r, lowerIsCalmer) => {
+    if (!r || !cur) { el.textContent = "–"; el.className = "n"; return; }
+    const p = 100 * (cur - r) / r; el.textContent = (p > 0 ? "+" : "") + p.toFixed(1) + "%";
+    el.className = "n " + (Math.abs(p) < 1 ? "" : (p < 0) === lowerIsCalmer ? "down" : "up");
+  };
+  delta($("vDHr"), hr, base && base.hr, true); delta($("vDHrv"), v, base && base.rmssd, false);
+  const sub = !ref ? "vs opening silence" : ref.open ? "Opening silence in progress" : !ref.ok ? "Opening silence under 30 beats" : null;
+  $("vRHr").textContent = sub || "vs opening silence, " + Math.round(ref.hr) + " bpm";
+  $("vRHrv").textContent = sub || "vs opening silence, " + (ref.rmssd ? Math.round(ref.rmssd) + " ms" : "–");
+  const q = $("vQ");
+  if (!S.connected) { q.textContent = "–"; q.style.color = ""; $("vQs").textContent = "Artifact beats, 60 s"; }
+  else if (!live) { q.textContent = "No beats"; q.style.color = css("--crit"); $("vQs").textContent = "Check strap contact"; }
+  else { const w = beatsIn(t - 60, t), a = w.length ? 100 * w.filter(x => x.art).length / w.length : 0;
+    q.textContent = (a < 2 ? "Good" : a < 5 ? "Fair" : "Poor") + " · " + a.toFixed(1) + "%"; q.style.color = css(a < 2 ? "--ok" : a < 5 ? "--warn" : "--crit"); $("vQs").textContent = "Artifact beats, 60 s"; }
+  $("vBeats").textContent = S.phase !== "idle" ? S.beats.filter(x => x.rec).length.toLocaleString() : "–";
+  if (S.connected) setConnected(true);
+  $("clock").textContent = recording() ? fmt(rel(t)) : S.phase === "done" ? fmt(rel(S.tEnd)) : "00:00";
+  if (recording()) renderPalette();
+}
+
+/* ---- Canvas ---- */
+function fit(cv) {
+  const r = cv.getBoundingClientRect(), d = devicePixelRatio || 1;
+  if (cv.width !== Math.round(r.width * d) || cv.height !== Math.round(r.height * d)) { cv.width = Math.round(r.width * d); cv.height = Math.round(r.height * d); }
+  const g = cv.getContext("2d"); g.setTransform(d, 0, 0, d, 0, 0); return [g, r.width, r.height];
+}
+const ticks = (lo, hi, n) => { const s = [1, 2, 5, 10, 20, 25, 50].find(s => (hi - lo) / s <= n) || 100, out = []; for (let v = Math.ceil(lo / s) * s; v <= hi; v += s) out.push(v); return out; };
+function emptyText(g, W, H, msg) { g.fillStyle = css("--ink-3"); g.font = "12.5px " + css("--ui"); g.textAlign = "center"; g.textBaseline = "middle"; g.fillText(msg, W / 2, H / 2); }
+
+function drawTrend() {
+  const [g, W, H] = fit($("trend"));
+  g.clearRect(0, 0, W, H);
+  if (W < 50 || H < 80) return;
+  if (!S.beats.length) return emptyText(g, W, H, S.connected ? "Waiting for beats from the Polar H10…" : "Connect a Polar H10 to see live heart rate and HRV");
+  const active = S.phase !== "idle", tNow = S.phase === "done" ? S.tEnd : now();
+  const span = S.win || (active ? Math.max(120, tNow - S.t0) : 300), tA = tNow - span;
+  const L = 40, R = W - 40, top = 10;
+  const ivs = active ? intervals().filter(s => s.t2 >= tA) : [], lanes = [...new Set(ivs.map(s => s.label))];
+  const laneH = 12, lanesH = Math.max(laneH, lanes.length * (laneH + 2)), axisH = 16;
+  const lanesTop = H - axisH - lanesH, hvH = Math.max(40, (lanesTop - top - 24) * 0.3), hvTop = lanesTop - 10 - hvH, hrBot = hvTop - 14;
+  const x = t => L + (t - tA) / span * (R - L);
+  g.font = "10.5px " + css("--mono"); g.textBaseline = "middle"; g.lineWidth = 1;
+
+  // HR (5-beat smoothed)
+  const vis = beatsIn(tA - 5, tNow).filter(b => !b.art), pts = []; let acc = [];
+  vis.forEach(b => { acc.push(b.hr); if (acc.length > 5) acc.shift(); pts.push([b.t, acc.reduce((a, c) => a + c, 0) / acc.length]); });
+  let lo = 55, hi = 90;
+  if (pts.length) { lo = Math.min(...pts.map(p => p[1])) - 4; hi = Math.max(...pts.map(p => p[1])) + 4; if (hi - lo < 16) { const m = (hi + lo) / 2; lo = m - 8; hi = m + 8; } }
+  const y = v => top + (1 - (v - lo) / (hi - lo)) * (hrBot - top);
+  g.strokeStyle = css("--line"); g.fillStyle = css("--ink-3"); g.textAlign = "right";
+  ticks(lo, hi, 5).forEach(v => { g.beginPath(); g.moveTo(L, y(v)); g.lineTo(R, y(v)); g.stroke(); g.fillText(v, L - 6, y(v)); });
+  g.textAlign = "left"; g.fillText("bpm", R + 5, top + 2);
+  const ref = active ? reference() : null;
+  if (ref && ref.ok && ref.hr > lo && ref.hr < hi) { g.setLineDash([3, 4]); g.strokeStyle = css("--ink-3"); g.beginPath(); g.moveTo(L, y(ref.hr)); g.lineTo(R, y(ref.hr)); g.stroke(); g.setLineDash([]); g.fillText("ref", R + 5, y(ref.hr)); }
+  g.save(); g.beginPath(); g.rect(L, 0, R - L, H); g.clip();
+  if (pts.length > 1) {
+    const path = () => { g.beginPath(); pts.forEach(([t, v], i) => i ? g.lineTo(x(t), y(v)) : g.moveTo(x(t), y(v))); };
+    path(); g.lineTo(x(pts[pts.length - 1][0]), hrBot); g.lineTo(x(pts[0][0]), hrBot); g.closePath(); g.globalAlpha = .07; g.fillStyle = css("--trace"); g.fill(); g.globalAlpha = 1;
+    path(); g.strokeStyle = css("--trace"); g.lineWidth = 1.7; g.lineJoin = "round"; g.stroke(); g.lineWidth = 1;
+    const [et, ev] = pts[pts.length - 1]; g.beginPath(); g.arc(x(et), y(ev), 3.2, 0, 7); g.fillStyle = css("--trace"); g.fill();
+  }
+  S.events.filter(e => e.kind === "signal" && e.t >= tA && e.t <= tNow).forEach(e => {
+    g.strokeStyle = g.fillStyle = css("--crit"); g.beginPath(); g.moveTo(x(e.t), top); g.lineTo(x(e.t), lanesTop + lanesH); g.stroke();
+    g.font = "600 10.5px " + css("--ui"); g.textAlign = "left"; g.fillText(e.text, x(e.t) + 5, top + 3); g.font = "10.5px " + css("--mono");
+  });
+  g.restore();
+
+  // RMSSD for the selected window
+  const hv = S.hrv[S.hrvWin].filter(p => p.t >= tA - 2 && p.t <= tNow && p.v != null);
+  const hmax = hv.length ? Math.max(30, Math.ceil(Math.max(...hv.map(p => p.v)) / 10) * 10 + 5) : 60, yh = v => hvTop + (1 - v / hmax) * hvH;
+  g.strokeStyle = css("--line"); g.fillStyle = css("--ink-3"); g.textAlign = "right";
+  [0, Math.round(hmax / 10) * 5, Math.floor(hmax / 5) * 5].forEach(v => { g.beginPath(); g.moveTo(L, yh(v)); g.lineTo(R, yh(v)); g.stroke(); g.fillText(v, L - 6, yh(v)); });
+  g.textAlign = "left"; g.fillText("ms", R + 5, hvTop + 2);
+  g.fillStyle = css("--accent"); g.font = "600 10px " + css("--ui"); g.fillText("RMSSD " + S.hrvWin + " s", L + 4, hvTop + 6); g.font = "10.5px " + css("--mono");
+  if (hv.length > 1) { g.save(); g.beginPath(); g.rect(L, 0, R - L, H); g.clip(); g.beginPath(); hv.forEach((p, i) => i ? g.lineTo(x(p.t), yh(p.v)) : g.moveTo(x(p.t), yh(p.v)));
+    g.strokeStyle = css("--accent"); g.lineWidth = 1.4; g.stroke(); g.lineWidth = 1; g.restore(); }
+
+  // Label lanes, one row per label seen in this window
+  if (!lanes.length) { g.fillStyle = css("--surface-2"); g.fillRect(L, lanesTop, R - L, laneH); g.fillStyle = css("--ink-3"); g.font = "11px " + css("--ui"); g.textAlign = "center";
+    g.fillText("Label lanes appear once recording starts", (L + R) / 2, lanesTop + laneH / 2 + 1); }
+  g.save(); g.beginPath(); g.rect(L, lanesTop, R - L, lanesH); g.clip();
+  lanes.forEach((l, i) => { const ly = lanesTop + i * (laneH + 2); g.fillStyle = css("--surface-2"); g.fillRect(L, ly, R - L, laneH);
+    ivs.filter(s => s.label === l).forEach(s => { const a = Math.max(x(s.t1), L), z = Math.min(x(s.t2), R); g.fillStyle = colorOf(l); g.fillRect(a, ly, Math.max(1.5, z - a), laneH);
+      if (z - a > 64) { g.fillStyle = css("--on-label"); g.font = "600 10px " + css("--ui"); g.textAlign = "left"; g.fillText(l, a + 5, ly + laneH / 2 + .5); } }); });
+  g.restore();
+
+  // Time axis
+  g.fillStyle = css("--ink-3"); g.font = "10.5px " + css("--mono"); g.textAlign = "center";
+  const t0 = active ? S.t0 : tNow, step = span <= 360 ? 60 : span <= 1000 ? 180 : 600;
+  for (let t = Math.ceil((tA - t0) / step) * step; t <= tNow - t0 + .01; t += step) { const px = x(t0 + t); if (px < L + 12 || px > R - 12) continue;
+    g.fillText(active ? fmt(t) : Math.abs(t) < 1 ? "now" : "-" + fmt(-t), px, H - axisH / 2); }
+}
+
+/* ECG sweep: samples play out at 130 Hz from a small jitter buffer; a write head sweeps left to right
+   and erases the old trace just ahead of it, like a bedside monitor on ECG paper. */
+const sweep = { N: 650, buf: new Float32Array(650), head: 0, filled: 0, queue: [], playing: false, carry: 0, last: 0 };
+function sweepAdvance(t) {
+  const dt = Math.min(0.1, t - (sweep.last || t)); sweep.last = t;
+  if (!sweep.playing) { if (sweep.queue.length >= 90) sweep.playing = true; else return; }   // ~0.7 s buffer absorbs BLE packet bursts
+  sweep.carry += dt * 130;
+  let n = Math.floor(sweep.carry); sweep.carry -= n;
+  if (sweep.queue.length > 260) n += sweep.queue.length - 130;   // more than 2 s behind: catch up
+  for (let i = 0; i < n && sweep.queue.length; i++) { sweep.buf[sweep.head] = sweep.queue.shift(); sweep.head = (sweep.head + 1) % sweep.N; if (sweep.filled < sweep.N) sweep.filled++; }
+  if (!sweep.queue.length) sweep.playing = false;
+}
+function drawEcg() {
+  const [g, W, H] = fit($("ecg"));
+  g.fillStyle = css("--surface"); g.fillRect(0, 0, W, H);
+  const mm = W / 125, mid = H * 0.6;          // 5 s at 25 mm/s = 125 mm
+  for (let i = 0; i * mm <= W; i++) { g.strokeStyle = css(i % 5 ? "--paper" : "--paper-major"); g.beginPath(); g.moveTo(i * mm, 0); g.lineTo(i * mm, H); g.stroke(); }
+  for (let i = -Math.ceil(mid / mm); mid + i * mm <= H; i++) { g.strokeStyle = css(i % 5 ? "--paper" : "--paper-major"); g.beginPath(); g.moveTo(0, mid + i * mm); g.lineTo(W, mid + i * mm); g.stroke(); }
+  if (!sweep.filled) return emptyText(g, W, H, S.connected ? "Waiting for ECG…" : "Connect a Polar H10 to see the live ECG");
+  const N = sweep.N, gap = 18, X = k => k / (N - 1) * W, Y = v => mid - v / 1000 * mm * 10;
+  const line = (a, b) => { if (b - a < 2) return; g.beginPath(); for (let k = a; k < b; k++) k === a ? g.moveTo(X(k), Y(sweep.buf[k])) : g.lineTo(X(k), Y(sweep.buf[k])); g.stroke(); };
+  g.strokeStyle = css("--trace"); g.lineWidth = 1.6; g.lineJoin = "round";
+  line(0, sweep.head);                                                               // current sweep
+  if (sweep.filled >= N) { g.globalAlpha = .5; line(Math.min(N, sweep.head + gap), N); g.globalAlpha = 1; }   // previous sweep, erased just ahead of the head
+  const k = (sweep.head - 1 + N) % N;
+  g.save(); g.shadowColor = css("--trace"); g.shadowBlur = 8; g.fillStyle = css("--trace"); g.beginPath(); g.arc(X(k), Y(sweep.buf[k]), 2.6, 0, 7); g.fill(); g.restore();
+  g.lineWidth = 1;
+}
+
+/* ======================= Loop ======================= */
+let lastHrv = 0, lastVit = 0;
+function frame() {
+  const t = now();
+  sweepAdvance(t);
+  if (t - lastHrv >= 1) { lastHrv = t; for (const w of HRV_WINDOWS) { S.hrv[w].push({ t, v: S.connected ? rmssd(t - w, t) : null }); if (S.hrv[w].length > 8000 && !recording()) S.hrv[w].splice(0, 3000); } }
+  if (t - lastVit >= 0.5) { lastVit = t; renderVitals(); }
+  drawTrend(); drawEcg(); requestAnimationFrame(frame);
+}
+
+/* ======================= Wiring ======================= */
+$("pal").innerHTML = paletteHTML();
+$("pal").addEventListener("click", e => { const k = e.target.closest(".key"); if (k) toggle(k.dataset.label); });
+$("btnBle").onclick = $("dlgBle").onclick = () => connectBle(false);
+$("btnReconnect").onclick = () => connectBle(true);
+$("btnNew").onclick = openNew;
+$("btnReview").onclick = openReview;
+for (const k in FIELD) $(FIELD[k][0]).addEventListener("input", e => { e.target.classList.remove("auto"); $(FIELD[k][1]).textContent = ""; validateNew(); });
+$("formNew").addEventListener("submit", e => { e.preventDefault(); if (!$("btnStart").disabled) startRecording(); });
+document.querySelectorAll("[data-close]").forEach(b => b.onclick = () => b.closest("dialog").close());
+document.querySelectorAll("[data-export]").forEach(b => b.onclick = () => save(b.dataset.export));
+const segGroup = (attr, set) => document.querySelectorAll(`[${attr}]`).forEach(b => b.onclick = () => {
+  set(+b.getAttribute(attr)); document.querySelectorAll(`[${attr}]`).forEach(x => x.setAttribute("aria-pressed", String(x === b))); renderVitals(); });
+segGroup("data-win", v => S.win = v);
+segGroup("data-hrv", v => S.hrvWin = v);
+
+[["fileConsent", "consent"], ["fileQuest", "questionnaire"]].forEach(([id, kind]) => {
+  const input = $(id), box = $(DOC[kind][2]);
+  input.addEventListener("change", () => { addDocs(kind, [...input.files]); input.value = ""; });
+  box.addEventListener("dragover", e => { e.preventDefault(); box.classList.add("drag"); });
+  box.addEventListener("dragleave", () => box.classList.remove("drag"));
+  box.addEventListener("drop", e => { e.preventDefault(); box.classList.remove("drag"); if (e.dataTransfer.files.length) addDocs(kind, [...e.dataTransfer.files]); });
+});
+$("formNew").addEventListener("click", e => { const r = e.target.closest("[data-remove]"); if (!r) return; const [k, i] = r.dataset.remove.split(":"); S.draft[k].splice(+i, 1); renderDocs(); validateNew(); });
+
+// Keyboard: label hotkeys while recording, N for a new recording. Ignored while typing in a field.
+document.addEventListener("keydown", e => {
+  if (e.metaKey || e.ctrlKey || e.altKey || e.repeat) return;
+  if (["INPUT", "TEXTAREA", "SELECT"].includes(document.activeElement?.tagName)) return;
+  const k = e.key.length === 1 ? e.key.toUpperCase() : e.key, dialogOpen = $("dlgNew").open || $("dlgReview").open;
+  if (HOTKEY[k] && recording() && !dialogOpen) { e.preventDefault(); toggle(HOTKEY[k]); return; }
+  if (k === "N" && !recording() && !dialogOpen) { e.preventDefault(); openNew(); }
+});
+
+// Hold to stop, so a stray click never ends a session.
+let holdT = null; const stop = $("btnStop");
+const arm = () => { stop.classList.add("armed"); holdT = setTimeout(() => { stop.classList.remove("armed"); stopRecording(); }, 1200); };
+const disarm = () => { stop.classList.remove("armed"); clearTimeout(holdT); };
+stop.addEventListener("pointerdown", arm); ["pointerup", "pointerleave", "pointercancel"].forEach(ev => stop.addEventListener(ev, disarm));
+stop.addEventListener("keydown", e => { if ((e.key === " " || e.key === "Enter") && !e.repeat) { e.preventDefault(); arm(); } });
+stop.addEventListener("keyup", e => { if (e.key === " " || e.key === "Enter") disarm(); });
+window.addEventListener("beforeunload", e => { if (recording() || (S.phase === "done" && !S.exported)) { e.preventDefault(); e.returnValue = ""; } });
+
+resetDialog(); setConnected(false); render(); requestAnimationFrame(frame);
+</script>

@@ -1,37 +1,50 @@
-# MVP validation · 5 October 2026
+# Validation · v0.3 session desk · 10 October 2026
 
-## Completed automated checks
+## Automated
 
-36 tests pass in version 0.2. The original 26 tests cover:
+`pytest tests -q`: 45 tests pass.
 
-- Signed 24-bit ECG boundaries and 8/16/24-bit raw acceleration frames.
-- HR flags, 8/16-bit heart rate, energy, contact and original RR ticks.
-- Truncated/unsupported frames, PMD settings, command rejection and multipart acknowledgments.
-- Shared sensor/host clock anchors and missing-sample gaps without interpolation.
-- Atomic chunk publication, checksums, immutable raw files and unfinished temporary files.
-- Missing, duplicate and corrupt chunks; unaffected chunks remain readable.
-- A separate process forced to exit without cleanup; prior committed samples survive and recover.
-- Committed chunks left out of a manifest by a crash; reconciliation on recovery.
-- Export contents, valid CSV and refusal to export an active session.
-- Versioned, repeatable respiration regeneration without raw-data mutation.
-- A synthetic 15 breaths/min amplitude-modulated ECG fixture, gap rejection and flatline rejection. This is a software fixture check, not physiological validation.
-- An accelerated 60-minute recording of 468,000 ECG samples and 180,000 motion samples: 1,440 independently verified chunks; empty pending buffers after commits; peak tracked Python allocation below 25 MB.
-- Recording during simulated dropout and reconnection, disk-full interruption and reconnect retries.
+- HR packets: uint8 and uint16 values, energy field skipped, contact flags,
+  RR ticks to ms, packets without RR.
+- ECG frames: signed 24-bit samples including negative extremes; non-ECG
+  frames ignored; the ECG start command bytes.
+- Artifact detection (20 % of the 7-beat median, 5-beat minimum), RMSSD
+  (known values, artifacts, gaps, 5-pair minimum), HR display mean, quality
+  grades.
+- Label rules (toggle, stack, Silence clears, empty is Silence), interval
+  pairing, label tagging of beats and ECG, start/stop events, beat clock
+  resync, 130 Hz ECG spacing, opening-silence reference and % change, no
+  trimming of a stopped session.
+- ID extraction: CSV header row, key/value rows, the survey baseline export,
+  nested JSON, null values, file names, FlateDecode PDF with split TJ text.
+- Exports: CSV columns, ECG labels, JSON shape, zip opens with every entry
+  stored uncompressed, duplicate document names.
+- Study registry and survey server (kept for the survey app).
 
-## Desktop workflow checks
+## Desktop workflow (offscreen Qt, synthetic packets through the real handlers)
 
-The native Qt window was exercised through simulator connection, start, recording, a full 20-second dropout, reconnect, stop/save, review, verification and ZIP/CSV export. The stored ECG has an approximately 20-second gap and no fabricated filler samples. All committed chunks verified.
+Empty states without a sensor; New recording gating; auto-fill from a CSV and
+from a file name; conflict warning; user edit clears the auto-fill mark; Enter
+starts; facilitator remembered; click and hotkey toggles; Silence when empty;
+N ignored while recording; HRV window switch; sensor lost and reconnected
+events; short press does not stop, a 1.2 s hold does; Review; all four
+exports; the zip opens. No Qt warnings. Light, dark and narrow (< 960 px)
+layouts were checked from screenshots.
 
-Display updates were deliberately paused for over five seconds during recording; chunks continued to save independently. Screenshots of the recording, dropout and session-library views were checked for layout issues. The bundled executable was launched with its own embedded Python/runtime in an offline sandbox, and its macOS ad-hoc code signature verified.
+Paint cost at 2x scale with a one-hour session: ECG sweep about 2.3 ms per
+frame; trend 5.5 ms per repaint at the 5 min view, repainting a few times a
+second (only when data arrives or time moves it by half a pixel).
 
-## Remaining hardware acceptance
+## Not verified
 
-No live Polar H10 hardware recording was performed during this build. Before using the rig for a study, verify with the actual H10/firmware: discovery and macOS Bluetooth permission, negotiated ECG/ACC streams, contact flags and RR availability, battery reading, a physical 20-second out-of-range dropout/reconnect, an hour-long acquisition, and recovery after a forced quit. Compare the respiration estimator with a respiratory reference if the estimate will be interpreted scientifically.
+No Polar H10 was available. Untested on hardware:
 
-The app is locally ad-hoc signed, not Apple-notarized for distribution to other Macs. This build targets Apple Silicon/macOS 14+. The app has no update/download path and requires no Internet at runtime.
-
-## Version 0.2 dashboard validation
-
-Ten additional tests check RR formulas against known values; excluded-observation and gap handling; selection boundaries; interval-union coverage; read-only session loading; corrupt-chunk isolation; active-session refusal; invalid respiration pointers; empty sessions; and rejected respiration windows.
-
-The dashboard was exercised against the user's completed H10 sample recording. All five views, selection controls, ECG navigation, small-window layout and return-to-library navigation passed. Checksums of all 165 source files before/after analysis matched. Screenshots of each view were inspected. These checks validate the software behavior; they do not establish physiological or clinical accuracy.
+- Scanning, macOS Bluetooth permission prompt, connect and the HR
+  notification subscription.
+- The PMD ECG start sequence and frame sizes at the negotiated MTU, and
+  "ECG stream unavailable" when it is refused.
+- Disconnect detection, Reconnect reusing the same device, and the
+  sensor-lost/reconnected timing in a real dropout.
+- ECG sweep smoothness against real BLE packet timing.
+- The macOS display wake lock (`caffeinate`) and Reduce motion detection.
+- The PyInstaller build of this version.
